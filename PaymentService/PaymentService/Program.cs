@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using PaymentService.Context;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +9,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<PaymentContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PaymentDb")));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
