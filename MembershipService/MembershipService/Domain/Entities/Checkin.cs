@@ -9,4 +9,7 @@ public class Checkin
     public DateTime Timestamp { get; set; }
 
     public string Location { get; set; } = string.Empty;
+
+    // Navigation property
+    public Membership? Membership { get; set; }
 }
