@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using ServiceService.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +10,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+builder.Services.AddDbContext<ServiceDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
