@@ -3,14 +3,14 @@
     public class Principal
     {
         // DTO koji predstavlja informacije o korisniku koje se šalju klijentu nakon uspešne autentifikacije
-        public int Id { get; set; }         
+            public Guid Id { get; set; }         
             public string Username { get; set; } 
             public string Email { get; set; }    
-            public List<string> Roles { get; set; } // Role korisnika
+            public List<Role> Roles { get; set; } // Role korisnika
 
             public Principal() { }
 
-            public Principal(int id, string username, string email, List<string> roles)
+            public Principal(Guid id, string username, string email, List<Role> roles)
             {
                 Id = id;
                 Username = username;

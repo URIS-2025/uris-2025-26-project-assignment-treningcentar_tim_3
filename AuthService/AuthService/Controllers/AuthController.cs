@@ -1,8 +1,10 @@
-﻿using AuthService.Helpers;
+﻿using AuthService.Data.Auth;
+using AuthService.Helpers;
 using AuthService.Models;
 using AuthService.Models.DTO;
 using AuthService.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 
 namespace AuthService.Controllers
@@ -43,16 +45,20 @@ namespace AuthService.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDTO dto)
+        public async Task<IActionResult> Login(LoginDTO dto, [FromServices] IAuthHelper authHelper)
         {
+           
+
             var user = await _repository.GetByUsernameAsync(dto.Username);
 
-            if (user == null || !PasswordHelper.VerifyPassword(dto.Password, user.PasswordHash))
+            if (user == null || !await authHelper.AuthenticatePrincipal(dto.Username, dto.Password))
                 return Unauthorized("Invalid credentials");
 
-            // Kasnije ćemo dodati JWT token ovde
+            var principal = new Principal(user.Id, user.Username, user.Email, new List<Role> { user.Role});
 
-            return Ok(new { message = "Login successful" });
+            //  var token = authHelper.GenerateJwt(new Principal(user.Id, user.Username, user.Email, new List<Role> { user.Role }));
+            var token = authHelper.GenerateJwt(principal);
+            return Ok(new { Token = token });
         }
     }
 
