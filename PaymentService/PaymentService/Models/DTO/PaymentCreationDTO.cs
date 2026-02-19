@@ -22,6 +22,7 @@ namespace PaymentService.Models.DTO
     
         /// Način plaćanja.
         [Required(ErrorMessage = "Payment method is required.")]
+        [EnumDataType(typeof(PaymentMethod))]
         public PaymentMethod Method { get; set; }
 
         /// ID rezervacije.
