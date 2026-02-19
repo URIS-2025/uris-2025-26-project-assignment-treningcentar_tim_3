@@ -23,12 +23,15 @@ public class MembershipContext : DbContext
         modelBuilder.Entity<Membership>()
             .HasOne(m => m.Package)
             .WithMany()
-            .HasForeignKey(m => m.PackageId);
+            .HasForeignKey(m => m.PackageId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         // Konfiguracija odnosa između Membership i Checkin
         modelBuilder.Entity<Membership>()
             .HasMany(m => m.Checkins)
             .WithOne(c => c.Membership)
-            .HasForeignKey(c => c.MembershipId);
+            .HasForeignKey(c => c.MembershipId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
+
 }
