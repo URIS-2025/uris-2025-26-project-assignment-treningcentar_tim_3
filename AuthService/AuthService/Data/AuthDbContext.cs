@@ -10,6 +10,15 @@ namespace AuthService.Data
         {
         }
         public DbSet<UserEntity> Users { get; set; }
-    
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            // Da ne budu brojevi u bazi
+            builder.Entity<UserEntity>()
+                   .Property(u => u.Role)
+                   .HasConversion<string>();
+        }
+
     }
 }

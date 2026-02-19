@@ -9,14 +9,15 @@
 
         public string LastName { get; set; }
 
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         public string Email { get; set; }
 
-        public string Password { get; set; } // Hash-ovana šifra korisnika
-        public List<Role> Roles { get; set; } = new();
+        public string PasswordHash { get; set; } // Hash-ovana šifra korisnika
+        //public List<Role> Roles { get; set; } = new();
+        public Role Role { get; set; } = Role.User; //jer EF Core ne može automatski da mapira List<enum> direktno u PostgreSQL tabelu
 
-        // public string Salt { get; set; }
+      
 
 
     }

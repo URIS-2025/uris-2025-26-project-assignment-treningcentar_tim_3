@@ -1,4 +1,5 @@
 using AuthService.Data;
+using AuthService.Repositories;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("AuthDb")));
 
-// Add services to the container.
+builder.Services.AddScoped<UserRepository>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -2,8 +2,8 @@
 {
     public class Principal
     {
-       
-            public int Id { get; set; }         
+        // DTO koji predstavlja informacije o korisniku koje se šalju klijentu nakon uspešne autentifikacije
+        public int Id { get; set; }         
             public string Username { get; set; } 
             public string Email { get; set; }    
             public List<string> Roles { get; set; } // Role korisnika

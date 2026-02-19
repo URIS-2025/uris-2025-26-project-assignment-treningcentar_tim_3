@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "C/9IHw6VE/w=",
+  "dgSpecHash": "RP1zYFbUhrc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Korisnik\\Source\\Repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
+  "projectFilePath": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Korisnik\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.build.framework\\17.8.43\\microsoft.build.framework.17.8.43.nupkg.sha512",

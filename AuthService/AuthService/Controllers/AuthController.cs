@@ -1,0 +1,59 @@
+﻿using AuthService.Helpers;
+using AuthService.Models;
+using AuthService.Models.DTO;
+using AuthService.Repositories;
+using Microsoft.AspNetCore.Mvc;
+
+
+namespace AuthService.Controllers
+{
+    [ApiController]
+    [Route("api/auth")]
+    public class AuthController : ControllerBase
+    {
+        private readonly UserRepository _repository;
+
+        public AuthController(UserRepository repository)
+        {
+            _repository = repository;
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterDTO dto)
+        {
+            var existingUser = await _repository.GetByUsernameAsync(dto.Username);
+
+            if (existingUser != null)
+                return BadRequest("User already exists");
+
+            var user = new UserEntity
+            {
+
+                Username = dto.Username,
+                Email = dto.Email,
+                PasswordHash = PasswordHelper.HashPassword(dto.Password),
+                Role = Models.Role.User,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName
+            };
+
+            await _repository.AddUserAsync(user);
+
+            return Ok("User created");
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDTO dto)
+        {
+            var user = await _repository.GetByUsernameAsync(dto.Username);
+
+            if (user == null || !PasswordHelper.VerifyPassword(dto.Password, user.PasswordHash))
+                return Unauthorized("Invalid credentials");
+
+            // Kasnije ćemo dodati JWT token ovde
+
+            return Ok(new { message = "Login successful" });
+        }
+    }
+
+}

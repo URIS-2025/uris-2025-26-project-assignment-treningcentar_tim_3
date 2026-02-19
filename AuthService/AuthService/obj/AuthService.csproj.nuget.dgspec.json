@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Korisnik\\Source\\Repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj": {}
+    "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Korisnik\\Source\\Repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj": {
+    "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Korisnik\\Source\\Repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
+        "projectUniqueName": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
         "projectName": "AuthService",
-        "projectPath": "C:\\Users\\Korisnik\\Source\\Repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
+        "projectPath": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
         "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Korisnik\\Source\\Repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\obj\\",
+        "outputPath": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.13, )"
