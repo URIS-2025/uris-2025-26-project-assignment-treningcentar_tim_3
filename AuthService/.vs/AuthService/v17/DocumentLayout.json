@@ -3,32 +3,48 @@
   "WorkspaceRootPath": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\data\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\data\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\data\\auth\\authhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\data\\auth\\authhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\data\\dbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\data\\dbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\models\\dto\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\models\\dto\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\authservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\authservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\models\\dto\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\models\\dto\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\repositories\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\repositories\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\models\\dto\\updateuserrolesdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\models\\dto\\updateuserrolesdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\data\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\data\\authdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\data\\dbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\data\\dbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -55,28 +71,12 @@
       "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\data\\auth\\iauthhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\data\\auth\\authhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\data\\auth\\authhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\models\\userentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\models\\userentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\migrations\\20260219155134_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\migrations\\20260219155134_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\authservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\authservice.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\authservice.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
@@ -85,6 +85,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\migrations\\20260219162145_removesalt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\migrations\\20260219162145_removesalt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|c:\\users\\korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\authservice\\authservice\\migrations\\20260220141232_changeusertomember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F401E40C-5CE0-405B-8C1C-C427B335A59D}|AuthService\\AuthService.csproj|solutionrelative:authservice\\migrations\\20260220141232_changeusertomember.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -94,7 +98,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -105,216 +109,77 @@
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "DbSeeder.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\DbSeeder.cs",
-              "RelativeDocumentMoniker": "AuthService\\Data\\DbSeeder.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\DbSeeder.cs",
-              "RelativeToolTip": "AuthService\\Data\\DbSeeder.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-20T14:14:49.6Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "20260220141232_ChangeUserToMember.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs",
-              "RelativeDocumentMoniker": "AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs",
-              "RelativeToolTip": "AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-20T14:12:32.724Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Principal.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\Principal.cs",
-              "RelativeDocumentMoniker": "AuthService\\Models\\DTO\\Principal.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\Principal.cs",
-              "RelativeToolTip": "AuthService\\Models\\DTO\\Principal.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-18T13:25:11.298Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "RegisterDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\RegisterDTO.cs",
-              "RelativeDocumentMoniker": "AuthService\\Models\\DTO\\RegisterDTO.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\RegisterDTO.cs",
-              "RelativeToolTip": "AuthService\\Models\\DTO\\RegisterDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T15:19:04.692Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Role.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\Role.cs",
-              "RelativeDocumentMoniker": "AuthService\\Models\\Role.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\Role.cs",
-              "RelativeToolTip": "AuthService\\Models\\Role.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-18T13:31:13.48Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "IUserRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Repositories\\IUserRepository.cs",
-              "RelativeDocumentMoniker": "AuthService\\Repositories\\IUserRepository.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Repositories\\IUserRepository.cs",
-              "RelativeToolTip": "AuthService\\Repositories\\IUserRepository.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAAwBYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T16:53:18.787Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Program.cs",
               "RelativeDocumentMoniker": "AuthService\\Program.cs",
               "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Program.cs",
               "RelativeToolTip": "AuthService\\Program.cs",
-              "ViewState": "AgIAACIAAAAAAAAAAAAmwDQAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-18T15:49:58.961Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AuthDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\AuthDbContext.cs",
-              "RelativeDocumentMoniker": "AuthService\\Data\\AuthDbContext.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\AuthDbContext.cs",
-              "RelativeToolTip": "AuthService\\Data\\AuthDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-18T16:29:12.494Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "LoginDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\LoginDTO.cs",
-              "RelativeDocumentMoniker": "AuthService\\Models\\DTO\\LoginDTO.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\LoginDTO.cs",
-              "RelativeToolTip": "AuthService\\Models\\DTO\\LoginDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T15:19:16.539Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "PasswordHelper.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Helpers\\PasswordHelper.cs",
-              "RelativeDocumentMoniker": "AuthService\\Helpers\\PasswordHelper.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Helpers\\PasswordHelper.cs",
-              "RelativeToolTip": "AuthService\\Helpers\\PasswordHelper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T15:00:35.033Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UserRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Repositories\\UserRepository.cs",
-              "RelativeDocumentMoniker": "AuthService\\Repositories\\UserRepository.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Repositories\\UserRepository.cs",
-              "RelativeToolTip": "AuthService\\Repositories\\UserRepository.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAAACUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T15:04:33.222Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "AuthDbContextFactory.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\AuthDbContextFactory.cs",
-              "RelativeDocumentMoniker": "AuthService\\Data\\AuthDbContextFactory.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\AuthDbContextFactory.cs",
-              "RelativeToolTip": "AuthService\\Data\\AuthDbContextFactory.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T15:50:28.384Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "IAuthHelper.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\Auth\\IAuthHelper.cs",
-              "RelativeDocumentMoniker": "AuthService\\Data\\Auth\\IAuthHelper.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\Auth\\IAuthHelper.cs",
-              "RelativeToolTip": "AuthService\\Data\\Auth\\IAuthHelper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T16:49:23.453Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "AuthHelper.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\Auth\\AuthHelper.cs",
-              "RelativeDocumentMoniker": "AuthService\\Data\\Auth\\AuthHelper.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\Auth\\AuthHelper.cs",
-              "RelativeToolTip": "AuthService\\Data\\Auth\\AuthHelper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwCsAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T16:48:35.834Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 1,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "AuthService\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Controllers\\AuthController.cs",
               "RelativeToolTip": "AuthService\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAYwCQAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEcAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-19T15:07:36.939Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "UserEntity.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\UserEntity.cs",
-              "RelativeDocumentMoniker": "AuthService\\Models\\UserEntity.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\UserEntity.cs",
-              "RelativeToolTip": "AuthService\\Models\\UserEntity.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAA0AAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "AuthHelper.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\Auth\\AuthHelper.cs",
+              "RelativeDocumentMoniker": "AuthService\\Data\\Auth\\AuthHelper.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\Auth\\AuthHelper.cs",
+              "RelativeToolTip": "AuthService\\Data\\Auth\\AuthHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-18T13:18:25.648Z",
+              "WhenOpened": "2026-02-19T16:48:35.834Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 3,
+              "Title": "AuthService.csproj",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
+              "RelativeDocumentMoniker": "AuthService\\AuthService.csproj",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
+              "RelativeToolTip": "AuthService\\AuthService.csproj",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-19T15:01:34.836Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Repositories\\UserRepository.cs",
+              "RelativeDocumentMoniker": "AuthService\\Repositories\\UserRepository.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Repositories\\UserRepository.cs",
+              "RelativeToolTip": "AuthService\\Repositories\\UserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T15:04:33.222Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\appsettings.json",
               "RelativeDocumentMoniker": "AuthService\\appsettings.json",
@@ -327,6 +192,175 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Principal.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\Principal.cs",
+              "RelativeDocumentMoniker": "AuthService\\Models\\DTO\\Principal.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\Principal.cs",
+              "RelativeToolTip": "AuthService\\Models\\DTO\\Principal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T13:25:11.298Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Role.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\Role.cs",
+              "RelativeDocumentMoniker": "AuthService\\Models\\Role.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\Role.cs",
+              "RelativeToolTip": "AuthService\\Models\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T13:31:13.48Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Repositories\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "AuthService\\Repositories\\IUserRepository.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Repositories\\IUserRepository.cs",
+              "RelativeToolTip": "AuthService\\Repositories\\IUserRepository.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAwBQAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T16:53:18.787Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AuthDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\AuthDbContext.cs",
+              "RelativeDocumentMoniker": "AuthService\\Data\\AuthDbContext.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\AuthDbContext.cs",
+              "RelativeToolTip": "AuthService\\Data\\AuthDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T16:29:12.494Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "UpdateUserRolesDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\UpdateUserRolesDTO.cs",
+              "RelativeDocumentMoniker": "AuthService\\Models\\DTO\\UpdateUserRolesDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\UpdateUserRolesDTO.cs",
+              "RelativeToolTip": "AuthService\\Models\\DTO\\UpdateUserRolesDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T14:35:14.915Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "RegisterDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\RegisterDTO.cs",
+              "RelativeDocumentMoniker": "AuthService\\Models\\DTO\\RegisterDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\RegisterDTO.cs",
+              "RelativeToolTip": "AuthService\\Models\\DTO\\RegisterDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T15:19:04.692Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "20260220141232_ChangeUserToMember.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs",
+              "RelativeDocumentMoniker": "AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs",
+              "RelativeToolTip": "AuthService\\Migrations\\20260220141232_ChangeUserToMember.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T14:12:32.724Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DbSeeder.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\DbSeeder.cs",
+              "RelativeDocumentMoniker": "AuthService\\Data\\DbSeeder.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\DbSeeder.cs",
+              "RelativeToolTip": "AuthService\\Data\\DbSeeder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-20T14:14:49.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "LoginDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\LoginDTO.cs",
+              "RelativeDocumentMoniker": "AuthService\\Models\\DTO\\LoginDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\DTO\\LoginDTO.cs",
+              "RelativeToolTip": "AuthService\\Models\\DTO\\LoginDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T15:19:16.539Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "PasswordHelper.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Helpers\\PasswordHelper.cs",
+              "RelativeDocumentMoniker": "AuthService\\Helpers\\PasswordHelper.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Helpers\\PasswordHelper.cs",
+              "RelativeToolTip": "AuthService\\Helpers\\PasswordHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T15:00:35.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AuthDbContextFactory.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\AuthDbContextFactory.cs",
+              "RelativeDocumentMoniker": "AuthService\\Data\\AuthDbContextFactory.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\AuthDbContextFactory.cs",
+              "RelativeToolTip": "AuthService\\Data\\AuthDbContextFactory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T15:50:28.384Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "IAuthHelper.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\Auth\\IAuthHelper.cs",
+              "RelativeDocumentMoniker": "AuthService\\Data\\Auth\\IAuthHelper.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Data\\Auth\\IAuthHelper.cs",
+              "RelativeToolTip": "AuthService\\Data\\Auth\\IAuthHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-19T16:49:23.453Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "UserEntity.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\UserEntity.cs",
+              "RelativeDocumentMoniker": "AuthService\\Models\\UserEntity.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Models\\UserEntity.cs",
+              "RelativeToolTip": "AuthService\\Models\\UserEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-18T13:18:25.648Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 20,
               "Title": "20260219162145_removeSalt.cs",
               "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Migrations\\20260219162145_removeSalt.cs",
@@ -335,11 +369,12 @@
               "RelativeToolTip": "AuthService\\Migrations\\20260219162145_removeSalt.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T16:21:45.823Z"
+              "WhenOpened": "2026-02-19T16:21:45.823Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "20260219155134_InitialCreate.cs",
               "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\Migrations\\20260219155134_InitialCreate.cs",
               "RelativeDocumentMoniker": "AuthService\\Migrations\\20260219155134_InitialCreate.cs",
@@ -347,19 +382,8 @@
               "RelativeToolTip": "AuthService\\Migrations\\20260219155134_InitialCreate.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-19T15:51:34.732Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "AuthService.csproj",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
-              "RelativeDocumentMoniker": "AuthService\\AuthService.csproj",
-              "ToolTip": "C:\\Users\\Korisnik\\source\\repos\\uris-2025-26-project-assignment-treningcentar_tim_3\\AuthService\\AuthService\\AuthService.csproj",
-              "RelativeToolTip": "AuthService\\AuthService.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-02-19T15:01:34.836Z"
+              "WhenOpened": "2026-02-19T15:51:34.732Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -371,11 +395,8 @@
               "RelativeToolTip": "AuthService\\AuthService.http",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2026-02-18T15:49:56.898Z"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+              "WhenOpened": "2026-02-18T15:49:56.898Z",
+              "EditorCaption": ""
             }
           ]
         }

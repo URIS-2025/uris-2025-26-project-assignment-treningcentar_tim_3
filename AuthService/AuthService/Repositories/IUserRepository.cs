@@ -17,6 +17,8 @@ namespace AuthService.Repositories
 
         // Dohvata sve korisnike (opciono, može za admin funkcionalnost)
         Task<List<UserEntity>> GetAllUsersAsync();
+
+        Task UpdateUserAsync(UserEntity user);
     }
 }
 

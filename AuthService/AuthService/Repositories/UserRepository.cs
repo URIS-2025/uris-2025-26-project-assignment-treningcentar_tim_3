@@ -41,6 +41,12 @@ namespace AuthService.Repositories
         {
             return await _context.Users.ToListAsync();
         }
+
+        public async Task UpdateUserAsync(UserEntity user)
+        {
+            _context.Users.Update(user); await _context.SaveChangesAsync();
+        }
+       
     }
 
 }

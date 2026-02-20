@@ -3,7 +3,9 @@ using AuthService.Models.DTO;
 using AuthService.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
+//using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace AuthService.Data.Auth
 {
@@ -27,15 +29,34 @@ namespace AuthService.Data.Auth
 
         public string GenerateJwt(Principal principal)
         {
-            var keyBytes = Convert.FromBase64String(_configuration["Jwt:Key"]);
+            var keyBytes = Convert.FromBase64String(_configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key missing"));
             var securityKey = new SymmetricSecurityKey(keyBytes);
-            // var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+            var claims = new List<Claim>
+            {
+
+                new Claim(JwtRegisteredClaimNames.Sub, principal.Id.ToString()),    // Id korisnika
+        new Claim(JwtRegisteredClaimNames.UniqueName, principal.Username),  // Username
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Jedinstveni ID tokena
+        new Claim(JwtRegisteredClaimNames.Iss, _configuration["Jwt:Issuer"]),
+        new Claim(JwtRegisteredClaimNames.Aud, _configuration["Jwt:Issuer"]) 
+   
+               /* new Claim(ClaimTypes.Name, principal.Username),
+                new Claim("userId", principal.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Aud, _configuration["Jwt:Issuer"]),
+                new Claim(JwtRegisteredClaimNames.Iss, _configuration["Jwt:Issuer"])*/
+             };
+
+            foreach (var role in principal.Roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+            }
+
             var token = new JwtSecurityToken(
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Issuer"],
-                null, // claimovi, možeš dodati role itd.
+                issuer: _configuration["Jwt:Issuer"],
+                audience:  _configuration["Jwt:Issuer"],
+                claims: claims,
                 expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials
             );
