@@ -4,9 +4,11 @@ using MeasurmentService.Context;
 using MeasurmentService.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MeasurmentService.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/guidelines")]
 public class GuidelinesController : ControllerBase
