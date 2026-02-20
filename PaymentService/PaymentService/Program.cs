@@ -2,8 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using PaymentService.Context;
 using PaymentService.Data;
 using PaymentService.Profiles;
+using PaymentService.Services.Stripe;
 using AutoMapper;
-
+using Stripe;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,12 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<PaymentContext>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
+
+// Konfiguracija Stripe API kljuca
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
 var mapperConfig = new MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new PaymentProfile());
