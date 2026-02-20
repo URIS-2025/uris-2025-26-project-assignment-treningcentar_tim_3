@@ -1,6 +1,6 @@
 using AutoMapper;
-using MembershipService.Domain.Entities;
-using MembershipService.DTO;
+using MembershipService.Models;
+using MembershipService.Models.DTO;
 
 namespace MembershipService.Profiles
 {

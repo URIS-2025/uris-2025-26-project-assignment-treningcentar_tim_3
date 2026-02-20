@@ -1,4 +1,4 @@
-namespace MembershipService.Domain.Enums;
+namespace MembershipService.Models.Enums;
 
 public enum MembershipStatus
 {

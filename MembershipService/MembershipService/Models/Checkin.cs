@@ -1,4 +1,4 @@
-namespace MembershipService.Domain.Entities;
+namespace MembershipService.Models;
 
 public class Checkin
 {

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MembershipService.Domain.Entities;
+using MembershipService.Models;
 
 namespace MembershipService.Context;
 

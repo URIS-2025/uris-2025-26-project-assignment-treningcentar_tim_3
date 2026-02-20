@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MembershipService.Migrations
 {
     [DbContext(typeof(MembershipContext))]
-    [Migration("20260219230416_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260220200232_AddUserIdToMembership")]
+    partial class AddUserIdToMembership
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,18 +28,16 @@ namespace MembershipService.Migrations
 
             modelBuilder.Entity("MembershipService.Models.Checkin", b =>
                 {
-                    b.Property<int>("CheckinId")
+                    b.Property<Guid>("CheckinId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CheckinId"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("MembershipId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("MembershipId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
@@ -53,23 +51,24 @@ namespace MembershipService.Migrations
 
             modelBuilder.Entity("MembershipService.Models.Membership", b =>
                 {
-                    b.Property<int>("MembershipId")
+                    b.Property<Guid>("MembershipId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MembershipId"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("PackageId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("PackageId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("MembershipId");
 
@@ -80,11 +79,9 @@ namespace MembershipService.Migrations
 
             modelBuilder.Entity("MembershipService.Models.Package", b =>
                 {
-                    b.Property<int>("PackageId")
+                    b.Property<Guid>("PackageId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PackageId"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()

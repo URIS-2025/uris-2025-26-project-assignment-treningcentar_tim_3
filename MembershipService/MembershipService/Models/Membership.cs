@@ -1,10 +1,12 @@
-using MembershipService.Domain.Enums;
+using MembershipService.Models.Enums;
 
-namespace MembershipService.Domain.Entities;
+namespace MembershipService.Models;
 
 public class Membership
 {
     public Guid MembershipId { get; set; }
+
+    public Guid UserId { get; set; }
 
     public Guid PackageId { get; set; }
 

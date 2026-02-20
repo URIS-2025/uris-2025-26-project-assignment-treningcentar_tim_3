@@ -1,4 +1,4 @@
-using MembershipService.DTO;
+using MembershipService.Models.DTO;
 
 namespace MembershipService.Data;
 

@@ -1,9 +1,9 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MembershipService.Context;
-using MembershipService.Domain.Entities;
-using MembershipService.Domain.Enums;
-using MembershipService.DTO;
+using MembershipService.Models;
+using MembershipService.Models.Enums;
+using MembershipService.Models.DTO;
 
 namespace MembershipService.Data;
 
@@ -39,10 +39,14 @@ public class MembershipRepository : IMembershipRepository
 
     public MembershipDto CreateMembership(CreateMembershipDto dto)
     {
+        if (_context.Memberships.Any(m => m.UserId == dto.UserId))
+        {
+            throw new InvalidOperationException("User already has an active membership.");
+        }
         
         var membership = new Membership
         {
-            
+            UserId = dto.UserId,
             PackageId = dto.PackageId,
             StartDate = dto.StartDate,
             EndDate = dto.EndDate,
@@ -60,7 +64,8 @@ public class MembershipRepository : IMembershipRepository
     public MembershipDto? UpdateMembership(Guid id, CreateMembershipDto dto)
     {
         var membership = _context.Memberships.FirstOrDefault(m => m.MembershipId == id);
-        if (membership == null) return null;
+        if (membership == null)
+            throw new InvalidOperationException("Membership not found.");
 
         // Validacija prelaza statusa 
         var currentStatus = membership.Status;
@@ -70,9 +75,10 @@ public class MembershipRepository : IMembershipRepository
     
         if (currentStatus == MembershipStatus.Cancelled && nextStatus == MembershipStatus.Active)
         {
-            return null; // Controller će vratiti BadRequest
+            throw new InvalidOperationException("Cannot reactivate cancelled membership.");
         }
 
+        membership.UserId = dto.UserId;
         membership.PackageId = dto.PackageId;
         membership.StartDate = dto.StartDate;
         membership.EndDate = dto.EndDate;

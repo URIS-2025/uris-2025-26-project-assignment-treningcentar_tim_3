@@ -1,11 +1,14 @@
 using System.ComponentModel.DataAnnotations;
-using MembershipService.Domain.Enums;
+using MembershipService.Models.Enums;
 
-namespace MembershipService.DTO;
+namespace MembershipService.Models.DTO;
 
 
 public class CreateMembershipDto
 {
+    //ID korisnika
+    [Required(ErrorMessage = "UserId is required.")]
+    public Guid UserId { get; set; }
     //ID paketa
     [Required(ErrorMessage = "PackageId is required.")]
     public Guid PackageId { get; set; }

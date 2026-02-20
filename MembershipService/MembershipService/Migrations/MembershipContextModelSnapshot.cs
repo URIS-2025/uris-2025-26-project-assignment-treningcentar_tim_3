@@ -23,7 +23,7 @@ namespace MembershipService.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("MembershipService.Domain.Entities.Checkin", b =>
+            modelBuilder.Entity("MembershipService.Models.Checkin", b =>
                 {
                     b.Property<Guid>("CheckinId")
                         .ValueGeneratedOnAdd()
@@ -43,10 +43,10 @@ namespace MembershipService.Migrations
 
                     b.HasIndex("MembershipId");
 
-                    b.ToTable("Checkins", (string)null);
+                    b.ToTable("Checkins");
                 });
 
-            modelBuilder.Entity("MembershipService.Domain.Entities.Membership", b =>
+            modelBuilder.Entity("MembershipService.Models.Membership", b =>
                 {
                     b.Property<Guid>("MembershipId")
                         .ValueGeneratedOnAdd()
@@ -64,14 +64,17 @@ namespace MembershipService.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("MembershipId");
 
                     b.HasIndex("PackageId");
 
-                    b.ToTable("Memberships", (string)null);
+                    b.ToTable("Memberships");
                 });
 
-            modelBuilder.Entity("MembershipService.Domain.Entities.Package", b =>
+            modelBuilder.Entity("MembershipService.Models.Package", b =>
                 {
                     b.Property<Guid>("PackageId")
                         .ValueGeneratedOnAdd()
@@ -97,12 +100,12 @@ namespace MembershipService.Migrations
 
                     b.HasKey("PackageId");
 
-                    b.ToTable("Packages", (string)null);
+                    b.ToTable("Packages");
                 });
 
-            modelBuilder.Entity("MembershipService.Domain.Entities.Checkin", b =>
+            modelBuilder.Entity("MembershipService.Models.Checkin", b =>
                 {
-                    b.HasOne("MembershipService.Domain.Entities.Membership", "Membership")
+                    b.HasOne("MembershipService.Models.Membership", "Membership")
                         .WithMany("Checkins")
                         .HasForeignKey("MembershipId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -111,9 +114,9 @@ namespace MembershipService.Migrations
                     b.Navigation("Membership");
                 });
 
-            modelBuilder.Entity("MembershipService.Domain.Entities.Membership", b =>
+            modelBuilder.Entity("MembershipService.Models.Membership", b =>
                 {
-                    b.HasOne("MembershipService.Domain.Entities.Package", "Package")
+                    b.HasOne("MembershipService.Models.Package", "Package")
                         .WithMany()
                         .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -122,7 +125,7 @@ namespace MembershipService.Migrations
                     b.Navigation("Package");
                 });
 
-            modelBuilder.Entity("MembershipService.Domain.Entities.Membership", b =>
+            modelBuilder.Entity("MembershipService.Models.Membership", b =>
                 {
                     b.Navigation("Checkins");
                 });
