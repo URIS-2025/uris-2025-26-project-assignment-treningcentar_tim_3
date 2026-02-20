@@ -8,7 +8,7 @@ public class CreateMembershipDto
 {
     //ID paketa
     [Required(ErrorMessage = "PackageId is required.")]
-    public int PackageId { get; set; }
+    public Guid PackageId { get; set; }
     //Datum početka članarine
     [Required(ErrorMessage = "StartDate is required.")]
     public DateTime StartDate { get; set; }

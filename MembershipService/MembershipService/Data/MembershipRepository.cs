@@ -31,7 +31,7 @@ public class MembershipRepository : IMembershipRepository
     }
 
     
-    public MembershipDto? GetMembershipById(int id)
+    public MembershipDto? GetMembershipById(Guid id)
     {
         var membership = _context.Memberships.FirstOrDefault(m => m.MembershipId == id);
         return _mapper.Map<MembershipDto>(membership);
@@ -57,7 +57,7 @@ public class MembershipRepository : IMembershipRepository
         return _mapper.Map<MembershipDto>(membership);
     }
 
-    public MembershipDto? UpdateMembership(int id, CreateMembershipDto dto)
+    public MembershipDto? UpdateMembership(Guid id, CreateMembershipDto dto)
     {
         var membership = _context.Memberships.FirstOrDefault(m => m.MembershipId == id);
         if (membership == null) return null;
@@ -83,7 +83,7 @@ public class MembershipRepository : IMembershipRepository
         return _mapper.Map<MembershipDto>(membership);
     }
 
-    public void DeleteMembership(int id)
+    public void DeleteMembership(Guid id)
     {
         var membership = _context.Memberships.FirstOrDefault(m => m.MembershipId == id);
         if (membership != null)

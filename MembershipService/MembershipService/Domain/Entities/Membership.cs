@@ -4,9 +4,9 @@ namespace MembershipService.Domain.Entities;
 
 public class Membership
 {
-    public int MembershipId { get; set; }
+    public Guid MembershipId { get; set; }
 
-    public int PackageId { get; set; }
+    public Guid PackageId { get; set; }
 
     public DateTime StartDate { get; set; }
 

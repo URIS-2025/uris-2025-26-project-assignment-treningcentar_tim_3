@@ -2,7 +2,7 @@ namespace MembershipService.Domain.Entities;
 
 public class Package
 {
-    public int PackageId { get; set; }
+    public Guid PackageId { get; set; }
 
     public string Name { get; set; } = string.Empty;
 
