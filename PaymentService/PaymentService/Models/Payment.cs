@@ -19,5 +19,7 @@ namespace PaymentService.Models
         public Guid ReservationId { get; set; }
 
         public Guid ServiceId { get; set; }
+
+        public string? StripePaymentIntentId { get; set; }
     }
 }

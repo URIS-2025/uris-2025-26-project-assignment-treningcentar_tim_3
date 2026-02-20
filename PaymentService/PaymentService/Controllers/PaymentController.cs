@@ -44,16 +44,16 @@ namespace PaymentService.Controllers {
     [HttpPost]
     public ActionResult<PaymentConfirmationDTO> AddPayment([FromBody] PaymentCreationDTO dto)
     {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            try
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        try
         {
             var created = _paymentRepository.AddPayment(dto);
             return Created("", created);
         }
-        catch
+        catch (Exception ex)
         {
-            return BadRequest();
+            return BadRequest(new { error = ex.Message, detail = ex.InnerException?.Message });
         }
     }
         [HttpPut("{id}")]

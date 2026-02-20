@@ -3,18 +3,21 @@ using PaymentService.Context;
 using PaymentService.Models;
 using PaymentService.Models.DTO;
 using PaymentService.Models.Enums;
+using PaymentService.Services.Stripe;
 
 namespace PaymentService.Data
 {
-    public class PaymentRepository :IPaymentRepository
+    public class PaymentRepository : IPaymentRepository
     {
         private readonly PaymentContext _context;
         private readonly IMapper _mapper;
+        private readonly IStripePaymentService _stripePaymentService;
 
-        public PaymentRepository(PaymentContext context, IMapper mapper)
+        public PaymentRepository(PaymentContext context, IMapper mapper, IStripePaymentService stripePaymentService)
         {
             _context = context;
             _mapper = mapper;
+            _stripePaymentService = stripePaymentService;
         }
 
         public PaymentConfirmationDTO AddPayment(PaymentCreationDTO payment)
@@ -23,12 +26,24 @@ namespace PaymentService.Data
             {
                 Id = Guid.NewGuid(),
                 Amount = payment.Amount,
-                PaymentDate = payment.PaymentDate,
+                PaymentDate = DateTime.SpecifyKind(payment.PaymentDate, DateTimeKind.Utc),
                 Method = payment.Method,
                 Status = PaymentStatus.Pending,
                 ReservationId = payment.ReservationId,
                 ServiceId = payment.ServiceId
             };
+
+            // Ako je metoda kartična — pozovi Stripe
+            if (payment.Method == PaymentMethod.Card)
+            {
+                var paymentIntentId = _stripePaymentService
+                    .CreatePaymentIntentAsync(payment.Amount)
+                    .GetAwaiter()
+                    .GetResult();
+
+                newPayment.StripePaymentIntentId = paymentIntentId;
+                newPayment.Status = PaymentStatus.Completed; // Stripe je potvrdio
+            }
 
             _context.Payments.Add(newPayment);
             _context.SaveChanges();
@@ -81,7 +96,6 @@ namespace PaymentService.Data
 
             if (!allowed)
             {
-                // vrati null pa controller vraća BadRequest 
                 return null;
             }
 
@@ -106,6 +120,15 @@ namespace PaymentService.Data
             if (payment.Status != PaymentStatus.Completed)
             {
                 return null;
+            }
+
+            // Ako je kartično plaćanje — refunduj na Stripe-u
+            if (payment.Method == PaymentMethod.Card && !string.IsNullOrEmpty(payment.StripePaymentIntentId))
+            {
+                _stripePaymentService
+                    .RefundPaymentAsync(payment.StripePaymentIntentId)
+                    .GetAwaiter()
+                    .GetResult();
             }
 
             payment.Status = PaymentStatus.Refunded;
