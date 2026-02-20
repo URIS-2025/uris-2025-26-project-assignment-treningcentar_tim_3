@@ -34,7 +34,7 @@ namespace AuthService.Controllers
                 Username = dto.Username,
                 Email = dto.Email,
                 PasswordHash = PasswordHelper.HashPassword(dto.Password),
-                Role = Models.Role.User,
+                Role = Models.Role.Member, //member
                 FirstName = dto.FirstName,
                 LastName = dto.LastName
             };

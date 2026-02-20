@@ -15,7 +15,7 @@
 
         public string PasswordHash { get; set; } // Hash-ovana šifra korisnika
         //public List<Role> Roles { get; set; } = new();
-        public Role Role { get; set; } = Role.User; //jer EF Core ne može automatski da mapira List<enum> direktno u PostgreSQL tabelu
+        public Role Role { get; set; } = Role.Member; //jer EF Core ne može automatski da mapira List<enum> direktno u PostgreSQL tabelu
 
       
 

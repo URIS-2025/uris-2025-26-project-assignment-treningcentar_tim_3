@@ -3,7 +3,7 @@
     public enum Role
     {
         Admin,
-        User,
+        Member,
         Trainer,
         Nutritionist,
         Receptionist
