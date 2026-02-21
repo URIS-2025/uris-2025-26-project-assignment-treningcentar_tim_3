@@ -1,4 +1,4 @@
-﻿namespace ServiceService.Domain.Enums
+﻿namespace ServiceService.Models.Enums
 {
     public enum ServiceCategory
     {
@@ -7,6 +7,5 @@
         GroupTraining = 3,
         Nutrition = 4,
         Measurement = 5,
-        Other = 99
     }
 }

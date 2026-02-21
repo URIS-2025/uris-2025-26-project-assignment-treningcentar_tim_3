@@ -1,10 +1,10 @@
-﻿using ServiceService.Domain.Enums;
+﻿using ServiceService.Models.Enums;
 
-namespace ServiceService.Domain.Entities
+namespace ServiceService.Models
 {
     public class Service
     {
-        public int ServiceId { get; set; } 
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public decimal Price { get; set; }
