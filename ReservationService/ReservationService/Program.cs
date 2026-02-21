@@ -9,9 +9,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 // DbContext
 builder.Services.AddDbContext<ReservationContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ReservationDB")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Registracija repository-ja
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();

@@ -7,9 +7,7 @@ namespace ReservationService.Context
     {
         private readonly IConfiguration _configuration;
 
-        public ReservationContext(
-            DbContextOptions<ReservationContext> options,
-            IConfiguration configuration) : base(options)
+        public ReservationContext(DbContextOptions<ReservationContext> options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;
         }
@@ -22,27 +20,20 @@ namespace ReservationService.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Connection string iz appsettings.json
-            optionsBuilder.UseNpgsql(_configuration.GetConnectionString("ReservationDB"));
+            optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            // Ako imaš inicijalne podatke (seeding)
-            builder.Entity<TrainingHall>().HasData(
-                
-            );
+            // seeding
+            builder.Entity<TrainingHall>().HasData();
 
-            builder.Entity<Session>().HasData(
-                new
-                {
-                    Id = Guid.Parse("c3333333-3333-3333-3333-333333333333"),
-                    TrainingType = Models.Enums.TrainingType.Strength,
-                    MaxCapacity = 10
-                }
-            );
+            builder.Entity<Session>()
+                .HasDiscriminator<string>("SessionType")
+                .HasValue<PersonalSession>("Personal")
+                .HasValue<GroupSession>("Group");
 
-            builder.Entity<Reservation>().HasData(
-                );
+            builder.Entity<Reservation>().HasData();
         }
     }
 }
