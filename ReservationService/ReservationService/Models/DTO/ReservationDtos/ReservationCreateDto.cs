@@ -6,9 +6,9 @@ namespace ReservationService.Models.DTO
     public class ReservationCreateDto
     {
         [Required]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required]
-        public int SessionId { get; set; }
+        public Guid SessionId { get; set; }
     }
 }
