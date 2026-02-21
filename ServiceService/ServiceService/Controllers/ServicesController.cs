@@ -1,117 +1,114 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ServiceService.Contracts.Services;
-using ServiceService.Domain.Entities;
-using ServiceService.Infrastructure.Persistence;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ServiceService.Data;
+using ServiceService.Models.DTO;
 
-namespace ServiceService.Controllers;
-
-[ApiController]
-[Route("api/service")] 
-public class ServicesController : ControllerBase
+namespace ServiceService.Controllers
 {
-    private readonly ServiceDbContext _db;
-
-    public ServicesController(ServiceDbContext db)
+    // [Authorize] ubaciti kad se uradi 
+    [ApiController]
+    [Route("api/service")]
+    public class ServicesController : ControllerBase
     {
-        _db = db;
-    }
+        private readonly IServiceRepository _serviceRepository;
+        private readonly IMapper _mapper;
 
-    // GET: api/service
-    [HttpGet]
-    public async Task<ActionResult<List<ServiceResponse>>> GetAll()
-    {
-        var items = await _db.Services
-            .AsNoTracking()
-            .Select(s => new ServiceResponse(s.ServiceId, s.Name, s.Description, s.Price, s.Category))
-            .ToListAsync();
-
-        return Ok(items);
-    }
-
-    // GET: api/service/{id}
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<ServiceResponse>> GetById(int id)
-    {
-        var s = await _db.Services.AsNoTracking().FirstOrDefaultAsync(x => x.ServiceId == id);
-        if (s is null) return NotFound();
-
-        return Ok(new ServiceResponse(s.ServiceId, s.Name, s.Description, s.Price, s.Category));
-    }
-
-    // POST: api/service
-    [HttpPost]
-    public async Task<ActionResult<ServiceResponse>> Create([FromBody] CreateServiceRequest req)
-    {
-        if (string.IsNullOrWhiteSpace(req.Name)) return BadRequest("Name is required.");
-        if (req.Price < 0) return BadRequest("Price must be >= 0.");
-
-        var entity = new Service
+        public ServicesController(IServiceRepository serviceRepository, IMapper mapper)
         {
-            Name = req.Name.Trim(),
-            Description = string.IsNullOrWhiteSpace(req.Description) ? null : req.Description.Trim(),
-            Price = req.Price,
-            Category = req.Category
-        };
+            _serviceRepository = serviceRepository;
+            _mapper = mapper;
+        }
 
-        _db.Services.Add(entity);
-        await _db.SaveChangesAsync();
+        // GET: api/service/
+        [HttpGet]
+        [HttpHead]
+        public ActionResult<IEnumerable<ServiceDTO>> GetAll()
+        {
+            var services = _serviceRepository.GetServices();
+            if (services == null || !services.Any())
+                return NoContent();
 
-        var res = new ServiceResponse(entity.ServiceId, entity.Name, entity.Description, entity.Price, entity.Category);
-        return CreatedAtAction(nameof(GetById), new { id = entity.ServiceId }, res);
-    }
+            return Ok(services);
+        }
 
-    // PUT: api/service/{id}
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdateServiceRequest req)
-    {
-        if (string.IsNullOrWhiteSpace(req.Name)) return BadRequest("Name is required.");
-        if (req.Price < 0) return BadRequest("Price must be >= 0.");
+        // GET: api/service/{id}
+        [HttpGet("{id:guid}")]
+        public ActionResult<ServiceDTO> GetById(Guid id)
+        {
+            var service = _serviceRepository.GetServiceById(id);
+            if (service == null)
+                return NotFound();
 
-        var entity = await _db.Services.FirstOrDefaultAsync(x => x.ServiceId == id);
-        if (entity is null) return NotFound();
+            return Ok(service);
+        }
 
-        entity.Name = req.Name.Trim();
-        entity.Description = string.IsNullOrWhiteSpace(req.Description) ? null : req.Description.Trim();
-        entity.Price = req.Price;
-        entity.Category = req.Category;
+        // POST: api/service/
+        [HttpPost]
+        public ActionResult<ServiceDTO> Create([FromBody] ServiceCreationDTO dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        await _db.SaveChangesAsync();
-        return NoContent();
-    }
+            try
+            {
+                var created = _serviceRepository.AddService(dto);
 
-    // DELETE: api/service/{id}
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var entity = await _db.Services.FirstOrDefaultAsync(x => x.ServiceId == id);
-        if (entity is null) return NotFound();
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message, detail = ex.InnerException?.Message });
+            }
+        }
 
-        _db.Services.Remove(entity);
-        await _db.SaveChangesAsync();
-        return NoContent();
-    }
+        // PUT: api/service/{id}
+        [HttpPut("{id:guid}")]
+        public IActionResult Update(Guid id, [FromBody] ServiceUpdateDTO dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-    // GET: api/service/{id}/cost?quantity=3
-    [HttpGet("{id:int}/cost")]
-    public async Task<ActionResult<decimal>> CalculateCost(int id, [FromQuery] int quantity = 1)
-    {
-        if (quantity <= 0) return BadRequest("Quantity must be >= 1.");
+            try
+            {
+                if (!_serviceRepository.ServiceExists(id))
+                    return NotFound();
 
-        var service = await _db.Services.AsNoTracking().FirstOrDefaultAsync(x => x.ServiceId == id);
-        if (service is null) return NotFound();
+                _serviceRepository.UpdateService(id, dto);
+                return NoContent();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
 
-        var total = service.Price * quantity;
-        return Ok(total);
-    }
+        // DELETE: api/service/{id}
+        [HttpDelete("{id:guid}")]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                var existing = _serviceRepository.GetServiceById(id);
+                if (existing == null)
+                    return NotFound();
 
-    // GET: api/service/{id}/availability
-    [HttpGet("{id:int}/availability")]
-    public async Task<ActionResult<bool>> IsAvailable(int id)
-    {
-        var exists = await _db.Services.AsNoTracking().AnyAsync(x => x.ServiceId == id);
-        if (!exists) return NotFound();
+                _serviceRepository.DeleteService(id);
+                return NoContent();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
+            }
+        }
 
-        return Ok(true);
+        // OPTIONS: api/service
+        [HttpOptions]
+        [AllowAnonymous]
+        public IActionResult GetOptions()
+        {
+            Response.Headers.Add("Allow", "GET, HEAD, POST, PUT, DELETE, OPTIONS");
+            return Ok();
+        }
     }
 }
