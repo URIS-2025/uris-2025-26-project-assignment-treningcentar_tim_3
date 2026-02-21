@@ -22,9 +22,6 @@ namespace PaymentService.Models.DTO
             /// Status plaćanja.
             public PaymentStatus Status { get; set; }
 
-            /// ID rezervacije.
-            public Guid ReservationId { get; set; }
-
             /// ID servisa.
             public Guid ServiceId { get; set; }
         }
