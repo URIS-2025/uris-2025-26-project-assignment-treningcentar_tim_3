@@ -4,6 +4,10 @@ using ServiceService.Data;
 using ServiceService.Profiles;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using ServiceService.ServiceCalls.Measurement;
+using ServiceService.ServiceCalls.Membership;
+using ServiceService.ServiceCalls.Payment;
+using ServiceService.ServiceCalls.Reservation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +17,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ServiceContext>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IMembershipService, MembershipService>();
+builder.Services.AddScoped<IMeasurementService, MeasurementService>();
 
 // AutoMapper ali za verziju 16
 var loggerFactory = LoggerFactory.Create(b => b.AddConsole());
