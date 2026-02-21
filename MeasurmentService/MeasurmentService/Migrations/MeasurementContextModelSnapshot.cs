@@ -24,11 +24,12 @@ namespace MeasurmentService.Migrations
 
             modelBuilder.Entity("MeasurmentService.Models.Guideline", b =>
                 {
-                    b.Property<int>("GuidelineId")
+                    b.Property<Guid>("GuidelineId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GuidelineId"));
+                    b.Property<Guid>("AppointmentId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Category")
                         .HasColumnType("integer");
@@ -37,6 +38,9 @@ namespace MeasurmentService.Migrations
                         .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
+
+                    b.Property<Guid>("CreatedByNutritionistId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("timestamp with time zone");
@@ -48,54 +52,59 @@ namespace MeasurmentService.Migrations
 
                     b.HasKey("GuidelineId");
 
+                    b.HasIndex("AppointmentId")
+                        .IsUnique();
+
                     b.ToTable("Guidelines");
                 });
 
             modelBuilder.Entity("MeasurmentService.Models.MeasurementAppointment", b =>
                 {
-                    b.Property<int>("AppointmentId")
+                    b.Property<Guid>("AppointmentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AppointmentId"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int?>("GuidelineId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MemberId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("MemberId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Notes")
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
-                    b.Property<int?>("ServiceId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("NutritionistId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ServiceId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("AppointmentId");
-
-                    b.HasIndex("GuidelineId");
 
                     b.ToTable("MeasurementAppointments");
                 });
 
+            modelBuilder.Entity("MeasurmentService.Models.Guideline", b =>
+                {
+                    b.HasOne("MeasurmentService.Models.MeasurementAppointment", "MeasurementAppointment")
+                        .WithOne("Guideline")
+                        .HasForeignKey("MeasurmentService.Models.Guideline", "AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MeasurementAppointment");
+                });
+
             modelBuilder.Entity("MeasurmentService.Models.MeasurementAppointment", b =>
                 {
-                    b.HasOne("MeasurmentService.Models.Guideline", "Guideline")
-                        .WithMany()
-                        .HasForeignKey("GuidelineId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.OwnsOne("MeasurmentService.Models.Measurements", "Measurements", b1 =>
                         {
-                            b1.Property<int>("MeasurementAppointmentAppointmentId")
-                                .HasColumnType("integer");
+                            b1.Property<Guid>("MeasurementAppointmentAppointmentId")
+                                .HasColumnType("uuid");
 
                             b1.Property<double?>("BodyFatPercent")
                                 .HasColumnType("double precision");
@@ -114,10 +123,13 @@ namespace MeasurmentService.Migrations
                                 .HasForeignKey("MeasurementAppointmentAppointmentId");
                         });
 
-                    b.Navigation("Guideline");
-
                     b.Navigation("Measurements")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MeasurmentService.Models.MeasurementAppointment", b =>
+                {
+                    b.Navigation("Guideline");
                 });
 #pragma warning restore 612, 618
         }

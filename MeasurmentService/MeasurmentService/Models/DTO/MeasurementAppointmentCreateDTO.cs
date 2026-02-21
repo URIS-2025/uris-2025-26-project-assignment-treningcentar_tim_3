@@ -2,8 +2,9 @@
 {
     public class MeasurementAppointmentCreateDTO
     {
-        public int MemberId { get; set; }
-        public int EmployeeId { get; set; }
+        public Guid MemberId { get; set; }
+        public Guid EmployeeId { get; set; } // trainer
+
         public DateTime Date { get; set; }
 
         public double? WeightKg { get; set; }
@@ -11,7 +12,6 @@
         public double? BodyFatPercent { get; set; }
 
         public string? Notes { get; set; }
-        public int? ServiceId { get; set; }
-        public int? GuidelineId { get; set; }
+        public Guid? ServiceId { get; set; }
     }
 }

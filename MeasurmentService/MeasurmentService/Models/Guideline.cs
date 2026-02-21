@@ -1,12 +1,19 @@
-﻿using MeasurmentService.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MeasurmentService.Models
 {
     public class Guideline
     {
         [Key]
-        public int GuidelineId { get; set; }
+        public Guid GuidelineId { get; set; } = Guid.NewGuid();
+
+        // Ovo je ključ veze: guideline je UVEK za neki appointment (1:1)
+        [Required]
+        public Guid AppointmentId { get; set; }
+
+        // Autor guideline-a (nutritionist iz tokena)
+        [Required]
+        public Guid CreatedByNutritionistId { get; set; }
 
         [Required, MaxLength(120)]
         public string Title { get; set; } = string.Empty;
@@ -18,6 +25,7 @@ namespace MeasurmentService.Models
 
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
 
-
+        // navigation nazad
+        public MeasurementAppointment? MeasurementAppointment { get; set; }
     }
 }

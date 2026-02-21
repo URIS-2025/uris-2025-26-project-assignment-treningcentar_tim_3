@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using MeasurmentService.Models;
 using MeasurmentService.Context;
 using MeasurmentService.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace MeasurmentService.Controllers;
 
@@ -22,41 +22,79 @@ public class GuidelinesController : ControllerBase
         _mapper = mapper;
     }
 
+    private Guid CurrentUserId =>
+        Guid.Parse(User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                   ?? User.FindFirst("sub")?.Value
+                   ?? throw new UnauthorizedAccessException("Missing sub claim"));
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GuidelineDTO>>> GetAll()
     {
-        var items = await _context.Guidelines.AsNoTracking().ToListAsync();
+        var userId = CurrentUserId;
+
+        var q = _context.Guidelines.AsNoTracking()
+            .Join(
+                _context.MeasurementAppointments.AsNoTracking(),
+                g => g.AppointmentId,
+                a => a.AppointmentId,
+                (g, a) => new { g, a }
+            );
+
+        if (!User.IsInRole("Admin"))
+        {
+            if (User.IsInRole("Nutritionist"))
+                q = q.Where(x => x.g.CreatedByNutritionistId == userId);
+            else if (User.IsInRole("Trainer"))
+                q = q.Where(x => x.a.EmployeeId == userId);
+            else if (User.IsInRole("Member"))
+                q = q.Where(x => x.a.MemberId == userId);
+            else
+                return Forbid();
+        }
+
+        var items = await q.Select(x => x.g).ToListAsync();
         return Ok(items.Select(_mapper.Map<GuidelineDTO>));
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<GuidelineDTO>> GetById(int id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<GuidelineDTO>> GetById(Guid id)
     {
-        var item = await _context.Guidelines.AsNoTracking()
-            .FirstOrDefaultAsync(x => x.GuidelineId == id);
+        var userId = CurrentUserId;
 
-        if (item == null) return NotFound();
-        return Ok(_mapper.Map<GuidelineDTO>(item));
+        var data = await _context.Guidelines.AsNoTracking()
+            .Join(
+                _context.MeasurementAppointments.AsNoTracking(),
+                g => g.AppointmentId,
+                a => a.AppointmentId,
+                (g, a) => new { g, a }
+            )
+            .FirstOrDefaultAsync(x => x.g.GuidelineId == id);
+
+        if (data == null) return NotFound();
+
+        var allowed =
+            User.IsInRole("Admin")
+            || (User.IsInRole("Nutritionist") && data.g.CreatedByNutritionistId == userId)
+            || (User.IsInRole("Trainer") && data.a.EmployeeId == userId)
+            || (User.IsInRole("Member") && data.a.MemberId == userId);
+
+        if (!allowed) return Forbid();
+
+        return Ok(_mapper.Map<GuidelineDTO>(data.g));
     }
 
-    [HttpPost]
-    public async Task<ActionResult<GuidelineDTO>> Create([FromBody] GuidelineCreateDTO dto)
+    // Update/Delete: samo autor nutritionist (ili Admin)
+    [Authorize(Roles = "Nutritionist,Admin")]
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] GuidelineCreateDTO dto)
     {
-        var entity = _mapper.Map<Guideline>(dto);
-        entity.LastUpdated = DateTime.UtcNow;
+        var userId = CurrentUserId;
 
-        _context.Guidelines.Add(entity);
-        await _context.SaveChangesAsync();
-
-        var outDto = _mapper.Map<GuidelineDTO>(entity);
-        return CreatedAtAction(nameof(GetById), new { id = entity.GuidelineId }, outDto);
-    }
-
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, [FromBody] GuidelineCreateDTO dto)
-    {
         var entity = await _context.Guidelines.FirstOrDefaultAsync(x => x.GuidelineId == id);
         if (entity == null) return NotFound();
+
+        if (!User.IsInRole("Admin") && entity.CreatedByNutritionistId != userId)
+            return Forbid();
 
         entity.Title = dto.Title;
         entity.Content = dto.Content;
@@ -67,14 +105,22 @@ public class GuidelinesController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    [Authorize(Roles = "Nutritionist,Admin")]
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
     {
+        var userId = CurrentUserId;
+
         var entity = await _context.Guidelines.FirstOrDefaultAsync(x => x.GuidelineId == id);
         if (entity == null) return NotFound();
+
+        if (!User.IsInRole("Admin") && entity.CreatedByNutritionistId != userId)
+            return Forbid();
 
         _context.Guidelines.Remove(entity);
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    // ❌ POST /api/guidelines više ne treba (guideline se pravi samo preko appointment endpointa)
 }

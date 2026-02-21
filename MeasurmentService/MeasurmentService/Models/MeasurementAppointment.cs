@@ -4,15 +4,18 @@ namespace MeasurmentService.Models
 {
     public class MeasurementAppointment
     {
-
         [Key]
-        public int AppointmentId { get; set; }
+        public Guid AppointmentId { get; set; } = Guid.NewGuid();
+
+       
+        [Required]
+        public Guid MemberId { get; set; }          
 
         [Required]
-        public int MemberId { get; set; }
+        public Guid EmployeeId { get; set; }       
 
         [Required]
-        public int EmployeeId { get; set; }
+        public Guid NutritionistId { get; set; }   
 
         [Required]
         public DateTime Date { get; set; }
@@ -22,10 +25,9 @@ namespace MeasurmentService.Models
         [MaxLength(2000)]
         public string? Notes { get; set; }
 
-        public int? ServiceId { get; set; }
+        public Guid? ServiceId { get; set; }
 
-        public int? GuidelineId { get; set; }
+      
         public Guideline? Guideline { get; set; }
-
     }
 }
