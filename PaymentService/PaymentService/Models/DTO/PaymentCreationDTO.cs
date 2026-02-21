@@ -25,11 +25,7 @@ namespace PaymentService.Models.DTO
         [EnumDataType(typeof(PaymentMethod))]
         public PaymentMethod Method { get; set; }
 
-        /// ID rezervacije.
-        [Required(ErrorMessage = "Reservation ID is required.")]
-        public Guid ReservationId { get; set; }
-
-        /// <summary>    /// ID servisa.
+        /// ID servisa.
         [Required(ErrorMessage = "Service ID is required.")]
         public Guid ServiceId { get; set; }
     }

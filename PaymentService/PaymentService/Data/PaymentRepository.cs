@@ -29,7 +29,6 @@ namespace PaymentService.Data
                 PaymentDate = DateTime.SpecifyKind(payment.PaymentDate, DateTimeKind.Utc),
                 Method = payment.Method,
                 Status = PaymentStatus.Pending,
-                ReservationId = payment.ReservationId,
                 ServiceId = payment.ServiceId
             };
 
