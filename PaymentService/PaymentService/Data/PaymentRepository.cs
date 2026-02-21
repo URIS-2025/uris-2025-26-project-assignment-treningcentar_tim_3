@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using PaymentService.Context;
 using PaymentService.Models;
-using PaymentService.Models.DTO;
+using PaymentService.Models.DTO.Payment;
+using PaymentService.Models.DTO.Service;
 using PaymentService.Models.Enums;
 using PaymentService.Services.Stripe;
+using PaymentService.Services.ServiceService;
 
 namespace PaymentService.Data
 {
@@ -12,16 +14,23 @@ namespace PaymentService.Data
         private readonly PaymentContext _context;
         private readonly IMapper _mapper;
         private readonly IStripePaymentService _stripePaymentService;
+        private readonly IServiceService _serviceService;
 
-        public PaymentRepository(PaymentContext context, IMapper mapper, IStripePaymentService stripePaymentService)
+        public PaymentRepository(PaymentContext context, IMapper mapper, IStripePaymentService stripePaymentService, IServiceService serviceService)
         {
             _context = context;
             _mapper = mapper;
             _stripePaymentService = stripePaymentService;
+            _serviceService = serviceService;
         }
 
         public PaymentConfirmationDTO AddPayment(PaymentCreationDTO payment)
         {
+            // Validacija — proveravamo da li servis postoji u ServiceService
+            var service = _serviceService.GetServiceById(payment.ServiceId);
+            if (service == null)
+                throw new Exception($"Service with ID {payment.ServiceId} does not exist.");
+
             var newPayment = new Payment
             {
                 Id = Guid.NewGuid(),

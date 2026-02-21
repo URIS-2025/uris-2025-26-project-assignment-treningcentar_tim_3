@@ -1,16 +1,12 @@
-﻿using System;
+using System;
 using PaymentService.Models.Enums;
 
-namespace PaymentService.Models.DTO
+namespace PaymentService.Models.DTO.Payment
 {
-    /// DTO za potvrdu kreiranog/izmenjenog plaćanja.
-    public class PaymentConfirmationDTO
+    public class PaymentDTO
     {
         /// ID plaćanja.
-        public Guid PaymentId { get; set; }
-
-        /// Status plaćanja.
-        public PaymentStatus Status { get; set; }
+        public Guid Id { get; set; }
 
         /// Iznos plaćanja.
         public decimal Amount { get; set; }
@@ -20,5 +16,11 @@ namespace PaymentService.Models.DTO
 
         /// Način plaćanja.
         public PaymentMethod Method { get; set; }
+
+        /// Status plaćanja.
+        public PaymentStatus Status { get; set; }
+
+        /// ID servisa.
+        public Guid ServiceId { get; set; }
     }
 }
