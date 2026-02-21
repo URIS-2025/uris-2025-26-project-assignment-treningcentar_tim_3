@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PaymentService.Data;
-using PaymentService.Models.DTO;
+using PaymentService.Models.DTO.Payment;
 
 namespace PaymentService.Controllers { 
      

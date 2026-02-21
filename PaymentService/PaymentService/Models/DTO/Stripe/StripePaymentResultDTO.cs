@@ -1,4 +1,4 @@
-namespace PaymentService.Models.DTO
+namespace PaymentService.Models.DTO.Stripe
 {
     public class StripePaymentResultDTO
     {

@@ -3,6 +3,7 @@ using PaymentService.Context;
 using PaymentService.Data;
 using PaymentService.Profiles;
 using PaymentService.Services.Stripe;
+using PaymentService.Services.ServiceService;
 using AutoMapper;
 using Stripe;
 
@@ -18,6 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PaymentContext>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
+builder.Services.AddScoped<IServiceService, PaymentService.Services.ServiceService.ServiceService>();
 
 // Konfiguracija Stripe API kljuca
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];

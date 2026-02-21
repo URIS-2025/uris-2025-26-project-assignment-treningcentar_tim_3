@@ -1,4 +1,4 @@
-﻿using PaymentService.Models.DTO;
+﻿using PaymentService.Models.DTO.Payment;
 using System.ComponentModel.DataAnnotations;
 
 namespace PaymentService.Data

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PaymentService.Models;
-using PaymentService.Models.DTO;
+using PaymentService.Models.DTO.Payment;
 
 namespace PaymentService.Profiles
 {
