@@ -8,11 +8,16 @@ namespace MembershipService.Profiles
     {
         public MembershipProfile()
         {
-            // Mapiranje iz Entiteta u DTO 
+            // Membership mappings
             CreateMap<Membership, MembershipDto>();
-
-            // Mapiranje iz CreateDTO u Entitet 
             CreateMap<CreateMembershipDto, Membership>();
+
+            // Package mappings
+            CreateMap<Package, PackageDto>();
+            CreateMap<CreatePackageDto, Package>();
+
+            // Checkin mappings
+            CreateMap<Checkin, CheckinDto>();
         } 
     }
 }
