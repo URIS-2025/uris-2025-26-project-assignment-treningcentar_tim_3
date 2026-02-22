@@ -4,6 +4,7 @@ using MembershipService.Context;
 using MembershipService.Models;
 using MembershipService.Models.Enums;
 using MembershipService.Models.DTO;
+using MembershipService.ServiceCalls.Auth;
 
 namespace MembershipService.Data;
 
@@ -11,11 +12,13 @@ public class MembershipRepository : IMembershipRepository
 {
     private readonly MembershipContext _context;
     private readonly IMapper _mapper;
+    private readonly IAuthService _authService;
 
-    public MembershipRepository(MembershipContext context, IMapper mapper)
+    public MembershipRepository(MembershipContext context, IMapper mapper, IAuthService authService)
     {
         _context = context;
         _mapper = mapper;
+        _authService = authService;
     }
 
     public bool SaveChanges()
@@ -39,6 +42,12 @@ public class MembershipRepository : IMembershipRepository
 
     public async Task<MembershipDto> CreateMembershipAsync(CreateMembershipDto dto)
     {
+        // Verify user exists in AuthService
+        if (!_authService.UserExists(dto.UserId))
+        {
+            throw new InvalidOperationException($"User {dto.UserId} not found in AuthService.");
+        }
+
         if (_context.Memberships.Any(m => m.UserId == dto.UserId && m.Status == MembershipStatus.Active))
         {
             throw new InvalidOperationException("User already has an active membership.");

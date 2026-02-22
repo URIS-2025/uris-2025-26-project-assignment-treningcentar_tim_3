@@ -86,5 +86,25 @@ namespace MembershipService.Controllers
             _repository.DeleteMembership(id);
             return NoContent();
         }
+
+        // Admin endpoints
+        [HttpGet("admin/expiring")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult<IEnumerable<MembershipDto>> GetExpiringMemberships([FromQuery] int days = 30)
+        {
+            var memberships = _repository.GetMembershipsExpiringIn(days);
+            return Ok(memberships);
+        }
+
+        [HttpGet("admin/status/{status}")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult<IEnumerable<MembershipDto>> GetMembershipsByStatus(string status)
+        {
+            if (!Enum.TryParse<MembershipService.Models.Enums.MembershipStatus>(status, out var membershipStatus))
+                return BadRequest("Invalid status");
+
+            var memberships = _repository.GetMembershipsByStatus(membershipStatus);
+            return Ok(memberships);
+        }
     }
 }
