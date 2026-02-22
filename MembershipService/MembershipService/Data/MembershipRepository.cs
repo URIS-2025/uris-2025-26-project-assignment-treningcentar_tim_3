@@ -37,9 +37,9 @@ public class MembershipRepository : IMembershipRepository
         return _mapper.Map<MembershipDto>(membership);
     }
 
-    public MembershipDto CreateMembership(CreateMembershipDto dto)
+    public async Task<MembershipDto> CreateMembershipAsync(CreateMembershipDto dto)
     {
-        if (_context.Memberships.Any(m => m.UserId == dto.UserId))
+        if (_context.Memberships.Any(m => m.UserId == dto.UserId && m.Status == MembershipStatus.Active))
         {
             throw new InvalidOperationException("User already has an active membership.");
         }
@@ -50,15 +50,21 @@ public class MembershipRepository : IMembershipRepository
             PackageId = dto.PackageId,
             StartDate = dto.StartDate,
             EndDate = dto.EndDate,
-        
+            CreatedDate = DateTime.UtcNow,
             Status = MembershipStatus.Active 
         };
 
         _context.Memberships.Add(membership);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         
         return _mapper.Map<MembershipDto>(membership);
+    }
+
+    public MembershipDto CreateMembership(CreateMembershipDto dto)
+    {
+        // Fallback sync method for backward compatibility
+        return CreateMembershipAsync(dto).GetAwaiter().GetResult();
     }
 
     public MembershipDto? UpdateMembership(Guid id, CreateMembershipDto dto)
