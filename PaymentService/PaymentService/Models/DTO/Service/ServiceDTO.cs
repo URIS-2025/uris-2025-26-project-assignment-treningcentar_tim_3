@@ -1,6 +1,5 @@
 namespace PaymentService.Models.DTO.Service
 {
-    /// DTO koji predstavlja servis preuzet iz ServiceService-a.
     public class ServiceDTO
     {
         public Guid Id { get; set; }

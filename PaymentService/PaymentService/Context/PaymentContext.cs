@@ -19,7 +19,5 @@ namespace PaymentService.Context
         {
             optionsBuilder.UseNpgsql(_configuration.GetConnectionString("PaymentDb"));
         }
-
-      
     }
 }
