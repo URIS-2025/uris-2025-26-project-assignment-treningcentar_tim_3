@@ -4,11 +4,12 @@ using MembershipService.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MembershipService.ServiceCalls.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -29,12 +30,15 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Issuer"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Convert.FromBase64String(builder.Configuration["Jwt:Key"])),
+            Convert.FromBase64String(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured"))),
         ClockSkew = TimeSpan.FromMinutes(5)
     };
 });
 
 builder.Services.AddAuthorization();
+
+// Service calls - Auth Service
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Registracija repozitorijuma
 builder.Services.AddScoped<IMembershipRepository, MembershipRepository>();
