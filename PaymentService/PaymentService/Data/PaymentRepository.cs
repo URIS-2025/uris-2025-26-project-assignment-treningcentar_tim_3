@@ -35,13 +35,13 @@ namespace PaymentService.Data
             {
                 Id = Guid.NewGuid(),
                 Amount = payment.Amount,
+                // PostgreSQL zahteva eksplicitno UTC - bez ovoga baca exception
                 PaymentDate = DateTime.SpecifyKind(payment.PaymentDate, DateTimeKind.Utc),
                 Method = payment.Method,
                 Status = PaymentStatus.Pending,
                 ServiceId = payment.ServiceId
             };
 
-            // Ako je metoda kartična — pozovi Stripe
             if (payment.Method == PaymentMethod.Card)
             {
                 var paymentIntentId = _stripePaymentService
@@ -50,7 +50,7 @@ namespace PaymentService.Data
                     .GetResult();
 
                 newPayment.StripePaymentIntentId = paymentIntentId;
-                newPayment.Status = PaymentStatus.Completed; // Stripe je potvrdio
+                newPayment.Status = PaymentStatus.Completed;
             }
 
             _context.Payments.Add(newPayment);
@@ -98,6 +98,7 @@ namespace PaymentService.Data
             var current = payment.Status;
             var next = dto.Status;
 
+            // Pending→Completed/Failed, Completed→Refunded, ostali slucajevi ne mogu
             var allowed =
                 (current == PaymentStatus.Pending && (next == PaymentStatus.Completed || next == PaymentStatus.Failed)) ||
                 (current == PaymentStatus.Completed && next == PaymentStatus.Refunded);
@@ -130,7 +131,7 @@ namespace PaymentService.Data
                 return null;
             }
 
-            // Ako je kartično plaćanje — refunduj na Stripe-u
+            // Ako se placa karticom— uraditi refund preko Stripe-a
             if (payment.Method == PaymentMethod.Card && !string.IsNullOrEmpty(payment.StripePaymentIntentId))
             {
                 _stripePaymentService

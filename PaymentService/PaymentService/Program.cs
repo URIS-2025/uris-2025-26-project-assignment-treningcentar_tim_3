@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using PaymentService.Context;
 using PaymentService.Data;
 using PaymentService.Profiles;
@@ -11,10 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -81,7 +78,7 @@ builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Konfiguracija HTTP zahteva 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
