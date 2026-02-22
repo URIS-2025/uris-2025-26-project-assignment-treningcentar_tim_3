@@ -3,11 +3,14 @@ using MembershipService.Data;
 using MembershipService.Models.DTO;
 using MembershipService.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace MembershipService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class MembershipController : ControllerBase
     {
         private readonly IMembershipRepository _repository;
@@ -17,6 +20,15 @@ namespace MembershipService.Controllers
         {
             _repository = repository;
             _mapper = mapper;
+        }
+
+        private Guid GetUserIdFromClaims()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+                throw new UnauthorizedAccessException("Invalid or missing user ID in token");
+            
+            return userId;
         }
 
         // GET: api/membership
@@ -42,6 +54,9 @@ namespace MembershipService.Controllers
         [HttpPost]
         public ActionResult<MembershipDto> CreateMembership(CreateMembershipDto dto)
         {
+            var userId = GetUserIdFromClaims();
+            dto.UserId = userId;
+            
             var membership = _repository.CreateMembership(dto);
             return CreatedAtAction(nameof(GetMembershipById), new { id = membership.MembershipId }, membership);
         }
@@ -50,6 +65,9 @@ namespace MembershipService.Controllers
         [HttpPut("{id}")]
         public ActionResult<MembershipDto> UpdateMembership(Guid id, CreateMembershipDto dto)
         {
+            var userId = GetUserIdFromClaims();
+            dto.UserId = userId;
+            
             var updatedMembership = _repository.UpdateMembership(id, dto);
             if (updatedMembership == null)
                 return NotFound();
