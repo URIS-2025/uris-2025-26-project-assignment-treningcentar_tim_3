@@ -4,6 +4,7 @@ using MembershipService.Context;
 using MembershipService.Models;
 using MembershipService.Models.Enums;
 using MembershipService.Models.DTO;
+using MembershipService.ServiceCalls.Auth;
 
 namespace MembershipService.Data;
 
@@ -11,11 +12,13 @@ public class MembershipRepository : IMembershipRepository
 {
     private readonly MembershipContext _context;
     private readonly IMapper _mapper;
+    private readonly IAuthService _authService;
 
-    public MembershipRepository(MembershipContext context, IMapper mapper)
+    public MembershipRepository(MembershipContext context, IMapper mapper, IAuthService authService)
     {
         _context = context;
         _mapper = mapper;
+        _authService = authService;
     }
 
     public bool SaveChanges()
@@ -37,9 +40,15 @@ public class MembershipRepository : IMembershipRepository
         return _mapper.Map<MembershipDto>(membership);
     }
 
-    public MembershipDto CreateMembership(CreateMembershipDto dto)
+    public async Task<MembershipDto> CreateMembershipAsync(CreateMembershipDto dto)
     {
-        if (_context.Memberships.Any(m => m.UserId == dto.UserId))
+        // Verify user exists in AuthService
+        if (!_authService.UserExists(dto.UserId))
+        {
+            throw new InvalidOperationException($"User {dto.UserId} not found in AuthService.");
+        }
+
+        if (_context.Memberships.Any(m => m.UserId == dto.UserId && m.Status == MembershipStatus.Active))
         {
             throw new InvalidOperationException("User already has an active membership.");
         }
@@ -50,15 +59,21 @@ public class MembershipRepository : IMembershipRepository
             PackageId = dto.PackageId,
             StartDate = dto.StartDate,
             EndDate = dto.EndDate,
-        
+            CreatedDate = DateTime.UtcNow,
             Status = MembershipStatus.Active 
         };
 
         _context.Memberships.Add(membership);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         
         return _mapper.Map<MembershipDto>(membership);
+    }
+
+    public MembershipDto CreateMembership(CreateMembershipDto dto)
+    {
+        // Fallback sync method for backward compatibility
+        return CreateMembershipAsync(dto).GetAwaiter().GetResult();
     }
 
     public MembershipDto? UpdateMembership(Guid id, CreateMembershipDto dto)

@@ -6,8 +6,7 @@ namespace MembershipService.Models.DTO;
 
 public class CreateMembershipDto
 {
-    //ID korisnika
-    [Required(ErrorMessage = "UserId is required.")]
+    //ID korisnika - injected from JWT claims
     public Guid UserId { get; set; }
     //ID paketa
     [Required(ErrorMessage = "PackageId is required.")]

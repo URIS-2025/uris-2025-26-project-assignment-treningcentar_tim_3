@@ -10,6 +10,7 @@ public interface IMembershipRepository
     MembershipDto? GetMembershipById(Guid id);
     MembershipDto? GetUserMembership(Guid userId);
     MembershipDto CreateMembership(CreateMembershipDto dto);
+    Task<MembershipDto> CreateMembershipAsync(CreateMembershipDto dto);
     MembershipDto? UpdateMembership(Guid id, CreateMembershipDto dto);
     void DeleteMembership(Guid id);
     bool SaveChanges();
