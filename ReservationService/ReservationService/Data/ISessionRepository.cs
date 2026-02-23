@@ -11,12 +11,12 @@ namespace ReservationService.Data
         bool SaveChanges();
 
         // CRUD
-        SessionDto AddSession(SessionCreateDTO sessionDto);
+        SessionConfirmationDto AddSession(SessionCreateDTO sessionDto);
         SessionDto GetSessionById(Guid id);
         IEnumerable<SessionDto> GetAllSessions();
         IEnumerable<SessionDto> GetPersonalSessions();
         IEnumerable<SessionDto> GetGroupSessions();
-        SessionDto UpdateSession(SessionUpdateDTO sessionDto);
+        SessionConfirmationDto UpdateSession(SessionUpdateDTO sessionDto);
         void DeleteSession(Guid id);
     }
 }

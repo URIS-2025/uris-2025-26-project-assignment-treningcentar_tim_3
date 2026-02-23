@@ -1,55 +1,118 @@
 using AutoMapper;
 using ReservationService.Context;
 using ReservationService.Models;
+using ReservationService.Models.DTO;
+using ReservationService.Models.Enums;
+using ReservationService.ServiceCalls.User;
 
 namespace ReservationService.Data
 {
     public class ReservationRepository : IReservationRepository
     {
-        
         private readonly ReservationContext _context;
-        // ovde registrovati druge service
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public ReservationRepository(ReservationContext context, IMapper mapper)
+        public ReservationRepository(ReservationContext context, IMapper mapper, IUserService userService)
         {
             _context = context;
-            // _studentService = studentService;
-            // _subjectService = subjectService;
             _mapper = mapper;
-        }
-
-        
-        // inicijalna verzija dok se ne uklopi sa pravim servisima
-        private readonly List<Reservation> _reservations = new();
-
-        public IEnumerable<Reservation> GetAllReservations()
-        {
-            return _reservations;
-        }
-
-        public Reservation? GetReservationById(Guid id)
-        {
-            return _reservations.FirstOrDefault(r => r.reservationId == id);
-        }
-
-        public void CreateReservation(Reservation reservation)
-        {
-            _reservations.Add(reservation);
-        }
-
-        public void UpdateReservation(Reservation reservation)
-        {
-        }
-
-        public void DeleteReservation(Reservation reservation)
-        {
-            _reservations.Remove(reservation);
+            _userService = userService;
         }
 
         public bool SaveChanges()
         {
-            return true;
+            return _context.SaveChanges() > 0;
+        }
+
+        public IEnumerable<ReservationDto> GetAllReservations()
+        {
+            var reservations = _context.Reservations.ToList();
+            var result = new List<ReservationDto>();
+
+            foreach (var reservation in reservations)
+            {
+                var dto = _mapper.Map<ReservationDto>(reservation);
+                dto.Member = _userService.GetUserById(reservation.userId);
+                result.Add(dto);
+            }
+
+            return result;
+        }
+
+        public ReservationDto? GetReservationById(Guid id)
+        {
+            var reservation = _context.Reservations.FirstOrDefault(r => r.reservationId == id);
+            if (reservation == null)
+            {
+                return null;
+            }
+            
+            var dto = _mapper.Map<ReservationDto>(reservation);
+            dto.Member = _userService.GetUserById(reservation.userId);
+
+            return dto;
+        }
+
+        public ReservationConfirmationDto CreateReservation(ReservationCreateDto reservationDto)
+        {
+            // check if user exist
+            var user = _userService.GetUserById(reservationDto.UserId);
+            if (user == null)
+                throw new KeyNotFoundException($"User with ID {reservationDto.UserId} not found.");
+
+            
+            var newReservation = new Reservation
+            {
+                reservationId = Guid.NewGuid(),
+                userId = reservationDto.UserId,
+                sessionId =  reservationDto.SessionId,
+                status = ReservationStatus.Booked
+                
+            };
+
+            _context.Reservations.Add(newReservation);
+            _context.SaveChanges();
+            
+            return new ReservationConfirmationDto
+            {
+                UserName = user.FirstName + " " + user.LastName,
+                SessionId = reservationDto.SessionId
+            };
+        }
+
+        public ReservationConfirmationDto UpdateReservation(ReservationUpdateDto reservationDto)
+        {
+            var existing = _context.Reservations.FirstOrDefault(r => r.reservationId == reservationDto.ReservationId);
+            var user = _userService.GetUserById(reservationDto.UserId);
+            
+            if (existing != null)
+            {
+                existing.userId = reservationDto.UserId;
+                existing.sessionId = reservationDto.SessionId;
+                existing.status = reservationDto.Status;
+                
+                _context.SaveChanges();
+            }
+
+            
+
+            return new ReservationConfirmationDto
+            {
+                UserName = user.FirstName + " " + user.LastName,
+                SessionId = reservationDto.SessionId,
+                Status =  reservationDto.Status
+            };
+        }
+
+        public void DeleteReservation(Guid id)
+        {
+            var reservation = _context.Reservations.FirstOrDefault(r => r.reservationId == id);
+            if (reservation != null)
+            {
+                _context.Remove(reservation);
+                _context.SaveChanges();
+            }
         }
     }
 }

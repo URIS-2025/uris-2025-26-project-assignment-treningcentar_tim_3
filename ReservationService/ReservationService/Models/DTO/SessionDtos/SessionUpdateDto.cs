@@ -13,7 +13,7 @@ namespace ReservationService.Models.DTO
         public DateTime EndTime { get; set; }
         public SessionStatus Status { get; set; }
         public TrainingType TrainingType { get; set; }
-        public int TrainerId { get; set; }
+        public Guid TrainerId { get; set; }
 
         // Samo za group session (mogu biti null)
         public int? MaxCapacity { get; set; }

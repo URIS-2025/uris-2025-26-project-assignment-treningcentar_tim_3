@@ -59,7 +59,11 @@ namespace AuthService.Controllers
 
   
             var token = authHelper.GenerateJwt(principal);
-            return Ok(new { Token = token });
+            return Ok(new { 
+                User = user.FirstName + " " + user.LastName, 
+                Role = user.Role.ToString(),
+                Token = token 
+            });
         }
 
         [HttpPut("update-role")]
