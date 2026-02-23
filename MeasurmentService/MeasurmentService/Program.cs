@@ -1,4 +1,4 @@
-using MeasurmentService.Context;
+using MeasurmentService.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.OpenApi.Models;
+using MeasurmentService.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,16 @@ builder.Services
     });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpClient("ServiceService", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Services:ServiceServiceBaseUrl"]!);
+});
+
+builder.Services.AddScoped<MeasurmentService.Clients.ServiceServiceClient>();
 builder.Services.AddDbContext<MeasurementContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IMeasurementAppointmentRepository, MeasurementAppointmentRepository>();
+builder.Services.AddScoped<IGuidelineRepository, GuidelineRepository>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

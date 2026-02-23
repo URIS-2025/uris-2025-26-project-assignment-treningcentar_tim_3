@@ -1,7 +1,7 @@
 ﻿using MeasurmentService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace MeasurmentService.Context
+namespace MeasurmentService.Data
 {
     public class MeasurementContext : DbContext
     {
