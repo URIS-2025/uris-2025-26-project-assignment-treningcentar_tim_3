@@ -4,5 +4,5 @@ namespace ReservationService.ServiceCalls.User;
 
 public interface IUserService
 {
-    MemberDto GetMemberById(Guid id);
+    MemberDto GetUserById(Guid id);
 }

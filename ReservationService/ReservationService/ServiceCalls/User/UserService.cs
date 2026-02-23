@@ -12,7 +12,7 @@ public class UserService : IUserService
     {
         _configuration = configuration;
     }
-    public MemberDto GetMemberById(Guid id)
+    public MemberDto GetUserById(Guid id)
     {
         using (HttpClient client = new HttpClient())
         {
