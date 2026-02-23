@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ReservationService.Context;
 using ReservationService.Data;
+using ReservationService.ServiceCalls.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<ReservationContext>(options =>
 
 // Registracija repository-ja
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IUserService, UserService>(); 
 
 var app = builder.Build();
 

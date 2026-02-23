@@ -17,7 +17,7 @@ namespace ReservationService.Models.DTO
         [Required]
         public TrainingType TrainingType { get; set; }
         [Required]
-        public int TrainerId { get; set; }
+        public Guid TrainerId { get; set; }
 
         // Samo za group session
         public int? MaxCapacity { get; set; }
