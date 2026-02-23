@@ -4,8 +4,8 @@ using PaymentService.Models;
 using PaymentService.Models.DTO.Payment;
 using PaymentService.Models.DTO.Service;
 using PaymentService.Models.Enums;
-using PaymentService.Services.Stripe;
-using PaymentService.Services.ServiceService;
+using PaymentService.ServiceCalls.Stripe;
+using PaymentService.ServiceCalls.ServiceService;
 
 namespace PaymentService.Data
 {

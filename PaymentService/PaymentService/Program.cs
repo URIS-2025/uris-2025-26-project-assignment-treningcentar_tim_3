@@ -1,8 +1,9 @@
 using PaymentService.Context;
 using PaymentService.Data;
 using PaymentService.Profiles;
-using PaymentService.Services.Stripe;
-using PaymentService.Services.ServiceService;
+using PaymentService.ServiceCalls.Stripe;
+using PaymentService.ServiceCalls.ServiceService;
+using PaymentService.ServiceCalls.Logger;
 using AutoMapper;
 using Stripe;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,7 +66,14 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDbContext<PaymentContext>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
-builder.Services.AddScoped<IServiceService, PaymentService.Services.ServiceService.ServiceService>();
+builder.Services.AddScoped<IServiceService, PaymentService.ServiceCalls.ServiceService.ServiceService>();
+
+// Konfiguracija LoggerService HTTP klijenta
+builder.Services.AddHttpClient<ILoggerService, PaymentService.ServiceCalls.Logger.LoggerService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Services:LoggerService"]!);
+    client.Timeout = TimeSpan.FromSeconds(2);
+});
 
 // Konfiguracija Stripe API kljuca
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
