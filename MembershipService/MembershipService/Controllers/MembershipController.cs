@@ -106,5 +106,32 @@ namespace MembershipService.Controllers
             var memberships = _repository.GetMembershipsByStatus(membershipStatus);
             return Ok(memberships);
         }
+
+        // Receptionist endpoints
+        [HttpPost("checkin/manual")]
+        [Authorize(Roles = "Receptionist")]
+        public IActionResult RecordManualCheckin([FromBody] ManualCheckinDto dto)
+        {
+            try
+            {
+                _repository.RecordCheckin(dto.UserId, dto.Timestamp, dto.Location);
+                return Ok("Check-in recorded successfully");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("user/{userId}/status")]
+        [Authorize(Roles = "Receptionist")]
+        public ActionResult<MembershipDto> GetUserMembershipStatus(Guid userId)
+        {
+            var membership = _repository.GetUserMembership(userId);
+            if (membership == null)
+                return NotFound("User has no active membership");
+
+            return Ok(membership);
+        }
     }
 }
