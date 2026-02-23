@@ -1,4 +1,5 @@
-﻿using ServiceService.ServiceCalls.Logger.DTO;
+﻿using System.Net.Http.Json;
+using ServiceService.ServiceCalls.Logger.DTO;
 
 namespace ServiceService.ServiceCalls.Logger
 {
@@ -15,16 +16,15 @@ namespace ServiceService.ServiceCalls.Logger
         {
             try
             {
-               
                 dto.TimestampUtc ??= DateTime.UtcNow;
 
-                // Logger endpoint: POST api/logger
                 using var res = await _http.PostAsJsonAsync("api/logger", dto, ct);
 
+             
             }
-            catch
+            catch (Exception ex)
             {
-                // swallow — logger je opcioni
+                Console.WriteLine($"LOGGER EXCEPTION -> {ex.Message}");
             }
         }
     }
