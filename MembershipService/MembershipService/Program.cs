@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MembershipService.ServiceCalls.Auth;
+using MembershipService.ServiceCalls.Logger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,9 @@ builder.Services.AddAuthorization();
 
 // Service calls - Auth Service
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+// Service calls - Logger Service
+builder.Services.AddScoped<ILoggerService, LoggerService>();
 
 // Registracija repozitorijuma
 builder.Services.AddScoped<IMembershipRepository, MembershipRepository>();
