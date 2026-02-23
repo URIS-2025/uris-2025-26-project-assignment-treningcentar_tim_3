@@ -33,7 +33,7 @@ namespace ReservationService.Data
             foreach (var reservation in reservations)
             {
                 var dto = _mapper.Map<ReservationDto>(reservation);
-                dto.Member = _userService.GetMemberById(reservation.userId);
+                dto.Member = _userService.GetUserById(reservation.userId);
                 result.Add(dto);
             }
 
@@ -49,7 +49,7 @@ namespace ReservationService.Data
             }
             
             var dto = _mapper.Map<ReservationDto>(reservation);
-            dto.Member = _userService.GetMemberById(reservation.userId);
+            dto.Member = _userService.GetUserById(reservation.userId);
 
             return dto;
         }
@@ -57,7 +57,7 @@ namespace ReservationService.Data
         public ReservationConfirmationDto CreateReservation(ReservationCreateDto reservationDto)
         {
             // check if user exist
-            var user = _userService.GetMemberById(reservationDto.UserId);
+            var user = _userService.GetUserById(reservationDto.UserId);
             if (user == null)
                 throw new KeyNotFoundException($"User with ID {reservationDto.UserId} not found.");
 
@@ -84,7 +84,7 @@ namespace ReservationService.Data
         public ReservationConfirmationDto UpdateReservation(ReservationUpdateDto reservationDto)
         {
             var existing = _context.Reservations.FirstOrDefault(r => r.reservationId == reservationDto.ReservationId);
-            var user = _userService.GetMemberById(reservationDto.UserId);
+            var user = _userService.GetUserById(reservationDto.UserId);
             
             if (existing != null)
             {

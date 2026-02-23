@@ -10,5 +10,5 @@ public abstract class Session
     public DateTime EndTime { get; set; }
     public SessionStatus status { get; set; }
     public TrainingType trainingType { get; set; }
-    public int trainerId { get; set; }
+    public Guid trainerId { get; set; }
 }

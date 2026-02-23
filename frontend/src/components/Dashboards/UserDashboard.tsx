@@ -1,0 +1,137 @@
+import React, { useState } from 'react';
+import { Calendar as CalendarIcon, CheckCircle2, Users, User as PersonIcon, TrendingUp } from 'lucide-react';
+import dashboardData from '../../mock/userDashboardData.json';
+
+const UserDashboard: React.FC = () => {
+  const [data] = useState(dashboardData);
+  const [currentDate] = useState(new Date());
+
+  const stats = [
+    { 
+      label: 'Check-ins', 
+      value: data.stats.checkIns, 
+      icon: <CheckCircle2 className="w-6 h-6 text-emerald-500" />, 
+      color: 'bg-emerald-50',
+      trend: '+12% from last month'
+    },
+    { 
+      label: 'Personal Sessions', 
+      value: data.stats.personalSessions, 
+      icon: <PersonIcon className="w-6 h-6 text-blue-500" />, 
+      color: 'bg-blue-50',
+      trend: '+2 this week'
+    },
+    { 
+      label: 'Group Sessions', 
+      value: data.stats.groupSessions, 
+      icon: <Users className="w-6 h-6 text-purple-500" />, 
+      color: 'bg-purple-50',
+      trend: 'On track'
+    }
+  ];
+
+  // Calendar Helpers
+  const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
+  const firstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
+
+  const renderCalendar = () => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const totalDays = daysInMonth(year, month);
+    const startDay = firstDayOfMonth(year, month);
+    
+    const days = [];
+    // Padding
+    for (let i = 0; i < startDay; i++) {
+      days.push(<div key={`empty-${i}`} className="h-24 border border-amber-50/50 bg-neutral-50/30" />);
+    }
+    
+    // Month days
+    for (let d = 1; d <= totalDays; d++) {
+      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const hasAttended = data.attendance.includes(dateStr);
+      const isToday = new Date().toDateString() === new Date(year, month, d).toDateString();
+
+      days.push(
+        <div key={d} className={`h-24 border border-amber-100 p-2 relative group hover:bg-amber-50/50 transition-colors ${isToday ? 'bg-amber-50/30' : 'bg-white'}`}>
+          <span className={`text-sm font-bold ${isToday ? 'text-amber-600 bg-amber-100 w-7 h-7 flex items-center justify-center rounded-full' : 'text-neutral-400'}`}>
+            {d}
+          </span>
+          {hasAttended && (
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
+              <div className="w-2 h-2 bg-amber-500 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.6)] animate-pulse" title="Attended" />
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    return days;
+  };
+
+  const monthName = currentDate.toLocaleString('default', { month: 'long' });
+
+  return (
+    <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
+      {/* Header */}
+      <div className="flex justify-between items-end">
+        <div>
+          <h1 className="text-4xl font-black text-amber-950 tracking-tight">Your Progress</h1>
+          <p className="text-amber-800/60 font-medium">Keep up the great work this month!</p>
+        </div>
+        <div className="bg-white p-2 rounded-2xl shadow-sm border border-amber-100 flex items-center gap-2">
+            <span className="text-sm font-bold text-amber-900 px-4">{monthName} {currentDate.getFullYear()}</span>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {stats.map((stat, idx) => (
+          <div key={idx} className="bg-white rounded-[2rem] p-8 shadow-xl shadow-amber-900/5 border border-amber-50 relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
+            <div className={`absolute top-0 right-0 w-32 h-32 ${stat.color} opacity-20 rounded-bl-[5rem] -mr-8 -mt-8`} />
+            <div className="relative z-10">
+              <div className="mb-4">{stat.icon}</div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-black text-amber-950">{stat.value}</span>
+                <span className="text-sm font-bold text-amber-800/40 uppercase tracking-wider">{stat.label}</span>
+              </div>
+              <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                <TrendingUp className="w-3 h-3" />
+                {stat.trend}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Calendar Section */}
+      <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-amber-900/5 border border-amber-100 overflow-hidden">
+        <div className="p-8 border-b border-amber-50 flex items-center justify-between bg-neutral-50/50">
+          <div className="flex items-center gap-3">
+            <CalendarIcon className="w-5 h-5 text-amber-600" />
+            <h2 className="text-xl font-black text-amber-950">Activity Calendar</h2>
+          </div>
+          <div className="flex gap-2">
+             <div className="flex items-center gap-2 text-xs font-bold text-amber-900/40 uppercase pr-4">
+                <div className="w-2 h-2 bg-amber-500 rounded-full" /> Training Day
+             </div>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-7 bg-amber-50/30 border-b border-amber-100">
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+            <div key={day} className="py-4 text-center text-[10px] font-black text-amber-900/40 uppercase tracking-[0.2em]">
+              {day}
+            </div>
+          ))}
+        </div>
+        
+        <div className="grid grid-cols-7">
+          {renderCalendar()}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserDashboard;

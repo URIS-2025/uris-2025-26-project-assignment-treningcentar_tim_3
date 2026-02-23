@@ -1,5 +1,6 @@
 using ReservationService.Models.Enums;
 using System;
+using ReservationService.Models.DTO.MemberDtos;
 
 namespace ReservationService.Models.DTO
 {
@@ -11,7 +12,7 @@ namespace ReservationService.Models.DTO
         public DateTime EndTime { get; set; }
         public SessionStatus Status { get; set; }
         public TrainingType TrainingType { get; set; }
-        public int TrainerId { get; set; }
+        public TrainerDto TrainerId { get; set; }
         
         // Samo za group session
         public int? MaxCapacity { get; set; }

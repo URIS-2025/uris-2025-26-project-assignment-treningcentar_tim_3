@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ReservationService.Controllers
 {
-    // [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class SessionController : Controller
@@ -62,6 +61,7 @@ namespace ReservationService.Controllers
             return Ok(session);
         }
 
+        [Authorize(Roles = nameof(UserRole.Trainer))]
         [HttpPost]
         public ActionResult<SessionDto> AddSession([FromBody] SessionCreateDTO sessionDto)
         {
@@ -76,6 +76,7 @@ namespace ReservationService.Controllers
             }
         }
 
+        [Authorize(Roles = nameof(UserRole.Trainer))]
         [HttpPut]
         public ActionResult<SessionDto> UpdateSession([FromBody] SessionUpdateDTO sessionDto)
         {
@@ -94,6 +95,7 @@ namespace ReservationService.Controllers
             }
         }
 
+        [Authorize(Roles = nameof(UserRole.Trainer))]
         [HttpDelete("{id}")]
         public IActionResult DeleteSession(Guid id)
         {
