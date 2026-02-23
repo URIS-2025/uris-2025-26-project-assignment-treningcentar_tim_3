@@ -26,4 +26,4 @@ namespace ServiceService.ServiceCalls.Payment.DTO
         public Guid ServiceId { get; set; }
     }
 }
-}
+

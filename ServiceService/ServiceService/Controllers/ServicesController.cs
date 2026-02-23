@@ -6,7 +6,6 @@ using ServiceService.Models.DTO;
 using ServiceService.ServiceCalls.Logger;
 using ServiceService.ServiceCalls.Logger.DTO;
 
-
 namespace ServiceService.Controllers
 {
     // [Authorize] ubaciti kad se uradi 
@@ -62,7 +61,7 @@ namespace ServiceService.Controllers
             {
                 var created = _serviceRepository.AddService(dto);
 
-                //  LOG - CREATE
+                // LOG - CREATE
                 await _logger.TryLogAsync(new LogCreationDTO
                 {
                     Level = LogLevels.Info,
@@ -150,5 +149,4 @@ namespace ServiceService.Controllers
             return Ok();
         }
     }
-}
 }
