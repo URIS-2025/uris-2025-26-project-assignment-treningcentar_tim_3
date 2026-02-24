@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MeasurmentService.Clients;
 using MeasurmentService.Models.DTO;
 using MeasurmentService.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -15,11 +16,15 @@ public class GuidelinesController : ControllerBase
 {
     private readonly IGuidelineRepository _repo;
     private readonly IMapper _mapper;
+    private readonly LoggerServiceClient _loggerClient;
 
-    public GuidelinesController(IGuidelineRepository repo, IMapper mapper)
+    private const string ServiceName = "MeasurmentService";
+
+    public GuidelinesController(IGuidelineRepository repo, IMapper mapper, LoggerServiceClient loggerClient)
     {
         _repo = repo;
         _mapper = mapper;
+        _loggerClient = loggerClient;
     }
 
     private Guid CurrentUserId =>
@@ -42,6 +47,14 @@ public class GuidelinesController : ControllerBase
         }
     }
 
+    private string CorrelationId =>
+        Request.Headers.TryGetValue("X-Correlation-Id", out var h) && !string.IsNullOrWhiteSpace(h)
+            ? h.ToString()
+            : HttpContext.TraceIdentifier;
+
+    private string? BearerHeader =>
+        Request.Headers.TryGetValue("Authorization", out var h) ? h.ToString() : null;
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GuidelineDTO>>> GetAll()
     {
@@ -54,8 +67,6 @@ public class GuidelinesController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<GuidelineDTO>> GetById(Guid id)
     {
-        // Repo GetByIdAsync vraća guideline, ali access proveru radimo preko GetAllVisibleAsync
-        // (da ostane jednostavno i repo pattern stil)
         if (string.IsNullOrWhiteSpace(CurrentRole)) return Forbid();
 
         var visible = await _repo.GetAllVisibleAsync(CurrentUserId, CurrentRole);
@@ -83,6 +94,24 @@ public class GuidelinesController : ControllerBase
         entity.LastUpdated = DateTime.UtcNow;
 
         await _repo.SaveAsync();
+
+        await _loggerClient.TryLogAsync(
+            new LogCreationDTO
+            {
+                Level = LogLevels.Info,
+                ServiceName = ServiceName,
+                Action = "UpdateGuideline",
+                Message = "Guideline updated",
+                Details = $"GuidelineId={entity.GuidelineId}; AppointmentId={entity.AppointmentId}; Category={entity.Category}; Title={entity.Title}; ContentLen={(entity.Content?.Length ?? 0)}",
+                CorrelationId = CorrelationId,
+                EntityType = "Guideline",
+                EntityId = entity.GuidelineId,
+                UserId = userId
+            },
+            bearerHeader: BearerHeader,
+            requestCt: HttpContext.RequestAborted
+        );
+
         return NoContent();
     }
 
@@ -100,6 +129,24 @@ public class GuidelinesController : ControllerBase
 
         _repo.Remove(entity);
         await _repo.SaveAsync();
+
+        await _loggerClient.TryLogAsync(
+            new LogCreationDTO
+            {
+                Level = LogLevels.Info,
+                ServiceName = ServiceName,
+                Action = "DeleteGuideline",
+                Message = "Guideline deleted",
+                Details = $"GuidelineId={entity.GuidelineId}; AppointmentId={entity.AppointmentId}; Category={entity.Category}; Title={entity.Title}",
+                CorrelationId = CorrelationId,
+                EntityType = "Guideline",
+                EntityId = entity.GuidelineId,
+                UserId = userId
+            },
+            bearerHeader: BearerHeader,
+            requestCt: HttpContext.RequestAborted
+        );
+
         return NoContent();
     }
 }

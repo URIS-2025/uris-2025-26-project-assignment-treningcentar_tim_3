@@ -1,0 +1,136 @@
+{
+  "personal": [
+    {
+      "sessionId": "ps1",
+      "name": "Strength Training",
+      "startTime": "2026-02-23T10:00:00",
+      "endTime": "2026-02-23T11:00:00",
+      "status": 1,
+      "trainingType": "Individual",
+      "trainerId": "t1",
+      "trainerName": "Marko Markovic"
+    },
+    {
+      "sessionId": "ps1-2",
+      "name": "Strength Training",
+      "startTime": "2026-02-23T12:00:00",
+      "endTime": "2026-02-23T13:00:00",
+      "status": 1,
+      "trainingType": "Individual",
+      "trainerId": "t1",
+      "trainerName": "Marko Markovic"
+    },
+    {
+      "sessionId": "ps1-3",
+      "name": "Strength Training",
+      "startTime": "2026-02-23T15:00:00",
+      "endTime": "2026-02-23T16:00:00",
+      "status": 1,
+      "trainingType": "Individual",
+      "trainerId": "t1",
+      "trainerName": "Marko Markovic"
+    },
+    {
+      "sessionId": "ps2",
+      "name": "Cardio Blast",
+      "startTime": "2026-02-24T09:00:00",
+      "endTime": "2026-02-24T10:00:00",
+      "status": 1,
+      "trainingType": "Individual",
+      "trainerId": "t2",
+      "trainerName": "Ana Anic"
+    },
+    {
+      "sessionId": "ps3",
+      "name": "Functional Training",
+      "startTime": "2026-02-25T17:00:00",
+      "endTime": "2026-02-25T18:00:00",
+      "status": 1,
+      "trainingType": "Individual",
+      "trainerId": "t1",
+      "trainerName": "Marko Markovic"
+    }
+  ],
+  "group": [
+    {
+      "sessionId": "gs1",
+      "name": "Crossfit Basics",
+      "startTime": "2026-02-23T18:00:00",
+      "endTime": "2026-02-23T19:30:00",
+      "status": 1,
+      "trainingType": "Group",
+      "trainerId": "t3",
+      "trainerName": "Petar Petrovic",
+      "maxCapacity": 20,
+      "currentCount": 12
+    },
+    {
+      "sessionId": "gs2",
+      "name": "HIIT Intensive",
+      "startTime": "2026-02-25T08:00:00",
+      "endTime": "2026-02-25T09:00:00",
+      "status": 1,
+      "trainingType": "Group",
+      "trainerId": "t2",
+      "trainerName": "Ana Anic",
+      "maxCapacity": 15,
+      "currentCount": 15
+    },
+    {
+      "sessionId": "gs3",
+      "name": "Zumba Night",
+      "startTime": "2026-02-27T19:00:00",
+      "endTime": "2026-02-27T20:00:00",
+      "status": 1,
+      "trainingType": "Group",
+      "trainerId": "t4",
+      "trainerName": "Ivana Ivanic",
+      "maxCapacity": 30,
+      "currentCount": 24
+    }
+  ],
+  "myBookings": [
+    {
+      "sessionId": "mb1",
+      "name": "Leg Day Special",
+      "startTime": "2026-02-26T10:00:00",
+      "endTime": "2026-02-26T11:00:00",
+      "status": 1,
+      "trainingType": "Individual",
+      "trainerId": "t1",
+      "trainerName": "Marko Markovic"
+    },
+    {
+      "sessionId": "mb2",
+      "name": "Morning Yoga",
+      "startTime": "2026-02-28T07:00:00",
+      "endTime": "2026-02-28T08:00:00",
+      "status": 1,
+      "trainingType": "Group",
+      "trainerId": "t4",
+      "trainerName": "Ivana Ivanic"
+    }
+  ],
+  "history": [
+    {
+      "sessionId": "h1",
+      "name": "Initial Assessment",
+      "startTime": "2026-02-15T14:00:00",
+      "endTime": "2026-02-15T15:00:00",
+      "status": 2,
+      "trainingType": "Individual",
+      "trainerId": "t1",
+      "trainerName": "Marko Markovic"
+    },
+    {
+      "sessionId": "h2",
+      "name": "Full Body Workout",
+      "startTime": "2026-02-18T18:00:00",
+      "endTime": "2026-02-18T19:30:00",
+      "status": 2,
+      "trainingType": "Group",
+      "trainerId": "t3",
+      "trainerName": "Petar Petrovic"
+    }
+  ]
+}

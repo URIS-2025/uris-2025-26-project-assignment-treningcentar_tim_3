@@ -1,0 +1,42 @@
+[
+  {
+    "id": "s1",
+    "name": "Standard Monthly Membership",
+    "category": 1,
+    "description": "Unlimited access to our training facilities.",
+    "price": 40.0,
+    "type": "purchase"
+  },
+  {
+    "id": "s2",
+    "name": "Personal Training Session",
+    "category": 2,
+    "description": "One-on-one session with a certified trainer.",
+    "price": 25.0,
+    "type": "book"
+  },
+  {
+    "id": "s3",
+    "name": "Yoga Group Class",
+    "category": 3,
+    "description": "Improve your flexibility and focus.",
+    "price": 15.0,
+    "type": "book"
+  },
+  {
+    "id": "s4",
+    "name": "Nutritional Consultation",
+    "category": 4,
+    "description": "Personalized meal plan and guidance.",
+    "price": 60.0,
+    "type": "purchase"
+  },
+  {
+    "id": "s5",
+    "name": "Body Composition Measurement",
+    "category": 5,
+    "description": "Detailed analysis of your body metrics.",
+    "price": 10.0,
+    "type": "book"
+  }
+]

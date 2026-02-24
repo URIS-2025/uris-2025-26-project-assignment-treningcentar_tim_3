@@ -19,12 +19,8 @@ public class MeasurementProfile : Profile
             .ForMember(d => d.BodyFatPercent, o => o.MapFrom(s => s.Measurements.BodyFatPercent))
             .ForMember(d => d.GuidelineId, o => o.MapFrom(s => s.Guideline != null ? s.Guideline.GuidelineId : (Guid?)null));
 
+        // BITNO: Create/Update termina više NE upisuje rezultate merenja
         CreateMap<MeasurementAppointmentCreateDTO, MeasurementAppointment>()
-            .ForMember(d => d.Measurements, o => o.MapFrom(s => new Measurements
-            {
-                WeightKg = s.WeightKg,
-                HeightCm = s.HeightCm,
-                BodyFatPercent = s.BodyFatPercent
-            }));
+            .ForMember(d => d.Measurements, o => o.Ignore());
     }
 }
