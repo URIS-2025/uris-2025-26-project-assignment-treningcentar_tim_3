@@ -3,8 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { UserInfo } from '../../types/auth';
 import { Role } from '../../types/auth';
 
-import { authService } from '../../services/authService';
-
 interface AuthState {
   user: UserInfo | null;
   token: string | null;
