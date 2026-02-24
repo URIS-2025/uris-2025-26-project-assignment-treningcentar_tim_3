@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar as CalendarIcon, CheckCircle2, Users, User as PersonIcon, TrendingUp } from 'lucide-react';
-import dashboardData from '../../mock/userDashboardData.json';
+import dashboardData from '../mock/userDashboardData.json';
 
 const UserDashboard: React.FC = () => {
   const [data] = useState(dashboardData);
