@@ -21,6 +21,7 @@ public class MeasurementAppointmentRepository : IMeasurementAppointmentRepositor
             "Nutritionist" => await q.Where(a => a.NutritionistId == userId).ToListAsync(),
             "Trainer" => await q.Where(a => a.EmployeeId == userId).ToListAsync(),
             "Member" => await q.Where(a => a.MemberId == userId).ToListAsync(),
+            "Receptionist" => await q.ToListAsync(),
             _ => new List<MeasurementAppointment>()
         };
     }
