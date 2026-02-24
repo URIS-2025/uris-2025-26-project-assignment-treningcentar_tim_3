@@ -8,6 +8,9 @@ import UserDashboard from '../pages/UserDashboard';
 import Membership from '../pages/Membership';
 import Services from '../pages/Services';
 import Sessions from '../pages/Sessions';
+import TrainerDashboard from '../pages/TrainerDashboard';
+import TrainerSessions from '../pages/TrainerSessions';
+import TrainerClientMeasurements from '../pages/TrainerClientMeasurements';
 
 export const router = createBrowserRouter([
     {
@@ -44,6 +47,23 @@ export const router = createBrowserRouter([
                     {
                         path: 'sessions',
                         element: <Sessions />,
+                    }
+                ]
+            },
+            {
+                element: <ProtectedRoute requiredRole={Role.Trainer} />,
+                children: [
+                    {
+                        path: 'trainer-dashboard',
+                        element: <TrainerDashboard />,
+                    },
+                    {
+                        path: 'trainer-sessions',
+                        element: <TrainerSessions />,
+                    },
+                    {
+                        path: 'trainer-measurements',
+                        element: <TrainerClientMeasurements />,
                     }
                 ]
             }
