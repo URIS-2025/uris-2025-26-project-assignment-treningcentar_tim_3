@@ -10,7 +10,7 @@ public class GuidelineRepository : IGuidelineRepository
     public GuidelineRepository(MeasurementContext context) => _context = context;
 
     public Task<Guideline?> GetByIdAsync(Guid id) =>
-        _context.Guidelines.AsNoTracking().FirstOrDefaultAsync(x => x.GuidelineId == id);
+       _context.Guidelines.FirstOrDefaultAsync(x => x.GuidelineId == id);
 
     public async Task<List<Guideline>> GetAllVisibleAsync(Guid userId, string role)
     {
