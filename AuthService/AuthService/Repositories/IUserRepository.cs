@@ -9,6 +9,9 @@ namespace AuthService.Repositories
         // Dohvata korisnika po username
         Task<UserEntity?> GetByUsernameAsync(string username);
 
+        // Dohvata korisnika po ID
+        Task<UserEntity?> GetUserByIdAsync(Guid id);
+
         // Dodaje novog korisnika u bazu
         Task AddUserAsync(UserEntity user);
 

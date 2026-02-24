@@ -15,23 +15,30 @@
 
         public LogDTO CreateLog(LogCreationDTO dto)
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                Uri url = new Uri($"{_configuration["Services:LoggerService"]}api/logger");
-
-                var json = JsonConvert.SerializeObject(dto);
-                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-                var response = client.PostAsync(url, content).Result;
-                if (!response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient())
                 {
-                    return null;
+                    client.Timeout = TimeSpan.FromSeconds(3); // Fast timeout so login isn't painfully slow
+                    Uri url = new Uri($"{_configuration["Services:LoggerService"]}api/logger");
+
+                    var json = JsonConvert.SerializeObject(dto);
+                    var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                    var response = client.PostAsync(url, content).Result;
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return null;
+                    }
+
+                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    return JsonConvert.DeserializeObject<LogDTO>(responseContent);
                 }
-
-                var responseContent = response.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject<LogDTO>(responseContent);
-
-
+            }
+            catch
+            {
+                // Silently swallow logger connection errors so login doesn't crash
+                return null;
             }
         }
 

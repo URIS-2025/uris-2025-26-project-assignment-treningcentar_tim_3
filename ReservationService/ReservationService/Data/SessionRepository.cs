@@ -58,8 +58,8 @@ namespace ReservationService.Data
                     status = sessionDto.Status,
                     trainingType = sessionDto.TrainingType,
                     trainerId = sessionDto.TrainerId,
-                    maxCapacity = sessionDto.MaxCapacity.Value,
-                    hallId = sessionDto.HallId.Value
+                    maxCapacity = sessionDto.MaxCapacity ?? 10,
+                    hallId = sessionDto.HallId ?? 1
                 };
             }
             else
@@ -167,8 +167,8 @@ namespace ReservationService.Data
 
             if (existingSession is GroupSession groupSession)
             {
-                groupSession.maxCapacity = sessionDto.MaxCapacity.Value;
-                groupSession.hallId = sessionDto.HallId.Value;
+                groupSession.maxCapacity = sessionDto.MaxCapacity ?? groupSession.maxCapacity;
+                groupSession.hallId = sessionDto.HallId ?? groupSession.hallId;
             }
 
             _context.SaveChanges();

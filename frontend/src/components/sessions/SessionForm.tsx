@@ -3,11 +3,12 @@ import type { SessionCreateDto } from '../../services/sessionService';
 import { X, Calendar as CalendarIcon, Clock, Users } from 'lucide-react';
 
 interface Props {
+    trainerId: string;
     onClose: () => void;
     onSubmit: (dto: SessionCreateDto) => void;
 }
 
-const SessionForm: React.FC<Props> = ({ onClose, onSubmit }) => {
+const SessionForm: React.FC<Props> = ({ trainerId, onClose, onSubmit }) => {
     const [date, setDate] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
@@ -16,18 +17,20 @@ const SessionForm: React.FC<Props> = ({ onClose, onSubmit }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Validation for date > today + 24h
-        const selectedDate = new Date(`${date}T${startTime}`);
 
-        // Even though 24h rule is strictly for cancel/reschedule, it applies here too to match logic. 
-        // We will just let them create it, but cancel must be 24h.
+        // Construct full Date objects for C# DateTime
+        const localStart = new Date(`${date}T${startTime}`);
+        const localEnd = new Date(`${date}T${endTime}`);
 
         onSubmit({
-            date: selectedDate.toISOString().split('T')[0],
-            startTime: startTime + ':00',
-            endTime: endTime + ':00',
-            capacity: trainingType === 0 ? 1 : capacity,
-            trainingType,
+            name: trainingType === 0 ? 'Personal Training' : 'Group Training',
+            startTime: localStart.toISOString(),
+            endTime: localEnd.toISOString(),
+            status: 0, // Upcoming
+            trainingType: trainingType,
+            trainerId: trainerId,
+            maxCapacity: trainingType === 0 ? 1 : capacity,
+            isGroup: trainingType === 1
         });
     };
 

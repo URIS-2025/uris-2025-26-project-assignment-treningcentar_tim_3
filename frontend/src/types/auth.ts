@@ -29,6 +29,7 @@ export interface loginResponse {
 }
 
 export interface UserInfo {
+  id: string;
   fullName: string;
   role: Role;
   isAuthenticated: boolean;
