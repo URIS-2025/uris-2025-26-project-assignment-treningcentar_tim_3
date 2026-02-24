@@ -3,30 +3,33 @@ import { Calendar as CalendarIcon, CheckCircle2, Users, User as PersonIcon, Tren
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store';
 import { reservationService } from '../services/reservationService';
+import { checkinService, type CheckinDto } from '../services/checkinService';
 import { TrainingType } from '../types/reservation';
-import dashboardData from '../mock/userDashboardData.json';
-
 const UserDashboard: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
   
-  const [data] = useState(dashboardData);
   const [currentDate] = useState(new Date());
   
   const [personalCount, setPersonalCount] = useState(0);
   const [groupCount, setGroupCount] = useState(0);
+  const [reservations, setReservations] = useState<any[]>([]);
+  const [checkins, setCheckins] = useState<CheckinDto[]>([]);
 
   useEffect(() => {
     if (user?.id && token) {
+      // Fetch Reservations
       reservationService.getUserReservations(user.id, token)
-        .then(reservations => {
-          if (!reservations) {
+        .then(res => {
+          if (!res) {
             setPersonalCount(0);
             setGroupCount(0);
+            setReservations([]);
             return;
           }
-          const personal = reservations.filter(r => r.trainingType === TrainingType.Personal).length;
-          const group = reservations.filter(r => r.trainingType === TrainingType.Group).length;
+          setReservations(res);
+          const personal = res.filter(r => r.trainingType === TrainingType.Personal).length;
+          const group = res.filter(r => r.trainingType === TrainingType.Group).length;
           setPersonalCount(personal);
           setGroupCount(group);
         })
@@ -34,6 +37,17 @@ const UserDashboard: React.FC = () => {
           console.error("Error fetching reservations:", err);
           setPersonalCount(0);
           setGroupCount(0);
+          setReservations([]);
+        });
+
+      // Fetch Check-ins
+      checkinService.getCurrentMonthCheckins(user.id, token)
+        .then(data => {
+          setCheckins(data || []);
+        })
+        .catch(err => {
+          console.error("Error fetching check-ins:", err);
+          setCheckins([]);
         });
     }
   }, [user?.id, token]);
@@ -41,10 +55,10 @@ const UserDashboard: React.FC = () => {
   const stats = [
     { 
       label: 'Check-ins', 
-      value: data.stats.checkIns, 
+      value: checkins.length, 
       icon: <CheckCircle2 className="w-6 h-6 text-emerald-500" />, 
       color: 'bg-emerald-50',
-      trend: '+12% from last month'
+      trend: 'This month'
     },
     { 
       label: 'Personal Sessions', 
@@ -80,20 +94,29 @@ const UserDashboard: React.FC = () => {
     
     // Month days
     for (let d = 1; d <= totalDays; d++) {
-      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-      const hasAttended = data.attendance.includes(dateStr);
-      const isToday = new Date().toDateString() === new Date(year, month, d).toDateString();
+      const dayDate = new Date(year, month, d);
+      const isToday = new Date().toDateString() === dayDate.toDateString();
+      
+      const dayCheckins = checkins.filter(c => new Date(c.timestamp).toDateString() === dayDate.toDateString());
+      const dayPersonal = reservations.filter(r => r.trainingType === TrainingType.Personal && new Date(r.startTime).toDateString() === dayDate.toDateString());
+      const dayGroup = reservations.filter(r => r.trainingType === TrainingType.Group && new Date(r.startTime).toDateString() === dayDate.toDateString());
 
       days.push(
         <div key={d} className={`h-24 border border-amber-100 p-2 relative group hover:bg-amber-50/50 transition-colors ${isToday ? 'bg-amber-50/30' : 'bg-white'}`}>
           <span className={`text-sm font-bold ${isToday ? 'text-amber-600 bg-amber-100 w-7 h-7 flex items-center justify-center rounded-full' : 'text-neutral-400'}`}>
             {d}
           </span>
-          {hasAttended && (
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
-              <div className="w-2 h-2 bg-amber-500 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.6)] animate-pulse" title="Attended" />
-            </div>
-          )}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
+            {dayCheckins.length > 0 && (
+              <div className="w-1.5 h-1.5 bg-amber-500 rounded-full" title="Gym Check-in" />
+            )}
+            {dayPersonal.length > 0 && (
+              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" title="Personal Session" />
+            )}
+            {dayGroup.length > 0 && (
+              <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" title="Group Session" />
+            )}
+          </div>
         </div>
       );
     }
@@ -143,9 +166,15 @@ const UserDashboard: React.FC = () => {
             <CalendarIcon className="w-5 h-5 text-amber-600" />
             <h2 className="text-xl font-black text-amber-950">Activity Calendar</h2>
           </div>
-          <div className="flex gap-2">
-             <div className="flex items-center gap-2 text-xs font-bold text-amber-900/40 uppercase pr-4">
-                <div className="w-2 h-2 bg-amber-500 rounded-full" /> Training Day
+          <div className="flex gap-4">
+             <div className="flex items-center gap-1.5 text-[9px] font-black text-amber-900/40 uppercase">
+                <div className="w-2 h-2 bg-amber-500 rounded-full" /> Gym
+             </div>
+             <div className="flex items-center gap-1.5 text-[9px] font-black text-amber-900/40 uppercase">
+                <div className="w-2 h-2 bg-blue-500 rounded-full" /> Personal
+             </div>
+             <div className="flex items-center gap-1.5 text-[9px] font-black text-amber-900/40 uppercase">
+                <div className="w-2 h-2 bg-purple-500 rounded-full" /> Group
              </div>
           </div>
         </div>

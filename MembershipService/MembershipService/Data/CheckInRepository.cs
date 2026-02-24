@@ -79,4 +79,17 @@ public class CheckinRepository : ICheckinRepository
         var membership = _context.Memberships.FirstOrDefault(m => m.UserId == userId && m.Status == MembershipStatus.Active);
         return membership != null && membership.IsActive();
     }
+    
+    public IEnumerable<CheckinDto> GetCurrentMonthCheckins(Guid userId)
+    {
+        var startOfMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+        var checkins = _context.Checkins
+            .Where(c => c.Membership != null &&
+                        c.Membership.UserId == userId &&
+                        c.Timestamp >= startOfMonth)
+            .OrderByDescending(c => c.Timestamp)
+            .ToList();
+
+        return _mapper.Map<IEnumerable<CheckinDto>>(checkins);
+    }
 }
