@@ -2,6 +2,8 @@ using AutoMapper;
 using ReservationService.Context;
 using ReservationService.Models;
 using ReservationService.Models.DTO;
+using ReservationService.Models.DTO.LogDtos;
+using ReservationService.ServiceCalls.Logger;
 using ReservationService.ServiceCalls.User;
 
 namespace ReservationService.Data
@@ -11,12 +13,14 @@ namespace ReservationService.Data
         private readonly ReservationContext _context;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly IServiceLogger _logger;
 
-        public SessionRepository(ReservationContext context, IMapper mapper, IUserService userService)
+        public SessionRepository(ReservationContext context, IMapper mapper, IUserService userService, IServiceLogger logger)
         {
             _context = context;
             _mapper = mapper;
             _userService = userService;
+            _logger = logger;
         }
 
         public bool SaveChanges()
@@ -26,10 +30,20 @@ namespace ReservationService.Data
 
         public SessionConfirmationDto AddSession(SessionCreateDTO sessionDto)
         {
-            // proveri da li trainer postoji
             var trainer = _userService.GetUserById(sessionDto.TrainerId);
             if (trainer == null)
+            {
+                _logger.CreateLog(new LogCreationDto
+                {
+                    Level = LogLevels.Error,
+                    ServiceName = "ReservationService",
+                    Action = "AddSession",
+                    Message = $"Trainer with ID {sessionDto.TrainerId} not found.",
+                    EntityType = "Session",
+                    EntityId = sessionDto.TrainerId
+                });
                 throw new KeyNotFoundException($"Trainer with ID {sessionDto.TrainerId} not found.");
+            }
 
             Session newSession;
 
@@ -64,6 +78,16 @@ namespace ReservationService.Data
 
             _context.Sessions.Add(newSession);
             _context.SaveChanges();
+
+            _logger.CreateLog(new LogCreationDto
+            {
+                Level = LogLevels.Info,
+                ServiceName = "ReservationService",
+                Action = "AddSession",
+                Message = $"Session '{newSession.name}' created with ID {newSession.sessionId}.",
+                EntityType = "Session",
+                EntityId = newSession.sessionId
+            });
 
             return new SessionConfirmationDto
             {
@@ -100,7 +124,6 @@ namespace ReservationService.Data
         {
             var session = _context.Sessions.FirstOrDefault(s => s.sessionId == id);
             if (session == null) return null;
-
             return _mapper.Map<SessionDto>(session);
         }
 
@@ -108,11 +131,33 @@ namespace ReservationService.Data
         {
             var existingSession = _context.Sessions.FirstOrDefault(s => s.sessionId == sessionDto.SessionId);
             if (existingSession == null)
+            {
+                _logger.CreateLog(new LogCreationDto
+                {
+                    Level = LogLevels.Warning,
+                    ServiceName = "ReservationService",
+                    Action = "UpdateSession",
+                    Message = $"Session with ID {sessionDto.SessionId} not found.",
+                    EntityType = "Session",
+                    EntityId = sessionDto.SessionId
+                });
                 throw new KeyNotFoundException($"Session with ID {sessionDto.SessionId} not found.");
+            }
 
             var trainer = _userService.GetUserById(sessionDto.TrainerId);
             if (trainer == null)
+            {
+                _logger.CreateLog(new LogCreationDto
+                {
+                    Level = LogLevels.Error,
+                    ServiceName = "ReservationService",
+                    Action = "UpdateSession",
+                    Message = $"Trainer with ID {sessionDto.TrainerId} not found.",
+                    EntityType = "Session",
+                    EntityId = sessionDto.TrainerId
+                });
                 throw new KeyNotFoundException($"Trainer with ID {sessionDto.TrainerId} not found.");
+            }
 
             existingSession.trainingType = sessionDto.TrainingType;
             existingSession.StartTime = sessionDto.StartTime;
@@ -127,6 +172,16 @@ namespace ReservationService.Data
             }
 
             _context.SaveChanges();
+
+            _logger.CreateLog(new LogCreationDto
+            {
+                Level = LogLevels.Info,
+                ServiceName = "ReservationService",
+                Action = "UpdateSession",
+                Message = $"Session '{existingSession.name}' with ID {sessionDto.SessionId} updated.",
+                EntityType = "Session",
+                EntityId = sessionDto.SessionId
+            });
 
             return new SessionConfirmationDto
             {
@@ -148,6 +203,28 @@ namespace ReservationService.Data
             {
                 _context.Sessions.Remove(session);
                 _context.SaveChanges();
+
+                _logger.CreateLog(new LogCreationDto
+                {
+                    Level = LogLevels.Info,
+                    ServiceName = "ReservationService",
+                    Action = "DeleteSession",
+                    Message = $"Session with ID {id} deleted.",
+                    EntityType = "Session",
+                    EntityId = id
+                });
+            }
+            else
+            {
+                _logger.CreateLog(new LogCreationDto
+                {
+                    Level = LogLevels.Warning,
+                    ServiceName = "ReservationService",
+                    Action = "DeleteSession",
+                    Message = $"Attempted to delete non-existent session with ID {id}.",
+                    EntityType = "Session",
+                    EntityId = id
+                });
             }
         }
     }
