@@ -1,22 +1,11 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight, Clock, User, BookmarkCheck, Users as UsersIcon } from 'lucide-react';
-
-interface Session {
-    sessionId: string;
-    name: string;
-    startTime: string;
-    endTime: string;
-    status: number;
-    trainingType: string;
-    trainerId: string;
-    trainerName: string;
-    maxCapacity?: number;
-    currentCount?: number;
-}
+import type { SessionDto } from '../../types/reservation';
+import { TrainingType } from '../../types/reservation';
 
 interface SessionSchedulerProps {
     title: string;
-    sessions: Session[];
+    sessions: SessionDto[];
     currentWeekStart: Date;
     onWeekChange: (days: number) => void;
 }
@@ -107,7 +96,7 @@ const SessionScheduler: React.FC<SessionSchedulerProps> = ({ title, sessions, cu
                                                 <div className="space-y-1">
                                                     <h4 className="font-black text-amber-950 leading-tight">{session.name}</h4>
                                                     <span className="inline-block px-2 py-0.5 bg-amber-50 text-[10px] font-bold text-amber-600 rounded uppercase tracking-wider">
-                                                        {session.trainingType}
+                                                        {session.trainingType === TrainingType.Personal ? 'Personal' : 'Group'}
                                                     </span>
                                                 </div>
                                                 <div className="text-right">
@@ -128,7 +117,7 @@ const SessionScheduler: React.FC<SessionSchedulerProps> = ({ title, sessions, cu
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-[10px] font-black text-amber-800/30 uppercase tracking-wider">Trainer</span>
-                                                        <span className="text-xs font-bold text-amber-950">{session.trainerName}</span>
+                                                        <span className="text-xs font-bold text-amber-950">{session.trainerId.fullName}</span>
                                                     </div>
                                                 </div>
 
@@ -136,7 +125,7 @@ const SessionScheduler: React.FC<SessionSchedulerProps> = ({ title, sessions, cu
                                                     <div className="flex items-center gap-2 text-right">
                                                         <div className="flex flex-col">
                                                             <span className="text-[10px] font-black text-amber-800/30 uppercase tracking-wider">Capacity</span>
-                                                            <span className="text-xs font-bold text-amber-950">{session.currentCount}/{session.maxCapacity}</span>
+                                                            <span className="text-xs font-bold text-amber-950">{session.maxCapacity}</span>
                                                         </div>
                                                         <UsersIcon className="w-4 h-4 text-amber-300" />
                                                     </div>
@@ -146,10 +135,9 @@ const SessionScheduler: React.FC<SessionSchedulerProps> = ({ title, sessions, cu
                                             <div className="mt-6">
                                                 <button 
                                                     onClick={() => handleBook(session.name)}
-                                                    disabled={session.maxCapacity && session.currentCount ? session.currentCount >= session.maxCapacity : false}
-                                                    className="w-full py-3 bg-amber-600 hover:bg-amber-500 disabled:bg-neutral-100 disabled:text-neutral-400 text-white text-xs font-black rounded-xl transition-all shadow-lg shadow-amber-600/10 flex items-center justify-center gap-2">
+                                                    className="w-full py-3 bg-amber-600 hover:bg-amber-500 text-white text-xs font-black rounded-xl transition-all shadow-lg shadow-amber-600/10 flex items-center justify-center gap-2">
                                                     <BookmarkCheck className="w-4 h-4" /> 
-                                                    {session.maxCapacity && session.currentCount && session.currentCount >= session.maxCapacity ? 'FULLY BOOKED' : 'BOOK SESSION'}
+                                                    BOOK SESSION
                                                 </button>
                                             </div>
                                         </div>

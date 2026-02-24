@@ -31,7 +31,8 @@ const LoginForm = () => {
             dispatch(setCredentials({
                 user: data.user,
                 role: data.role,
-                token: data.token
+                token: data.token,
+                id: data.id
             }));
 
             setMessage({ text: 'Login successful!', type: 'success' });

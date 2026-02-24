@@ -50,6 +50,24 @@ namespace ReservationService.Controllers
 
             return Ok(sessions);
         }
+        
+        [HttpGet("range")]
+        [Authorize(Roles = "Member")]
+        public ActionResult<IEnumerable<SessionDto>> GetSessionsByDateRange(
+            [FromQuery] DateTime from,
+            [FromQuery] DateTime to,
+            [FromQuery] bool? isGroup = null)
+        {
+            if (from > to)
+                return BadRequest("'from' date must be before 'to' date.");
+
+            var sessions = _sessionRepository.GetSessionsByDateRange(from, to, isGroup);
+
+            if (sessions == null || !sessions.Any())
+                return NoContent();
+
+            return Ok(sessions);
+        }
 
         [HttpGet("{id}")]
         public ActionResult<SessionDto> GetSessionById(Guid id)
@@ -121,5 +139,7 @@ namespace ReservationService.Controllers
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
             return Ok();
         }
+        
+        
     }
 }

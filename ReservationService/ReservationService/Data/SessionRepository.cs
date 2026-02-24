@@ -3,6 +3,7 @@ using ReservationService.Context;
 using ReservationService.Models;
 using ReservationService.Models.DTO;
 using ReservationService.Models.DTO.LogDtos;
+using ReservationService.Models.Enums;
 using ReservationService.ServiceCalls.Logger;
 using ReservationService.ServiceCalls.User;
 
@@ -226,6 +227,23 @@ namespace ReservationService.Data
                     EntityId = id
                 });
             }
+        }
+        
+        public IEnumerable<SessionDto> GetSessionsByDateRange(DateTime from, DateTime to, bool? isGroup)
+        {
+            IQueryable<Session> query = _context.Sessions
+                .Where(s => s.StartTime >= from && s.StartTime <= to
+                                                && s.status == SessionStatus.Upcoming);
+
+            if (isGroup.HasValue)
+            {
+                if (isGroup.Value)
+                    query = query.OfType<GroupSession>();
+                else
+                    query = query.OfType<PersonalSession>();
+            }
+
+            return _mapper.Map<IEnumerable<SessionDto>>(query.ToList());
         }
     }
 }

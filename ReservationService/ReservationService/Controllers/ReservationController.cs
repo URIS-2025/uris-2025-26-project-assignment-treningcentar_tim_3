@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReservationService.Data;
 using ReservationService.Models;
@@ -139,6 +140,49 @@ namespace ReservationService.Controllers
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
             return Ok();
+        }
+        
+        /// <summary>
+        /// Vraca sve sesije rezervisane od strane korisnika od pocetka trenutnog mesecas.
+        /// </summary>
+        /// <param name="userId">ID korisnika</param>
+        /// <returns>Lista sesija koje je korisnik rezervisao.</returns>
+        /// <response code="200">Uspesno vraca listu sesija.</response>
+        /// <response code="204">Korisnik nema rezervacija.</response>
+        [HttpGet("user/{userId}")]
+        [Authorize(Roles = "Member")]
+        public ActionResult<IEnumerable<SessionDto>> GetSessionsByUser(Guid userId)
+        {
+            var sessions = _repo.GetSessionsByUserId(userId);
+            if (sessions == null || !sessions.Any())
+                return NoContent();
+            return Ok(sessions);
+        }
+        
+        /// <summary>
+        /// Vraca upcoming sesije korisnika.
+        /// </summary>
+        [HttpGet("user/{userId}/upcoming")]
+        [Authorize(Roles = "Member")]
+        public ActionResult<IEnumerable<SessionDto>> GetUpcomingSessionsByUser(Guid userId)
+        {
+            var sessions = _repo.GetUpcomingSessionsByUserId(userId);
+            if (sessions == null || !sessions.Any())
+                return NoContent();
+            return Ok(sessions);
+        }
+
+        /// <summary>
+        /// Vraca historiju sesija korisnika (Finished i Canceled).
+        /// </summary>
+        [HttpGet("user/{userId}/history")]
+        [Authorize(Roles = "Member")]
+        public ActionResult<IEnumerable<SessionDto>> GetSessionHistoryByUser(Guid userId)
+        {
+            var sessions = _repo.GetSessionHistoryByUserId(userId);
+            if (sessions == null || !sessions.Any())
+                return NoContent();
+            return Ok(sessions);
         }
     }
 }
