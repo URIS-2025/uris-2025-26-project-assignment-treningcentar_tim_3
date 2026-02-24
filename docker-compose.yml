@@ -1,0 +1,194 @@
+services:
+  auth-db:
+    image: postgres:17-alpine
+    container_name: auth-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: AuthDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+
+  auth-service:
+    build:
+      context: ./AuthService/AuthService
+      dockerfile: Dockerfile
+    container_name: auth-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__AuthDb=Host=auth-db;Port=5432;Database=AuthDb;Username=postgres;Password=postgres
+    ports:
+      - "5220:8080"
+    depends_on:
+      - auth-db
+
+  logger-db:
+    image: postgres:17-alpine
+    container_name: logger-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: logger_service_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - logger-db-data:/var/lib/postgresql/data
+
+  logger-service:
+    build:
+      context: ./LoggerService/LoggerService
+      dockerfile: Dockerfile
+    container_name: logger-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=logger-db;Port=5432;Database=logger_service_db;Username=postgres;Password=postgres
+    ports:
+      - "5194:8080"
+    depends_on:
+      - logger-db
+
+  measurment-db:
+    image: postgres:17-alpine
+    container_name: measurment-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: training_center_measurement
+    ports:
+      - "5434:5432"
+    volumes:
+      - measurment-db-data:/var/lib/postgresql/data
+
+  measurment-service:
+    build:
+      context: ./MeasurmentService/MeasurmentService
+      dockerfile: Dockerfile
+    container_name: measurment-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=measurment-db;Port=5432;Database=training_center_measurement;Username=postgres;Password=postgres
+    ports:
+      - "5225:8080"
+    depends_on:
+      - measurment-db
+
+  membership-db:
+    image: postgres:17-alpine
+    container_name: membership-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: membership_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - membership-db-data:/var/lib/postgresql/data
+
+  membership-service:
+    build:
+      context: ./MembershipService/MembershipService
+      dockerfile: Dockerfile
+    container_name: membership-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__MembershipDB=Host=membership-db;Port=5432;Database=membership_db;Username=postgres;Password=postgres
+    ports:
+      - "5118:8080"
+    depends_on:
+      - membership-db
+
+  payment-db:
+    image: postgres:17-alpine
+    container_name: payment-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: payment_db
+    ports:
+      - "5436:5432"
+    volumes:
+      - payment-db-data:/var/lib/postgresql/data
+
+  payment-service:
+    build:
+      context: ./PaymentService/PaymentService
+      dockerfile: Dockerfile
+    container_name: payment-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__PaymentDb=Host=payment-db;Port=5432;Database=payment_db;Username=postgres;Password=postgres
+      # Internal Docker URLs for Service-to-Service communication
+      - Services__LoggerService=http://logger-service:8080/
+      - Services__ServiceService=http://service-service:8080/
+    ports:
+      - "5219:8080"
+    depends_on:
+      - payment-db
+
+  reservation-db:
+    image: postgres:17-alpine
+    container_name: reservation-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ReservationServiceDb
+    ports:
+      - "5437:5432"
+    volumes:
+      - reservation-db-data:/var/lib/postgresql/data
+
+  reservation-service:
+    build:
+      context: ./ReservationService/ReservationService
+      dockerfile: Dockerfile
+    container_name: reservation-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=reservation-db;Port=5432;Database=ReservationServiceDb;Username=postgres;Password=postgres
+    ports:
+      - "5286:8080"
+    depends_on:
+      - reservation-db
+
+  service-db:
+    image: postgres:17-alpine
+    container_name: service-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: service_service_db
+    ports:
+      - "5438:5432"
+    volumes:
+      - service-db-data:/var/lib/postgresql/data
+
+  service-service:
+    build:
+      context: ./ServiceService/ServiceService
+      dockerfile: Dockerfile
+    container_name: service-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=service-db;Port=5432;Database=service_service_db;Username=postgres;Password=postgres
+    ports:
+      - "5079:8080"
+    depends_on:
+      - service-db
+
+volumes:
+  auth-db-data:
+  logger-db-data:
+  measurment-db-data:
+  membership-db-data:
+  payment-db-data:
+  reservation-db-data:
+  service-db-data:
