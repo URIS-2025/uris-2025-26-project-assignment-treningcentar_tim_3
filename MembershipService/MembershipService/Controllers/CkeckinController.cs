@@ -79,4 +79,15 @@ public class CheckinsController : ControllerBase
             return Conflict(ex.Message);
         }
     }
+    
+    // GET: api/checkins/{userId}/current-month
+    [HttpGet("{userId:guid}/current-month")]
+    [Authorize(Roles = "Member")]
+    public ActionResult<IEnumerable<CheckinDto>> GetCurrentMonthCheckins(Guid userId)
+    {
+        var checkins = _checkinRepository.GetCurrentMonthCheckins(userId);
+        if (!checkins.Any())
+            return NoContent();
+        return Ok(checkins);
+    }
 }

@@ -8,4 +8,6 @@ public interface ICheckinRepository
     IEnumerable<CheckinDto> GetCheckinHistory(Guid userId, DateTime? startDate = null, DateTime? endDate = null);
     bool PreventDuplicateCheckinSameDay(Guid userId);
     bool ValidateMembershipForCheckin(Guid userId);
+    
+    IEnumerable<CheckinDto> GetCurrentMonthCheckins(Guid userId);
 }
