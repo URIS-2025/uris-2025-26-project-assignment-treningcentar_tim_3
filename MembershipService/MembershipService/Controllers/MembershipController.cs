@@ -14,11 +14,13 @@ namespace MembershipService.Controllers
     public class MembershipController : ControllerBase
     {
         private readonly IMembershipRepository _repository;
+        private readonly ICheckinRepository _checkinRepository;
         private readonly IMapper _mapper;
 
-        public MembershipController(IMembershipRepository repository, IMapper mapper)
+        public MembershipController(IMembershipRepository repository, ICheckinRepository checkinRepository, IMapper mapper)
         {
             _repository = repository;
+            _checkinRepository = checkinRepository;
             _mapper = mapper;
         }
 
@@ -27,7 +29,7 @@ namespace MembershipService.Controllers
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
                 throw new UnauthorizedAccessException("Invalid or missing user ID in token");
-            
+
             return userId;
         }
 
@@ -56,7 +58,7 @@ namespace MembershipService.Controllers
         {
             var userId = GetUserIdFromClaims();
             dto.UserId = userId;
-            
+
             var membership = _repository.CreateMembership(dto);
             return CreatedAtAction(nameof(GetMembershipById), new { id = membership.MembershipId }, membership);
         }
@@ -67,7 +69,7 @@ namespace MembershipService.Controllers
         {
             var userId = GetUserIdFromClaims();
             dto.UserId = userId;
-            
+
             var updatedMembership = _repository.UpdateMembership(id, dto);
             if (updatedMembership == null)
                 return NotFound();
@@ -114,7 +116,7 @@ namespace MembershipService.Controllers
         {
             try
             {
-                _repository.RecordCheckin(dto.UserId, dto.Timestamp, dto.Location);
+                _checkinRepository.RecordCheckin(dto.UserId, dto.Timestamp, dto.Location);
                 return Ok("Check-in recorded successfully");
             }
             catch (InvalidOperationException ex)
@@ -124,7 +126,7 @@ namespace MembershipService.Controllers
         }
 
         [HttpGet("user/{userId}/status")]
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist,Member")]
         public ActionResult<MembershipDto> GetUserMembershipStatus(Guid userId)
         {
             var membership = _repository.GetUserMembership(userId);

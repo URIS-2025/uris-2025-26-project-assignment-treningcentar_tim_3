@@ -1,7 +1,7 @@
 import type { DecodedToken, LoginDTO, loginResponse, RegisterDTO, Role, UserInfo } from '../types/auth';
 import { jwtDecode } from 'jwt-decode';
 
-const API_BASE_URL = 'http://localhost:5120/api/auth';
+const API_BASE_URL = 'http://localhost:5220/api/auth';
 
 export const authService = {
     async login(dto: LoginDTO) {
@@ -29,6 +29,12 @@ export const authService = {
 
         if (formattedData.token) {
             localStorage.setItem('token', formattedData.token);
+            try {
+                const decoded = jwtDecode<DecodedToken>(formattedData.token);
+                formattedData.id = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] || decoded.nameid || decoded.sub;
+            } catch (err) {
+                console.error("Error decoding token for ID:", err);
+            }
         }
         return formattedData;
     },
@@ -74,7 +80,10 @@ export const authService = {
             const rawRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
             const role = (Array.isArray(rawRole) ? rawRole[0] : rawRole) as Role;
 
+            const id = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] || decoded.nameid || decoded.sub || '';
+
             return {
+                id,
                 fullName,
                 role,
                 isAuthenticated: true

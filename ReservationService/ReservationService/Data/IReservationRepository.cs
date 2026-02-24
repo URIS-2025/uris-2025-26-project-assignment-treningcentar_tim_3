@@ -11,5 +11,9 @@ namespace ReservationService.Data
         ReservationConfirmationDto UpdateReservation(ReservationUpdateDto reservation);
         void DeleteReservation(Guid id);
         bool SaveChanges();
+        IEnumerable<SessionDto> GetSessionsByUserId(Guid userId);
+        
+        IEnumerable<SessionDto> GetUpcomingSessionsByUserId(Guid userId);
+        IEnumerable<SessionDto> GetSessionHistoryByUserId(Guid userId);
     }
 }

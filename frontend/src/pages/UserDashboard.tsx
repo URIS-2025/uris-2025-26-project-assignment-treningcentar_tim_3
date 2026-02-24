@@ -1,10 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, CheckCircle2, Users, User as PersonIcon, TrendingUp } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store';
+import { reservationService } from '../services/reservationService';
+import { TrainingType } from '../types/reservation';
 import dashboardData from '../mock/userDashboardData.json';
 
 const UserDashboard: React.FC = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const token = useSelector((state: RootState) => state.auth.token);
+  
   const [data] = useState(dashboardData);
   const [currentDate] = useState(new Date());
+  
+  const [personalCount, setPersonalCount] = useState(0);
+  const [groupCount, setGroupCount] = useState(0);
+
+  useEffect(() => {
+    if (user?.id && token) {
+      reservationService.getUserReservations(user.id, token)
+        .then(reservations => {
+          if (!reservations) {
+            setPersonalCount(0);
+            setGroupCount(0);
+            return;
+          }
+          const personal = reservations.filter(r => r.trainingType === TrainingType.Personal).length;
+          const group = reservations.filter(r => r.trainingType === TrainingType.Group).length;
+          setPersonalCount(personal);
+          setGroupCount(group);
+        })
+        .catch(err => {
+          console.error("Error fetching reservations:", err);
+          setPersonalCount(0);
+          setGroupCount(0);
+        });
+    }
+  }, [user?.id, token]);
 
   const stats = [
     { 
@@ -16,14 +48,14 @@ const UserDashboard: React.FC = () => {
     },
     { 
       label: 'Personal Sessions', 
-      value: data.stats.personalSessions, 
+      value: personalCount, 
       icon: <PersonIcon className="w-6 h-6 text-blue-500" />, 
       color: 'bg-blue-50',
       trend: '+2 this week'
     },
     { 
       label: 'Group Sessions', 
-      value: data.stats.groupSessions, 
+      value: groupCount, 
       icon: <Users className="w-6 h-6 text-purple-500" />, 
       color: 'bg-purple-50',
       trend: 'On track'
@@ -95,9 +127,9 @@ const UserDashboard: React.FC = () => {
                 <span className="text-4xl font-black text-amber-950">{stat.value}</span>
                 <span className="text-sm font-bold text-amber-800/40 uppercase tracking-wider">{stat.label}</span>
               </div>
-              <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-emerald-600">
-                <TrendingUp className="w-3 h-3" />
-                {stat.trend}
+              <div className="mt-4 flex items-center gap-1.5 text-xs font-bold">
+                
+                This month
               </div>
             </div>
           </div>

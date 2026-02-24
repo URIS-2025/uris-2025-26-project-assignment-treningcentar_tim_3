@@ -46,11 +46,22 @@ builder.Services.AddScoped<ILoggerService, LoggerService>();
 
 // Registracija repozitorijuma
 builder.Services.AddScoped<IMembershipRepository, MembershipRepository>();
+builder.Services.AddScoped<IPackageRepository, PackageRepository>();
+builder.Services.AddScoped<ICheckinRepository, CheckinRepository>();
+
 //Automatsko mapiranje između entiteta i DTO-a
 builder.Services.AddAutoMapper(config => config.AddMaps(typeof(Program).Assembly));
 //DB
 builder.Services.AddDbContext<MembershipContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("MembershipDB")));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
@@ -61,6 +72,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

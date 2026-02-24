@@ -176,5 +176,48 @@ namespace ReservationService.Data
                 });
             }
         }
+        
+        public IEnumerable<SessionDto> GetSessionsByUserId(Guid userId)
+        {
+            var sessionIds = _context.Reservations
+                .Where(r => r.userId == userId)
+                .Select(r => r.sessionId)
+                .ToList();
+
+            var sessions = _context.Sessions
+                .Where(s => sessionIds.Contains(s.sessionId))
+                .ToList();
+
+            return _mapper.Map<IEnumerable<SessionDto>>(sessions);
+        }
+        
+        public IEnumerable<SessionDto> GetUpcomingSessionsByUserId(Guid userId)
+        {
+            var sessionIds = _context.Reservations
+                .Where(r => r.userId == userId)
+                .Select(r => r.sessionId)
+                .ToList();
+
+            var sessions = _context.Sessions
+                .Where(s => sessionIds.Contains(s.sessionId) && s.status == SessionStatus.Upcoming)
+                .ToList();
+
+            return _mapper.Map<IEnumerable<SessionDto>>(sessions);
+        }
+
+        public IEnumerable<SessionDto> GetSessionHistoryByUserId(Guid userId)
+        {
+            var sessionIds = _context.Reservations
+                .Where(r => r.userId == userId)
+                .Select(r => r.sessionId)
+                .ToList();
+
+            var sessions = _context.Sessions
+                .Where(s => sessionIds.Contains(s.sessionId) && 
+                            (s.status == SessionStatus.Finished || s.status == SessionStatus.Canceled))
+                .ToList();
+
+            return _mapper.Map<IEnumerable<SessionDto>>(sessions);
+        }
     }
 }
