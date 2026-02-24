@@ -70,9 +70,9 @@ namespace ReservationService.Controllers
                 var newSession = _sessionRepository.AddSession(sessionDto);
                 return Created(nameof(GetSessionById), newSession);
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { error = ex.Message });
             }
         }
 
@@ -89,9 +89,9 @@ namespace ReservationService.Controllers
                 var updatedSession = _sessionRepository.UpdateSession(sessionDto);
                 return Ok(updatedSession);
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { error = ex.Message });
             }
         }
 

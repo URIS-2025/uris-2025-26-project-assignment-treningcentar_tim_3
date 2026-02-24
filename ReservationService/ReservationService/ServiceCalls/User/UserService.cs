@@ -16,8 +16,9 @@ public class UserService : IUserService
     {
         using (HttpClient client = new HttpClient())
         {
-            var x = _configuration["Services:AuthService"];
-            Uri url = new Uri($"{_configuration["Services:AuthService"]}api/student/{id}");
+            // Inside the Docker network, use the internal docker hostname and port instead of localhost externally
+            var authServiceUrl = _configuration["Services:AuthService"]?.Replace("localhost:5120", "auth-service:8080");
+            Uri url = new Uri($"{authServiceUrl}/api/auth/{id}");
 
             var response = client.GetAsync(url).Result;
             if (!response.IsSuccessStatusCode)

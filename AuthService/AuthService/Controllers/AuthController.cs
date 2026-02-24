@@ -80,6 +80,24 @@ namespace AuthService.Controllers
 
             return Ok($"Role of {user.Username} updated to {dto.NewRole}");
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(Guid id)
+        {
+            var user = await _repository.GetUserByIdAsync(id);
+            if (user == null)
+                return NotFound("User not found");
+
+            return Ok(new
+            {
+                user.Id,
+                user.Username,
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Role
+            });
+        }
     }
 
 }

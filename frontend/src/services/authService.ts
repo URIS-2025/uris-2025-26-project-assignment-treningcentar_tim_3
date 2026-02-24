@@ -67,6 +67,7 @@ export const authService = {
         if (!token) return null;
         try {
             const decoded = jwtDecode<DecodedToken>(token);
+            const id = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] || decoded.sub || decoded.nameid || '';
             const firstName = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"] || decoded.firstName || '';
             const lastName = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"] || decoded.lastName || '';
             const fullName = firstName && lastName ? `${firstName} ${lastName}` : (decoded.unique_name || 'User');
@@ -75,6 +76,7 @@ export const authService = {
             const role = (Array.isArray(rawRole) ? rawRole[0] : rawRole) as Role;
 
             return {
+                id,
                 fullName,
                 role,
                 isAuthenticated: true
