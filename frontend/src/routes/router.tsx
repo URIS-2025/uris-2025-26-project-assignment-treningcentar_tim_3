@@ -3,8 +3,11 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import App from '../App';
 import ProtectedRoute from './ProtectedRoute';
-import UserDashboard from '../components/Dashboards/UserDashboard';
 import { Role } from '../types/auth';
+import UserDashboard from '../pages/UserDashboard';
+import Membership from '../pages/Membership';
+import Services from '../pages/Services';
+import Sessions from '../pages/Sessions';
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +32,18 @@ export const router = createBrowserRouter([
                     {
                         path: 'dashboard',
                         element: <UserDashboard />,
+                    },
+                    {
+                        path: 'membership',
+                        element: <Membership />,
+                    },
+                    {
+                        path: 'services',
+                        element: <Services />,
+                    },
+                    {
+                        path: 'sessions',
+                        element: <Sessions />,
                     }
                 ]
             }
