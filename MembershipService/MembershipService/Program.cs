@@ -52,6 +52,7 @@ builder.Services.AddAutoMapper(config => config.AddMaps(typeof(Program).Assembly
 builder.Services.AddDbContext<MembershipContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("MembershipDB")));
 
+builder.Services.AddCors();
 var app = builder.Build();
 
 
@@ -62,7 +63,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(policy =>
+    policy.WithOrigins("http://localhost:5173")
+          .AllowAnyHeader()
+          .AllowAnyMethod());
 app.UseAuthentication();
 app.UseAuthorization();
 

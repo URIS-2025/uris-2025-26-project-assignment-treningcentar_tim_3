@@ -26,7 +26,7 @@ const LoginForm = () => {
 
         try {
             const data = await authService.login(formData);
-            
+
             // Dispatch to Redux store for immediate UI updates
             dispatch(setCredentials({
                 user: data.user,
@@ -35,10 +35,12 @@ const LoginForm = () => {
             }));
 
             setMessage({ text: 'Login successful!', type: 'success' });
-            
+
             // Navigate based on role (Member goes to dashboard)
             setTimeout(() => {
-                if (data.role === Role.Member) {
+                if (data.role === Role.Admin) {
+                    navigate('/admin');
+                } else if (data.role === Role.Member) {
                     navigate('/dashboard');
                 } else {
                     navigate('/');
@@ -54,7 +56,7 @@ const LoginForm = () => {
             <div className="relative p-1 rounded-[2rem] bg-gradient-to-b from-amber-200/50 to-orange-300/30 shadow-2xl backdrop-blur-xl">
                 <div className="bg-white/90 backdrop-blur-md rounded-[1.8rem] p-10 border border-white/50 shadow-inner">
                     <div className="mb-10 text-center relative">
-                        
+
                         <h2 className="text-3xl font-black text-amber-950 mb-3 tracking-tight">Welcome Back</h2>
                         <p className="text-amber-800/60 font-medium">Elevate your training experience</p>
                     </div>
@@ -63,7 +65,7 @@ const LoginForm = () => {
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-amber-900 uppercase tracking-widest ml-1">Username</label>
                             <div className="relative group">
-                                
+
                                 <input
                                     type="text"
                                     name="username"
@@ -82,7 +84,7 @@ const LoginForm = () => {
                                 {/* <a href="#" className="text-xs font-semibold text-amber-600 hover:text-amber-500 transition-colors">Forgot?</a> */}
                             </div>
                             <div className="relative group">
-                               
+
                                 <input
                                     type="password"
                                     name="password"
@@ -96,9 +98,8 @@ const LoginForm = () => {
                         </div>
 
                         {message && (
-                            <div className={`p-4 rounded-2xl text-sm font-semibold flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300 ${
-                                message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-rose-50 text-rose-700 border border-rose-100'
-                            }`}>
+                            <div className={`p-4 rounded-2xl text-sm font-semibold flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300 ${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-rose-50 text-rose-700 border border-rose-100'
+                                }`}>
                                 <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-white/50">
                                     {message.type === 'success' ? '✓' : '!'}
                                 </span>

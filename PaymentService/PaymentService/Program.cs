@@ -84,6 +84,7 @@ var mapperConfig = new MapperConfiguration(cfg =>
 });
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
+builder.Services.AddCors();
 var app = builder.Build();
 
 // Konfiguracija HTTP zahteva 
@@ -93,7 +94,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(policy =>
+    policy.WithOrigins("http://localhost:5173")
+          .AllowAnyHeader()
+          .AllowAnyMethod());
 app.UseAuthentication();
 app.UseAuthorization();
 

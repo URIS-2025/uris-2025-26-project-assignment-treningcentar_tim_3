@@ -16,9 +16,11 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<ReservationContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Registracija repository-ja
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IUserService, UserService>(); 
+
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -29,7 +31,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(policy =>
+    policy.WithOrigins("http://localhost:5173")
+          .AllowAnyHeader()
+          .AllowAnyMethod());
 app.UseAuthorization();
 
 app.MapControllers(); 

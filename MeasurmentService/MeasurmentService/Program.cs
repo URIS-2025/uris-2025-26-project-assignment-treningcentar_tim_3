@@ -85,6 +85,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddCors();
 var app = builder.Build();
 Console.WriteLine("LOGGER URL = " + builder.Configuration["Services:LoggerServiceBaseUrl"]);
 
@@ -95,8 +96,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
+app.UseCors(policy =>
+    policy.WithOrigins("http://localhost:5173")
+          .AllowAnyHeader()
+          .AllowAnyMethod());
 app.UseAuthentication();
 
 app.UseAuthorization();
