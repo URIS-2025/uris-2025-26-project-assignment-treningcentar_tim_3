@@ -34,6 +34,12 @@ const Header: React.FC = () => {
             <nav className="flex items-center gap-4 md:gap-8">
                 {user ? (
                     <div className="flex items-center gap-4">
+                        <div className="hidden lg:flex items-center gap-6 mr-4 border-r border-amber-50 pr-8">
+                            <a href="/dashboard" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Dashboard</a>
+                            <a href="/membership" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Membership</a>
+                            <a href="/services" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Services</a>
+                            <a href="/sessions" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Sessions</a>
+                        </div>
                         <div className="hidden md:flex flex-col items-end">
                             <span className="text-sm font-bold text-amber-950">
                                 {user.fullName}

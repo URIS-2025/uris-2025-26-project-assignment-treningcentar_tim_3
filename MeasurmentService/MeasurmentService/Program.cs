@@ -26,6 +26,11 @@ builder.Services.AddHttpClient("ServiceService", client =>
 });
 
 builder.Services.AddScoped<MeasurmentService.Clients.ServiceServiceClient>();
+builder.Services.AddHttpClient("LoggerService", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Services:LoggerServiceBaseUrl"]!);
+});
+builder.Services.AddScoped<MeasurmentService.Clients.LoggerServiceClient>();
 builder.Services.AddDbContext<MeasurementContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IMeasurementAppointmentRepository, MeasurementAppointmentRepository>();
@@ -81,6 +86,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddAuthorization();
 var app = builder.Build();
+Console.WriteLine("LOGGER URL = " + builder.Configuration["Services:LoggerServiceBaseUrl"]);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

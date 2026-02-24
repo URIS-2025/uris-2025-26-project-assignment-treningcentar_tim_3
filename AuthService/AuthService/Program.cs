@@ -1,6 +1,7 @@
 using AuthService.Data;
 using AuthService.Data.Auth;
 using AuthService.Repositories;
+using AuthService.ServiceCalls.Logger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthHelper, AuthHelper>();
+builder.Services.AddScoped<IServiceLogger, ServiceLogger>();
 
 
 builder.Services.AddControllers();
@@ -138,6 +140,10 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod());
 });
 
+builder.Services.AddHttpClient("LoggerService", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5194/");
+});
 
 
 var app = builder.Build();

@@ -5,6 +5,7 @@ using MembershipService.Models;
 using MembershipService.Models.Enums;
 using MembershipService.Models.DTO;
 using MembershipService.ServiceCalls.Auth;
+using MembershipService.ServiceCalls.Logger;
 
 namespace MembershipService.Data;
 
@@ -13,12 +14,14 @@ public class MembershipRepository : IMembershipRepository
     private readonly MembershipContext _context;
     private readonly IMapper _mapper;
     private readonly IAuthService _authService;
+    private readonly ILoggerService _loggerService;
 
-    public MembershipRepository(MembershipContext context, IMapper mapper, IAuthService authService)
+    public MembershipRepository(MembershipContext context, IMapper mapper, IAuthService authService, ILoggerService loggerService)
     {
         _context = context;
         _mapper = mapper;
         _authService = authService;
+        _loggerService = loggerService;
     }
 
     public bool SaveChanges()
@@ -45,11 +48,13 @@ public class MembershipRepository : IMembershipRepository
         // Verify user exists in AuthService
         if (!_authService.UserExists(dto.UserId))
         {
+            await _loggerService.LogErrorAsync("CreateMembership", $"User {dto.UserId} not found in AuthService.", dto.UserId);
             throw new InvalidOperationException($"User {dto.UserId} not found in AuthService.");
         }
 
         if (_context.Memberships.Any(m => m.UserId == dto.UserId && m.Status == MembershipStatus.Active))
         {
+            await _loggerService.LogWarningAsync("CreateMembership", $"User {dto.UserId} already has an active membership.", dto.UserId);
             throw new InvalidOperationException("User already has an active membership.");
         }
         
@@ -66,7 +71,9 @@ public class MembershipRepository : IMembershipRepository
         _context.Memberships.Add(membership);
         await _context.SaveChangesAsync();
 
-        
+        await _loggerService.LogInfoAsync("CreateMembership", $"Membership created successfully", membership.MembershipId, 
+            $"User: {dto.UserId}, Package: {dto.PackageId}, Status: Active");
+
         return _mapper.Map<MembershipDto>(membership);
     }
 
@@ -223,12 +230,18 @@ public class MembershipRepository : IMembershipRepository
     {
         var membership = _context.Memberships.FirstOrDefault(m => m.UserId == userId && m.Status == MembershipStatus.Active);
         if (membership == null)
+        {
+            _loggerService.LogErrorAsync("RecordCheckin", $"User {userId} does not have an active membership.", userId).GetAwaiter().GetResult();
             throw new InvalidOperationException("User does not have an active membership.");
+        }
 
         var todayCheckin = _context.Checkins.Any(c => c.MembershipId == membership.MembershipId && 
             c.Timestamp.Date == timestamp.Date);
         if (todayCheckin)
+        {
+            _loggerService.LogWarningAsync("RecordCheckin", $"User {userId} already checked in today.", userId).GetAwaiter().GetResult();
             throw new InvalidOperationException("User has already checked in today.");
+        }
 
         var checkin = new Checkin
         {
@@ -240,6 +253,10 @@ public class MembershipRepository : IMembershipRepository
 
         _context.Checkins.Add(checkin);
         _context.SaveChanges();
+        
+        // Log checkin (fire and forget)
+        _ = _loggerService.LogInfoAsync("RecordCheckin", $"Check-in recorded", userId, 
+            $"Location: {location}, Membership: {membership.MembershipId}");
     }
 
     public IEnumerable<CheckinDto> GetCheckinHistory(Guid userId, DateTime? startDate = null, DateTime? endDate = null)
