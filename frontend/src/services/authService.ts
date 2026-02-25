@@ -81,8 +81,6 @@ export const authService = {
             const rawRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
             const role = (Array.isArray(rawRole) ? rawRole[0] : rawRole) as Role;
 
-            const id = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] || decoded.nameid || decoded.sub || '';
-
             return {
                 id,
                 fullName,
