@@ -1,6 +1,7 @@
 using AutoMapper;
 using ReservationService.Models;
 using ReservationService.Models.DTO;
+using ReservationService.Models.DTO.MemberDtos;
 
 namespace ReservationService.Profiles
 {
@@ -16,7 +17,7 @@ namespace ReservationService.Profiles
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.status))
                 .ForMember(dest => dest.TrainingType, opt => opt.MapFrom(src => src.trainingType))
-                .ForMember(dest => dest.TrainerId, opt => opt.MapFrom(src => src.trainerId))
+                .ForMember(dest => dest.TrainerId, opt => opt.MapFrom(src => new TrainerDto { Id = src.trainerId }))
                 .ForMember(dest => dest.MaxCapacity, opt => opt.Ignore())
                 .ForMember(dest => dest.HallId, opt => opt.Ignore());
 
@@ -36,7 +37,7 @@ namespace ReservationService.Profiles
                 .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.status, opt => opt.MapFrom(src => src.Status))
                 .ForMember(dest => dest.trainingType, opt => opt.MapFrom(src => src.TrainingType))
-                .ForMember(dest => dest.trainerId, opt => opt.MapFrom(src => src.TrainerId))
+                .ForMember(dest => dest.trainerId, opt => opt.MapFrom(src => src.TrainerId != null ? src.TrainerId.Id : Guid.Empty))
                 .ForMember(dest => dest.maxCapacity, opt => opt.MapFrom(src => src.MaxCapacity ?? 0))
                 .ForMember(dest => dest.hallId, opt => opt.MapFrom(src => src.HallId ?? 0));
 
@@ -45,8 +46,7 @@ namespace ReservationService.Profiles
                 .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.status, opt => opt.MapFrom(src => src.Status))
                 .ForMember(dest => dest.trainingType, opt => opt.MapFrom(src => src.TrainingType))
-                .ForMember(dest => dest.trainerId, opt => opt.MapFrom(src => src.TrainerId));
-
+                .ForMember(dest => dest.trainerId, opt => opt.MapFrom(src => src.TrainerId != null ? src.TrainerId.Id : Guid.Empty));
         }
     }
 }

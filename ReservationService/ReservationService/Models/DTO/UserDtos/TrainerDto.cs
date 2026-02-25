@@ -2,6 +2,7 @@ namespace ReservationService.Models.DTO.MemberDtos;
 
 public class TrainerDto
 {
+    public Guid Id { get; set; }
     public string FirstName { get; set; }
 
     public string LastName { get; set; }

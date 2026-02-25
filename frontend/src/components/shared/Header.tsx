@@ -28,17 +28,27 @@ const Header: React.FC = () => {
                     </span>
                 </div>
             </div>
-            
+
             <div className="flex-1"></div>
 
             <nav className="flex items-center gap-4 md:gap-8">
                 {user ? (
                     <div className="flex items-center gap-4">
                         <div className="hidden lg:flex items-center gap-6 mr-4 border-r border-amber-50 pr-8">
-                            <a href="/dashboard" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Dashboard</a>
-                            <a href="/membership" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Membership</a>
-                            <a href="/services" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Services</a>
-                            <a href="/sessions" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Sessions</a>
+                            {user.role === 'Trainer' ? (
+                                <>
+                                    <a href="/trainer-dashboard" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Dashboard</a>
+                                    <a href="/trainer-sessions" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">My Sessions</a>
+                                    <a href="/trainer-measurements" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Client Measurements</a>
+                                </>
+                            ) : (
+                                <>
+                                    <a href="/dashboard" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Dashboard</a>
+                                    <a href="/membership" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Membership</a>
+                                    <a href="/services" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Services</a>
+                                    <a href="/sessions" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Sessions</a>
+                                </>
+                            )}
                         </div>
                         <div className="hidden md:flex flex-col items-end">
                             <span className="text-sm font-bold text-amber-950">
@@ -52,7 +62,7 @@ const Header: React.FC = () => {
                             <User className="w-5 h-5 text-amber-600" />
                             <div className="absolute top-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></div>
                         </div>
-                        <button 
+                        <button
                             onClick={handleLogout}
                             className="p-2.5 text-amber-900/40 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"
                             title="Logout"
