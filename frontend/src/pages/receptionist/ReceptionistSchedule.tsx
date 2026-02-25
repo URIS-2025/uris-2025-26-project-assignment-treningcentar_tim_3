@@ -70,7 +70,7 @@ const ReceptionistSchedule: React.FC = () => {
     // ── Search members ──
     useEffect(() => {
         if (!memberSearch.trim()) {
-            setFilteredMembers([]);
+            setFilteredMembers(members.slice(0, 20));
             return;
         }
         const q = memberSearch.toLowerCase();
@@ -151,10 +151,16 @@ const ReceptionistSchedule: React.FC = () => {
             });
 
             // 2. Create reservation for the member
-            await receptionistService.createReservation({
-                userId: selectedMemberId,
-                sessionId: session.sessionId,
-            });
+            if (session.sessionId) {
+                try {
+                    await receptionistService.createReservation({
+                        userId: selectedMemberId,
+                        sessionId: session.sessionId,
+                    });
+                } catch (reservationErr) {
+                    console.warn('Reservation creation failed:', reservationErr);
+                }
+            }
 
             // Refresh sessions
             const updatedSessions = await receptionistService.getAllSessions();
@@ -220,10 +226,10 @@ const ReceptionistSchedule: React.FC = () => {
                     className={`relative h-10 rounded-lg text-xs font-bold transition-all duration-150 ${isSelected
                         ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/30'
                         : isToday
-                            ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                            ? 'bg-amber-500/10 text-amber-600 border border-amber-200'
                             : isPast
-                                ? 'text-neutral-700 cursor-not-allowed'
-                                : 'text-neutral-300 hover:bg-white/5'
+                                ? 'text-neutral-300 cursor-not-allowed'
+                                : 'text-neutral-700 hover:bg-neutral-100'
                         }`}
                 >
                     {day}
@@ -245,8 +251,8 @@ const ReceptionistSchedule: React.FC = () => {
             {toast && (
                 <div
                     className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-xl text-sm font-semibold shadow-2xl ${toast.type === 'success'
-                        ? 'bg-emerald-500/20 border border-emerald-500/30 text-emerald-400'
-                        : 'bg-rose-500/20 border border-rose-500/30 text-rose-400'
+                        ? 'bg-emerald-50 border border-emerald-200 text-emerald-700'
+                        : 'bg-rose-50 border border-rose-200 text-rose-700'
                         }`}
                 >
                     {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
@@ -257,11 +263,11 @@ const ReceptionistSchedule: React.FC = () => {
 
             {/* Header */}
             <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-purple-500/10">
-                    <CalendarPlus className="w-6 h-6 text-purple-400" />
+                <div className="p-2.5 rounded-xl bg-purple-50">
+                    <CalendarPlus className="w-6 h-6 text-purple-500" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-black text-white">Schedule Personal Training</h1>
+                    <h1 className="text-2xl font-black text-neutral-900">Schedule Personal Training</h1>
                     <p className="text-neutral-500 text-sm">Book a personal session for a member with a trainer</p>
                 </div>
             </div>
@@ -275,7 +281,7 @@ const ReceptionistSchedule: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                     {/* Left: Scheduling Form */}
                     <div className="lg:col-span-3 space-y-6">
-                        <div className="bg-neutral-900 border border-white/5 rounded-2xl p-6 space-y-5">
+                        <div className="bg-white border border-neutral-200 rounded-2xl p-6 space-y-5 shadow-sm">
                             {/* Member Search */}
                             <div>
                                 <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
@@ -283,10 +289,10 @@ const ReceptionistSchedule: React.FC = () => {
                                     Select Member
                                 </label>
                                 <div className="relative">
-                                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                                     <input
                                         type="text"
-                                        className="w-full bg-neutral-800 border border-white/5 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
+                                        className="w-full bg-neutral-100 border border-neutral-200 rounded-xl pl-10 pr-4 py-3 text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:border-amber-500 transition-colors"
                                         placeholder="Search members..."
                                         value={memberSearch}
                                         onChange={(e) => {
@@ -296,7 +302,7 @@ const ReceptionistSchedule: React.FC = () => {
                                         onFocus={() => setShowMemberDropdown(true)}
                                     />
                                     {showMemberDropdown && filteredMembers.length > 0 && (
-                                        <div className="absolute top-full mt-1 left-0 right-0 bg-neutral-800 border border-white/5 rounded-xl overflow-hidden z-20 max-h-48 overflow-y-auto">
+                                        <div className="absolute top-full mt-1 left-0 right-0 bg-white border border-neutral-200 rounded-xl overflow-hidden z-20 max-h-48 overflow-y-auto shadow-lg">
                                             {filteredMembers.map((m) => (
                                                 <button
                                                     key={m.id}
@@ -305,12 +311,12 @@ const ReceptionistSchedule: React.FC = () => {
                                                         setMemberSearch(`${m.firstName} ${m.lastName}`);
                                                         setShowMemberDropdown(false);
                                                     }}
-                                                    className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/5 transition-colors text-left text-sm"
+                                                    className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-neutral-100 transition-colors text-left text-sm"
                                                 >
-                                                    <div className="w-7 h-7 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-                                                        <span className="text-[10px] font-black text-amber-400">{m.firstName?.charAt(0)}</span>
+                                                    <div className="w-7 h-7 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                                                        <span className="text-[10px] font-black text-amber-600">{m.firstName?.charAt(0)}</span>
                                                     </div>
-                                                    <span className="text-white font-semibold">{m.firstName} {m.lastName}</span>
+                                                    <span className="text-neutral-900 font-semibold">{m.firstName} {m.lastName}</span>
                                                     <span className="text-neutral-500 text-xs ml-auto">@{m.username}</span>
                                                 </button>
                                             ))}
@@ -334,7 +340,7 @@ const ReceptionistSchedule: React.FC = () => {
                                 <select
                                     value={selectedTrainerId}
                                     onChange={(e) => setSelectedTrainerId(e.target.value)}
-                                    className="w-full bg-neutral-800 border border-white/5 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-500 transition-colors appearance-none"
+                                    className="w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-3 text-neutral-900 text-sm focus:outline-none focus:border-amber-500 transition-colors appearance-none"
                                 >
                                     <option value="">Choose a trainer...</option>
                                     {trainers.map((t) => (
@@ -355,7 +361,7 @@ const ReceptionistSchedule: React.FC = () => {
                                     type="text"
                                     value={sessionName}
                                     onChange={(e) => setSessionName(e.target.value)}
-                                    className="w-full bg-neutral-800 border border-white/5 rounded-xl px-4 py-3 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
+                                    className="w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-3 text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:border-amber-500 transition-colors"
                                     placeholder="e.g. Personal Training"
                                 />
                             </div>
@@ -372,7 +378,7 @@ const ReceptionistSchedule: React.FC = () => {
                                         value={sessionDate}
                                         onChange={(e) => setSessionDate(e.target.value)}
                                         min={new Date().toISOString().split('T')[0]}
-                                        className="w-full bg-neutral-800 border border-white/5 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                                        className="w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-3 text-neutral-900 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                                     />
                                 </div>
                                 <div>
@@ -384,7 +390,7 @@ const ReceptionistSchedule: React.FC = () => {
                                         type="time"
                                         value={startTime}
                                         onChange={(e) => setStartTime(e.target.value)}
-                                        className="w-full bg-neutral-800 border border-white/5 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                                        className="w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-3 text-neutral-900 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                                     />
                                 </div>
                                 <div>
@@ -396,7 +402,7 @@ const ReceptionistSchedule: React.FC = () => {
                                         type="time"
                                         value={endTime}
                                         onChange={(e) => setEndTime(e.target.value)}
-                                        className="w-full bg-neutral-800 border border-white/5 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                                        className="w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-3 text-neutral-900 text-sm focus:outline-none focus:border-amber-500 transition-colors"
                                     />
                                 </div>
                             </div>
@@ -426,7 +432,7 @@ const ReceptionistSchedule: React.FC = () => {
                                     </h3>
                                     <button
                                         onClick={() => setConfirmationDetails(null)}
-                                        className="text-neutral-500 hover:text-white transition-colors"
+                                        className="text-neutral-400 hover:text-neutral-700 transition-colors"
                                     >
                                         <X className="w-4 h-4" />
                                     </button>
@@ -434,19 +440,19 @@ const ReceptionistSchedule: React.FC = () => {
                                 <div className="grid grid-cols-2 gap-4 text-sm">
                                     <div>
                                         <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Member</p>
-                                        <p className="text-white font-semibold">{confirmationDetails.member}</p>
+                                        <p className="text-neutral-900 font-semibold">{confirmationDetails.member}</p>
                                     </div>
                                     <div>
                                         <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Trainer</p>
-                                        <p className="text-white font-semibold">{confirmationDetails.trainer}</p>
+                                        <p className="text-neutral-900 font-semibold">{confirmationDetails.trainer}</p>
                                     </div>
                                     <div>
                                         <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Date</p>
-                                        <p className="text-white font-semibold">{confirmationDetails.date}</p>
+                                        <p className="text-neutral-900 font-semibold">{confirmationDetails.date}</p>
                                     </div>
                                     <div>
                                         <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Time</p>
-                                        <p className="text-white font-semibold">{confirmationDetails.time}</p>
+                                        <p className="text-neutral-900 font-semibold">{confirmationDetails.time}</p>
                                     </div>
                                 </div>
                                 <p className="text-[11px] text-neutral-600 mt-4">Scheduled by receptionist · {new Date().toLocaleString()}</p>
@@ -456,22 +462,22 @@ const ReceptionistSchedule: React.FC = () => {
 
                     {/* Right: Visual Calendar */}
                     <div className="lg:col-span-2">
-                        <div className="bg-neutral-900 border border-white/5 rounded-2xl p-6">
+                        <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm">
                             {/* Calendar Header */}
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-white font-bold text-sm">
+                                <h2 className="text-neutral-900 font-bold text-sm">
                                     {calendarMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                                 </h2>
                                 <div className="flex items-center gap-1">
                                     <button
                                         onClick={() => navigateMonth(-1)}
-                                        className="p-1.5 rounded-lg hover:bg-white/5 text-neutral-400 hover:text-white transition-colors"
+                                        className="p-1.5 rounded-lg hover:bg-neutral-100 text-neutral-400 hover:text-neutral-900 transition-colors"
                                     >
                                         <ChevronLeft className="w-4 h-4" />
                                     </button>
                                     <button
                                         onClick={() => navigateMonth(1)}
-                                        className="p-1.5 rounded-lg hover:bg-white/5 text-neutral-400 hover:text-white transition-colors"
+                                        className="p-1.5 rounded-lg hover:bg-neutral-100 text-neutral-400 hover:text-neutral-900 transition-colors"
                                     >
                                         <ChevronRight className="w-4 h-4" />
                                     </button>
@@ -494,7 +500,7 @@ const ReceptionistSchedule: React.FC = () => {
 
                             {/* Sessions on selected date */}
                             {selectedCalDate && (
-                                <div className="mt-4 pt-4 border-t border-white/5">
+                                <div className="mt-4 pt-4 border-t border-neutral-200">
                                     <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3">
                                         Sessions on {selectedCalDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                                     </h3>
@@ -505,11 +511,11 @@ const ReceptionistSchedule: React.FC = () => {
                                             {getSessionsForDate(selectedCalDate).map((s) => (
                                                 <div
                                                     key={s.sessionId}
-                                                    className="flex items-center gap-2 p-2.5 bg-neutral-800 rounded-lg text-xs"
+                                                    className="flex items-center gap-2 p-2.5 bg-neutral-50 rounded-lg text-xs"
                                                 >
                                                     <div className="w-1.5 h-6 rounded-full bg-blue-400 flex-shrink-0" />
                                                     <div>
-                                                        <p className="text-white font-semibold">{s.name}</p>
+                                                        <p className="text-neutral-900 font-semibold">{s.name}</p>
                                                         <p className="text-neutral-500">
                                                             {new Date(s.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                             {' — '}

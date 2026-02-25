@@ -41,7 +41,7 @@ const ReceptionistCheckIn: React.FC = () => {
     // ── Search / filter ──
     useEffect(() => {
         if (!searchQuery.trim()) {
-            setFilteredMembers([]);
+            setFilteredMembers(members.slice(0, 20));
             return;
         }
         setSearchLoading(true);
@@ -123,8 +123,8 @@ const ReceptionistCheckIn: React.FC = () => {
             {toast && (
                 <div
                     className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-xl text-sm font-semibold shadow-2xl transition-all duration-300 animate-in slide-in-from-right ${toast.type === 'success'
-                        ? 'bg-emerald-500/20 border border-emerald-500/30 text-emerald-400'
-                        : 'bg-rose-500/20 border border-rose-500/30 text-rose-400'
+                        ? 'bg-emerald-50 border border-emerald-200 text-emerald-700'
+                        : 'bg-rose-50 border border-rose-200 text-rose-700'
                         }`}
                 >
                     {toast.type === 'success' ? (
@@ -141,11 +141,11 @@ const ReceptionistCheckIn: React.FC = () => {
 
             {/* Page Header */}
             <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-blue-500/10">
-                    <ClipboardCheck className="w-6 h-6 text-blue-400" />
+                <div className="p-2.5 rounded-xl bg-blue-50">
+                    <ClipboardCheck className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-black text-white">Check-In Management</h1>
+                    <h1 className="text-2xl font-black text-neutral-900">Check-In Management</h1>
                     <p className="text-neutral-500 text-sm">Manual check-in registration for members</p>
                 </div>
             </div>
@@ -154,41 +154,41 @@ const ReceptionistCheckIn: React.FC = () => {
                 {/* Left: Search & Check-In Form */}
                 <div className="lg:col-span-3 space-y-6">
                     {/* Search */}
-                    <div className="bg-neutral-900 border border-white/5 rounded-2xl p-6">
-                        <h2 className="text-white font-bold mb-4 flex items-center gap-2">
-                            <Search className="w-4 h-4 text-amber-400" />
+                    <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm">
+                        <h2 className="text-neutral-900 font-bold mb-4 flex items-center gap-2">
+                            <Search className="w-4 h-4 text-amber-600" />
                             Find Member
                         </h2>
                         <div className="relative">
-                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                             <input
                                 type="text"
-                                className="w-full bg-neutral-800 border border-white/5 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
+                                className="w-full bg-neutral-100 border border-neutral-200 rounded-xl pl-10 pr-4 py-3 text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:border-amber-500 transition-colors"
                                 placeholder="Search by name, username, or member ID..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                             {searchLoading && (
-                                <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-400 animate-spin" />
+                                <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-600 animate-spin" />
                             )}
                         </div>
 
                         {/* Search Results */}
                         {filteredMembers.length > 0 && (
-                            <div className="mt-3 bg-neutral-800 border border-white/5 rounded-xl overflow-hidden max-h-60 overflow-y-auto">
+                            <div className="mt-3 bg-white border border-neutral-200 rounded-xl overflow-hidden max-h-60 overflow-y-auto shadow-lg">
                                 {filteredMembers.map((m) => (
                                     <button
                                         key={m.id}
                                         onClick={() => selectMember(m)}
-                                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors text-left border-b border-white/3 last:border-b-0"
+                                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-neutral-100 transition-colors text-left border-b border-neutral-100 last:border-b-0"
                                     >
-                                        <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-                                            <span className="text-xs font-black text-amber-400">
+                                        <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                                            <span className="text-xs font-black text-amber-600">
                                                 {m.firstName?.charAt(0)?.toUpperCase() || '?'}
                                             </span>
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-white">
+                                            <p className="text-sm font-semibold text-neutral-900">
                                                 {m.firstName} {m.lastName}
                                             </p>
                                             <p className="text-xs text-neutral-500">@{m.username} · {m.role}</p>
@@ -208,10 +208,10 @@ const ReceptionistCheckIn: React.FC = () => {
 
                     {/* Selected Member & Check-In Form */}
                     {selectedMember && (
-                        <div className="bg-neutral-900 border border-white/5 rounded-2xl p-6 space-y-5">
+                        <div className="bg-white border border-neutral-200 rounded-2xl p-6 space-y-5 shadow-sm">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-white font-bold flex items-center gap-2">
-                                    <UserCheck className="w-4 h-4 text-emerald-400" />
+                                <h2 className="text-neutral-900 font-bold flex items-center gap-2">
+                                    <UserCheck className="w-4 h-4 text-emerald-500" />
                                     Selected Member
                                 </h2>
                                 <button
@@ -219,27 +219,27 @@ const ReceptionistCheckIn: React.FC = () => {
                                         setSelectedMember(null);
                                         setCheckinHistory([]);
                                     }}
-                                    className="text-neutral-500 hover:text-white transition-colors"
+                                    className="text-neutral-400 hover:text-neutral-700 transition-colors"
                                 >
                                     <X className="w-4 h-4" />
                                 </button>
                             </div>
 
                             {/* Member Card */}
-                            <div className="flex items-center gap-4 p-4 bg-neutral-800 rounded-xl border border-white/5">
-                                <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-                                    <span className="text-lg font-black text-amber-400">
+                            <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                                <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                                    <span className="text-lg font-black text-amber-600">
                                         {selectedMember.firstName?.charAt(0)?.toUpperCase()}
                                     </span>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-white font-bold">
+                                    <p className="text-neutral-900 font-bold">
                                         {selectedMember.firstName} {selectedMember.lastName}
                                     </p>
                                     <p className="text-xs text-neutral-500">@{selectedMember.username} · {selectedMember.email}</p>
                                 </div>
-                                <div className="px-3 py-1 bg-blue-500/10 rounded-lg">
-                                    <span className="text-xs font-bold text-blue-400">{selectedMember.role}</span>
+                                <div className="px-3 py-1 bg-blue-50 rounded-lg">
+                                    <span className="text-xs font-bold text-blue-600">{selectedMember.role}</span>
                                 </div>
                             </div>
 
@@ -250,7 +250,7 @@ const ReceptionistCheckIn: React.FC = () => {
                                         <Clock className="w-3.5 h-3.5 inline mr-1.5" />
                                         Check-in Time
                                     </label>
-                                    <div className="bg-neutral-800 border border-white/5 rounded-xl px-4 py-3 text-sm text-white font-mono">
+                                    <div className="bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 font-mono">
                                         {new Date().toLocaleString()}
                                     </div>
                                 </div>
@@ -262,7 +262,7 @@ const ReceptionistCheckIn: React.FC = () => {
                                     <select
                                         value={location}
                                         onChange={(e) => setLocation(e.target.value)}
-                                        className="w-full bg-neutral-800 border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors appearance-none"
+                                        className="w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-amber-500 transition-colors appearance-none"
                                     >
                                         <option value="Main Entrance">Main Entrance</option>
                                         <option value="Side Entrance">Side Entrance</option>
@@ -292,9 +292,9 @@ const ReceptionistCheckIn: React.FC = () => {
 
                 {/* Right: Check-In History */}
                 <div className="lg:col-span-2">
-                    <div className="bg-neutral-900 border border-white/5 rounded-2xl p-6">
-                        <h2 className="text-white font-bold mb-4 flex items-center gap-2">
-                            <History className="w-4 h-4 text-purple-400" />
+                    <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm">
+                        <h2 className="text-neutral-900 font-bold mb-4 flex items-center gap-2">
+                            <History className="w-4 h-4 text-purple-500" />
                             Recent Check-Ins
                             {selectedMember && (
                                 <span className="text-xs text-neutral-500 font-normal ml-1">
@@ -311,7 +311,7 @@ const ReceptionistCheckIn: React.FC = () => {
                         ) : historyLoading ? (
                             <div className="space-y-3">
                                 {Array.from({ length: 4 }).map((_, i) => (
-                                    <div key={i} className="h-16 bg-neutral-800 rounded-xl animate-pulse" />
+                                    <div key={i} className="h-16 bg-neutral-200 rounded-xl animate-pulse" />
                                 ))}
                             </div>
                         ) : checkinHistory.length === 0 ? (
@@ -325,13 +325,13 @@ const ReceptionistCheckIn: React.FC = () => {
                                     .map((c, i) => (
                                         <div
                                             key={c.checkinId || i}
-                                            className="flex items-center gap-3 p-3 bg-neutral-800 rounded-xl border border-white/3"
+                                            className="flex items-center gap-3 p-3 bg-neutral-50 rounded-xl border border-neutral-200"
                                         >
-                                            <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                                                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                                            <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                                                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-semibold text-white">
+                                                <p className="text-xs font-semibold text-neutral-900">
                                                     {new Date(c.timestamp).toLocaleDateString('en-GB', {
                                                         weekday: 'short',
                                                         day: 'numeric',

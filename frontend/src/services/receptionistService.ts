@@ -5,6 +5,7 @@ const AUTH_API = 'http://localhost:5220/api/auth';
 const MEMBERSHIP_API = 'http://localhost:5118/api';
 const RESERVATION_API = 'http://localhost:5286/api';
 const PAYMENT_API = 'http://localhost:5219/api';
+const SERVICE_API = 'http://localhost:5079/api';
 
 // ===== Shared helpers =====
 const getHeaders = () => ({
@@ -87,24 +88,28 @@ export interface ReservationCreateDto {
     sessionId: string;
 }
 
+export interface ServiceDto {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    category: number;
+}
+
 export interface PaymentCreateDto {
-    userId: string;
     amount: number;
-    currency: string;
-    membershipTypeId: string;
-    paymentMethod: string;
+    paymentDate: string;
+    method: number; // 0=Card, 1=BankTransfer, 2=Cash
+    serviceId: string;
 }
 
 export interface PaymentDto {
     id: string;
-    userId: string;
-    username?: string;
     amount: number;
-    currency: string;
-    status: string;
-    createdAt: string;
-    membershipTypeName?: string;
-    paymentMethod?: string;
+    paymentDate: string;
+    method: number;
+    status: number; // 0=Pending, 1=Completed, 2=Failed, 3=Refunded
+    serviceId: string;
 }
 
 // ===== Receptionist Service =====
@@ -245,6 +250,18 @@ export const receptionistService = {
             const errorText = await response.text();
             throw new Error(errorText || 'Failed to create reservation');
         }
+    },
+
+    // ───── Services ─────
+    async getAllServices(): Promise<ServiceDto[]> {
+        const response = await fetch(`${SERVICE_API}/Service`, {
+            headers: getHeaders(),
+        });
+        if (response.status === 204) return [];
+        if (!response.ok) throw new Error('Failed to fetch services');
+        const data = await response.json();
+        // Handle both { value: [...] } and [...] response formats
+        return Array.isArray(data) ? data : (data.value || []);
     },
 
     // ───── Payments ─────

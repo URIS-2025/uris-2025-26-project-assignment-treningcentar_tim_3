@@ -3,6 +3,7 @@ using ReservationService.Models.Enums;
 
 public class SessionConfirmationDto
 {
+    public Guid SessionId { get; set; }
     [Required]
     public string Name { get; set; }
     [Required]

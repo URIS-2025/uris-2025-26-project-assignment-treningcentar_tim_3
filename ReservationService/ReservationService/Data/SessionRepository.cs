@@ -92,6 +92,7 @@ namespace ReservationService.Data
 
             return new SessionConfirmationDto
             {
+                SessionId = newSession.sessionId,
                 Name = newSession.name,
                 StartTime = newSession.StartTime,
                 EndTime = newSession.EndTime,

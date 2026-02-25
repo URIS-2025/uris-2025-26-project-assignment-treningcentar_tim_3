@@ -82,7 +82,7 @@ namespace AuthService.Controllers
         }
 
         [HttpGet("users")]
-        [Authorize(Roles = "Receptionist")]
+        [Authorize(Roles = "Receptionist,Admin")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _repository.GetAllUsersAsync();
