@@ -1,21 +1,25 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
 import type { RootState } from '../../store';
 import { LogOut, User } from 'lucide-react';
 
+const NAV_CLS = 'text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors';
+
 const Header: React.FC = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         dispatch(logout());
-        window.location.href = '/login';
+        navigate('/login');
     };
 
     return (
         <header className="h-20 bg-white/80 backdrop-blur-md border-b border-amber-100 flex items-center px-8 md:px-12 sticky top-0 z-50 shadow-[0_1px_10px_-5px_rgba(217,119,6,0.1)]">
-            <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.location.href = '/'}>
+            <Link to="/" className="flex items-center gap-3 group cursor-pointer">
                 <div className="w-10 h-10 bg-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-600/20 group-hover:rotate-6 transition-transform">
                     <span className="text-white font-black text-xl">T</span>
                 </div>
@@ -27,9 +31,9 @@ const Header: React.FC = () => {
                         Professional Athletics
                     </span>
                 </div>
-            </div>
+            </Link>
 
-            <div className="flex-1"></div>
+            <div className="flex-1" />
 
             <nav className="flex items-center gap-4 md:gap-8">
                 {user ? (
@@ -37,30 +41,34 @@ const Header: React.FC = () => {
                         <div className="hidden lg:flex items-center gap-6 mr-4 border-r border-amber-50 pr-8">
                             {user.role === 'Trainer' ? (
                                 <>
-                                    <a href="/trainer-dashboard" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Dashboard</a>
-                                    <a href="/trainer-sessions" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">My Sessions</a>
-                                    <a href="/trainer-measurements" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Client Measurements</a>
+                                    <Link to="/trainer-dashboard" className={NAV_CLS}>Dashboard</Link>
+                                    <Link to="/trainer-sessions" className={NAV_CLS}>My Sessions</Link>
+                                    <Link to="/trainer-measurements" className={NAV_CLS}>Client Measurements</Link>
+                                </>
+                            ) : user.role === 'Nutritionist' ? (
+                                <>
+                                    <Link to="/nutritionist/measurement-appointments" className={NAV_CLS}>Appointments</Link>
+                                </>
+                            ) : user.role === 'Admin' ? (
+                                <>
+                                    <Link to="/admin" className={NAV_CLS}>Dashboard</Link>
                                 </>
                             ) : (
                                 <>
-                                    <a href="/dashboard" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Dashboard</a>
-                                    <a href="/membership" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Membership</a>
-                                    <a href="/services" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Services</a>
-                                    <a href="/sessions" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Sessions</a>
+                                    <Link to="/dashboard" className={NAV_CLS}>Dashboard</Link>
+                                    <Link to="/membership" className={NAV_CLS}>Membership</Link>
+                                    <Link to="/services" className={NAV_CLS}>Services</Link>
+                                    <Link to="/sessions" className={NAV_CLS}>Sessions</Link>
                                 </>
                             )}
                         </div>
                         <div className="hidden md:flex flex-col items-end">
-                            <span className="text-sm font-bold text-amber-950">
-                                {user.fullName}
-                            </span>
-                            <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider">
-                                {user.role}
-                            </span>
+                            <span className="text-sm font-bold text-amber-950">{user.fullName}</span>
+                            <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider">{user.role}</span>
                         </div>
                         <div className="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center border border-amber-100 relative group cursor-pointer">
                             <User className="w-5 h-5 text-amber-600" />
-                            <div className="absolute top-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></div>
+                            <div className="absolute top-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full" />
                         </div>
                         <button
                             onClick={handleLogout}
@@ -72,10 +80,10 @@ const Header: React.FC = () => {
                     </div>
                 ) : (
                     <>
-                        <a href="/login" className="text-sm font-bold text-amber-950/60 hover:text-amber-600 transition-colors">Login</a>
-                        <a href="/register" className="px-5 py-2.5 bg-amber-50 text-amber-600 rounded-xl text-sm font-bold hover:bg-amber-100 transition-all border border-amber-100">
+                        <Link to="/login" className="text-sm font-bold text-amber-950/60 hover:text-amber-600 transition-colors">Login</Link>
+                        <Link to="/register" className="px-5 py-2.5 bg-amber-50 text-amber-600 rounded-xl text-sm font-bold hover:bg-amber-100 transition-all border border-amber-100">
                             Get Started
-                        </a>
+                        </Link>
                     </>
                 )}
             </nav>

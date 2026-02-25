@@ -99,6 +99,43 @@ namespace AuthService.Controllers
             return Ok(dtoList);
         }
 
+        // GET /api/auth/users/search?q=john&role=Member
+        [HttpGet("users/search")]
+        [Authorize(Roles = "Nutritionist,Admin")]
+        public async Task<IActionResult> SearchUsers([FromQuery] string? q, [FromQuery] string? role)
+        {
+            var all = await _repository.GetAllUsersAsync();
+
+            // filter by role if provided
+            if (!string.IsNullOrWhiteSpace(role) && Enum.TryParse<Role>(role, true, out var parsedRole))
+                all = all.Where(u => u.Role == parsedRole).ToList();
+
+            // filter by search term if provided
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var lower = q.Trim().ToLower();
+                all = all.Where(u =>
+                    (u.FirstName?.ToLower().Contains(lower) ?? false) ||
+                    (u.LastName?.ToLower().Contains(lower) ?? false) ||
+                    (u.Username?.ToLower().Contains(lower) ?? false) ||
+                    (u.Email?.ToLower().Contains(lower) ?? false)
+                ).ToList();
+            }
+
+            var result = all.Select(u => new
+            {
+                Id = u.Id.ToString(),
+                u.FirstName,
+                u.LastName,
+                u.Username,
+                u.Email,
+                Role = u.Role.ToString()
+            });
+
+            return Ok(result);
+        }
+
+
         [HttpPut("users/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserDTO dto)

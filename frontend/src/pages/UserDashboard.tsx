@@ -8,9 +8,9 @@ import { TrainingType } from '../types/reservation';
 const UserDashboard: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
-  
+
   const [currentDate] = useState(new Date());
-  
+
   const [personalCount, setPersonalCount] = useState(0);
   const [groupCount, setGroupCount] = useState(0);
   const [reservations, setReservations] = useState<any[]>([]);
@@ -53,24 +53,24 @@ const UserDashboard: React.FC = () => {
   }, [user?.id, token]);
 
   const stats = [
-    { 
-      label: 'Check-ins', 
-      value: checkins.length, 
-      icon: <CheckCircle2 className="w-6 h-6 text-emerald-500" />, 
+    {
+      label: 'Check-ins',
+      value: checkins.length,
+      icon: <CheckCircle2 className="w-6 h-6 text-emerald-500" />,
       color: 'bg-emerald-50',
       trend: 'This month'
     },
-    { 
-      label: 'Personal Sessions', 
-      value: personalCount, 
-      icon: <PersonIcon className="w-6 h-6 text-blue-500" />, 
+    {
+      label: 'Personal Sessions',
+      value: personalCount,
+      icon: <PersonIcon className="w-6 h-6 text-blue-500" />,
       color: 'bg-blue-50',
       trend: '+2 this week'
     },
-    { 
-      label: 'Group Sessions', 
-      value: groupCount, 
-      icon: <Users className="w-6 h-6 text-purple-500" />, 
+    {
+      label: 'Group Sessions',
+      value: groupCount,
+      icon: <Users className="w-6 h-6 text-purple-500" />,
       color: 'bg-purple-50',
       trend: 'On track'
     }
@@ -85,18 +85,18 @@ const UserDashboard: React.FC = () => {
     const month = currentDate.getMonth();
     const totalDays = daysInMonth(year, month);
     const startDay = firstDayOfMonth(year, month);
-    
+
     const days = [];
     // Padding
     for (let i = 0; i < startDay; i++) {
       days.push(<div key={`empty-${i}`} className="h-24 border border-amber-50/50 bg-neutral-50/30" />);
     }
-    
+
     // Month days
     for (let d = 1; d <= totalDays; d++) {
       const dayDate = new Date(year, month, d);
       const isToday = new Date().toDateString() === dayDate.toDateString();
-      
+
       const dayCheckins = checkins.filter(c => new Date(c.timestamp).toDateString() === dayDate.toDateString());
       const dayPersonal = reservations.filter(r => r.trainingType === TrainingType.Personal && new Date(r.startTime).toDateString() === dayDate.toDateString());
       const dayGroup = reservations.filter(r => r.trainingType === TrainingType.Group && new Date(r.startTime).toDateString() === dayDate.toDateString());
@@ -120,7 +120,7 @@ const UserDashboard: React.FC = () => {
         </div>
       );
     }
-    
+
     return days;
   };
 
@@ -135,7 +135,7 @@ const UserDashboard: React.FC = () => {
           <p className="text-amber-800/60 font-medium">Keep up the great work this month!</p>
         </div>
         <div className="bg-white p-2 rounded-2xl shadow-sm border border-amber-100 flex items-center gap-2">
-            <span className="text-sm font-bold text-amber-900 px-4">{monthName} {currentDate.getFullYear()}</span>
+          <span className="text-sm font-bold text-amber-900 px-4">{monthName} {currentDate.getFullYear()}</span>
         </div>
       </div>
 
@@ -151,7 +151,7 @@ const UserDashboard: React.FC = () => {
                 <span className="text-sm font-bold text-amber-800/40 uppercase tracking-wider">{stat.label}</span>
               </div>
               <div className="mt-4 flex items-center gap-1.5 text-xs font-bold">
-                
+
                 This month
               </div>
             </div>
@@ -167,18 +167,18 @@ const UserDashboard: React.FC = () => {
             <h2 className="text-xl font-black text-amber-950">Activity Calendar</h2>
           </div>
           <div className="flex gap-4">
-             <div className="flex items-center gap-1.5 text-[9px] font-black text-amber-900/40 uppercase">
-                <div className="w-2 h-2 bg-amber-500 rounded-full" /> Gym
-             </div>
-             <div className="flex items-center gap-1.5 text-[9px] font-black text-amber-900/40 uppercase">
-                <div className="w-2 h-2 bg-blue-500 rounded-full" /> Personal
-             </div>
-             <div className="flex items-center gap-1.5 text-[9px] font-black text-amber-900/40 uppercase">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" /> Group
-             </div>
+            <div className="flex items-center gap-1.5 text-[9px] font-black text-amber-900/40 uppercase">
+              <div className="w-2 h-2 bg-amber-500 rounded-full" /> Gym
+            </div>
+            <div className="flex items-center gap-1.5 text-[9px] font-black text-amber-900/40 uppercase">
+              <div className="w-2 h-2 bg-blue-500 rounded-full" /> Personal
+            </div>
+            <div className="flex items-center gap-1.5 text-[9px] font-black text-amber-900/40 uppercase">
+              <div className="w-2 h-2 bg-purple-500 rounded-full" /> Group
+            </div>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-7 bg-amber-50/30 border-b border-amber-100">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
             <div key={day} className="py-4 text-center text-[10px] font-black text-amber-900/40 uppercase tracking-[0.2em]">
@@ -186,7 +186,7 @@ const UserDashboard: React.FC = () => {
             </div>
           ))}
         </div>
-        
+
         <div className="grid grid-cols-7">
           {renderCalendar()}
         </div>

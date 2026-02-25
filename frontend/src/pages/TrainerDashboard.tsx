@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, Activity, ClipboardList, Weight } from 'lucide-react';
 import { sessionService, type SessionDto } from '../services/sessionService';
-import { measurementService, type MeasurementAppointmentDto } from '../services/measurementService';
+import { measurementService } from '../services/measurementService';
+import type { MeasurementAppointmentDTO } from '../types/measurement';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store';
 
 const TrainerDashboard: React.FC = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     const [sessions, setSessions] = useState<SessionDto[]>([]);
-    const [measurements, setMeasurements] = useState<MeasurementAppointmentDto[]>([]);
+    const [measurements, setMeasurements] = useState<MeasurementAppointmentDTO[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
