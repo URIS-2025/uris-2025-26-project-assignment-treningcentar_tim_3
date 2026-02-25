@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Activity, Search, AlertCircle, Weight, Ruler, Calendar, Percent } from 'lucide-react';
-import { measurementService, type MeasurementAppointmentDto } from '../services/measurementService';
+import { measurementService } from '../services/measurementService';
+import type { MeasurementAppointmentDTO } from '../types/measurement';
 
 const TrainerClientMeasurements: React.FC = () => {
-    const [appointments, setAppointments] = useState<MeasurementAppointmentDto[]>([]);
+    const [appointments, setAppointments] = useState<MeasurementAppointmentDTO[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [error, setError] = useState('');
@@ -33,7 +34,7 @@ const TrainerClientMeasurements: React.FC = () => {
     const upcoming = filteredAppointments.filter(a => new Date(a.date) >= new Date());
     const past = filteredAppointments.filter(a => new Date(a.date) < new Date());
 
-    const renderCard = (appt: MeasurementAppointmentDto) => {
+    const renderCard = (appt: MeasurementAppointmentDTO) => {
         const isUpcoming = new Date(appt.date) >= new Date();
         const hasResults = appt.weightKg != null || appt.heightCm != null || appt.bodyFatPercent != null;
 
@@ -56,9 +57,8 @@ const TrainerClientMeasurements: React.FC = () => {
                             )}
                         </div>
                     </div>
-                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-lg text-white font-black text-sm ${
-                        hasResults ? 'bg-gradient-to-br from-amber-500 to-orange-500 shadow-orange-500/20' : 'bg-amber-200 shadow-amber-200/20'
-                    }`}>
+                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-lg text-white font-black text-sm ${hasResults ? 'bg-gradient-to-br from-amber-500 to-orange-500 shadow-orange-500/20' : 'bg-amber-200 shadow-amber-200/20'
+                        }`}>
                         {appt.bodyFatPercent != null ? Math.round(appt.bodyFatPercent) + '%' : '--'}
                     </div>
                 </div>
