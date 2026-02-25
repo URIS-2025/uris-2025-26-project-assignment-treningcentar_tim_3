@@ -79,7 +79,7 @@ namespace ReservationService.Controllers
             return Ok(session);
         }
 
-        [Authorize(Roles = "Trainer,Admin")]
+        [Authorize(Roles = "Trainer,Admin,Receptionist")]
         [HttpPost]
         public ActionResult<SessionDto> AddSession([FromBody] SessionCreateDTO sessionDto)
         {
@@ -94,7 +94,7 @@ namespace ReservationService.Controllers
             }
         }
 
-        [Authorize(Roles = "Trainer,Admin")]
+        [Authorize(Roles = "Trainer,Admin,Receptionist")]
         [HttpPut]
         public ActionResult<SessionDto> UpdateSession([FromBody] SessionUpdateDTO sessionDto)
         {
@@ -113,7 +113,7 @@ namespace ReservationService.Controllers
             }
         }
 
-        [Authorize(Roles = "Trainer,Admin")]
+        [Authorize(Roles = "Trainer,Admin,Receptionist")]
         [HttpDelete("{id}")]
         public IActionResult DeleteSession(Guid id)
         {

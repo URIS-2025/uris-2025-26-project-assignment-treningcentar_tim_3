@@ -18,6 +18,9 @@ const ProtectedRoute = ({ requiredRole }: ProtectedRouteProps) => {
     if (authService.hasRole(Role.Admin)) {
       return <Navigate to="/admin" replace />;
     }
+    if (authService.hasRole(Role.Receptionist)) {
+      return <Navigate to="/receptionist" replace />;
+    }
     return <Navigate to="/" replace />;
   }
 

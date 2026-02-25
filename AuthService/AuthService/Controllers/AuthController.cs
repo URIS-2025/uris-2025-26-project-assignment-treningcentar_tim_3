@@ -82,7 +82,7 @@ namespace AuthService.Controllers
         }
 
         [HttpGet("users")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Receptionist,Admin")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _repository.GetAllUsersAsync();
@@ -173,6 +173,17 @@ namespace AuthService.Controllers
             return Ok("User deleted successfully");
         }
 
+        [HttpGet("testrole")]
+        [Authorize]
+        public IActionResult TestRole()
+        {
+            var claims = User.Claims.Select(c => new { c.Type, c.Value });
+            var identity = User.Identity;
+            var isRec = User.IsInRole("Receptionist");
+            var isAdmin = User.IsInRole("Admin");
+            return Ok(new { claims, identity, isRec, isAdmin });
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
@@ -193,3 +204,4 @@ namespace AuthService.Controllers
     }
 
 }
+

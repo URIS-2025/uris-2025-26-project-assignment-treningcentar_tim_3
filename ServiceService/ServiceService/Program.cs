@@ -30,15 +30,8 @@ builder.Services.AddHttpClient<ILoggerService, LoggerService>(client =>
     client.Timeout = TimeSpan.FromSeconds(2);
 });
 
-// AutoMapper ali za verziju 16
-var loggerFactory = LoggerFactory.Create(b => b.AddConsole());
-
-var mapperConfig = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new ServiceProfile());
-}, loggerFactory);
-
-builder.Services.AddSingleton(mapperConfig.CreateMapper());
+// AutoMapper registration
+builder.Services.AddAutoMapper(typeof(ServiceProfile));
 
 builder.Services.AddCors();
 

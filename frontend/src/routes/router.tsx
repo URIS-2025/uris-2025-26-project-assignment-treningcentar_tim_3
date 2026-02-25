@@ -28,6 +28,11 @@ import AppointmentDetails from '../pages/nutritionist/AppointmentDetails';
 import NutritionistHome from '../pages/nutritionist/NutritionistHome';
 
 
+import ReceptionistLayout from '../pages/receptionist/ReceptionistLayout';
+import ReceptionistCheckIn from '../pages/receptionist/ReceptionistCheckIn';
+import ReceptionistMembership from '../pages/receptionist/ReceptionistMembership';
+import ReceptionistSchedule from '../pages/receptionist/ReceptionistSchedule';
+import ReceptionistPayment from '../pages/receptionist/ReceptionistPayment';
 
 export const router = createBrowserRouter([
     {
@@ -81,6 +86,21 @@ export const router = createBrowserRouter([
                     { path: 'payments', element: <AdminPayments /> },
                     { path: 'logs', element: <AdminSystemLogs /> },
                     { path: 'settings', element: <AdminSettings /> }
+                ]
+            }
+        ]
+    },
+    {
+        path: '/receptionist',
+        element: <ProtectedRoute requiredRole={Role.Receptionist} />,
+        children: [
+            {
+                element: <ReceptionistLayout />,
+                children: [
+                    { index: true, element: <ReceptionistCheckIn /> },
+                    { path: 'membership', element: <ReceptionistMembership /> },
+                    { path: 'schedule', element: <ReceptionistSchedule /> },
+                    { path: 'payment', element: <ReceptionistPayment /> }
                 ]
             }
         ]

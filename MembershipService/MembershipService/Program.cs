@@ -32,7 +32,9 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["Jwt:Issuer"],
         IssuerSigningKey = new SymmetricSecurityKey(
             Convert.FromBase64String(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured"))),
-        ClockSkew = TimeSpan.FromMinutes(5)
+        ClockSkew = TimeSpan.FromMinutes(5),
+        RoleClaimType = System.Security.Claims.ClaimTypes.Role,
+        NameClaimType = System.Security.Claims.ClaimTypes.Name
     };
 });
 
@@ -58,7 +60,7 @@ builder.Services.AddDbContext<MembershipContext>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5174")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -75,7 +77,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowFrontend");
 
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -89,5 +90,5 @@ using (var scope = app.Services.CreateScope())
 
 app.Run();
 
-
-
+// Make the implicit Program class accessible for integration tests
+public partial class Program { }

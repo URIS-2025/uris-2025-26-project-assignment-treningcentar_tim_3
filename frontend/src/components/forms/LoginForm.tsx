@@ -37,10 +37,14 @@ const LoginForm = () => {
 
             setMessage({ text: 'Login successful!', type: 'success' });
 
-            // Navigate based on role (Member goes to dashboard)
+            // Navigate based on role
             setTimeout(() => {
                 if (data.role === Role.Admin) {
                     navigate('/admin');
+                } else if (data.role === Role.Receptionist) {
+                    navigate('/receptionist');
+                } else if (data.role === Role.Trainer) {
+                    navigate('/trainer-dashboard');
                 } else if (data.role === Role.Member) {
                     navigate('/dashboard');
                 } else {

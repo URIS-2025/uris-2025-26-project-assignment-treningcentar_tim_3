@@ -82,7 +82,7 @@ public class CheckinsController : ControllerBase
     
     // GET: api/checkins/{userId}/current-month
     [HttpGet("{userId:guid}/current-month")]
-    [Authorize(Roles = "Member")]
+    [Authorize(Roles = "Member,Receptionist")]
     public ActionResult<IEnumerable<CheckinDto>> GetCurrentMonthCheckins(Guid userId)
     {
         var checkins = _checkinRepository.GetCurrentMonthCheckins(userId);

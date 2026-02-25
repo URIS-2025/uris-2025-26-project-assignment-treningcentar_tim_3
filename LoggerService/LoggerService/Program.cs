@@ -13,14 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<LoggerContext>();
 builder.Services.AddScoped<ILoggerRepository, LoggerRepository>();
 
-// AutoMapper ručno 
-var loggerFactory = LoggerFactory.Create(_ => { });
-var mapperConfig = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new LoggerProfile());
-}, loggerFactory);
-
-builder.Services.AddSingleton(mapperConfig.CreateMapper());
+// AutoMapper registration
+builder.Services.AddAutoMapper(typeof(LoggerProfile));
 
 builder.Services.AddCors();
 
