@@ -24,12 +24,18 @@ import TrainerDashboard from '../pages/TrainerDashboard';
 import TrainerSessions from '../pages/TrainerSessions';
 import TrainerClientMeasurements from '../pages/TrainerClientMeasurements';
 
+const IndexRedirect = () => {
+    if (authService.hasRole(Role.Admin)) return <Navigate to="/admin" replace />;
+    if (authService.hasRole(Role.Trainer)) return <Navigate to="/trainer-dashboard" replace />;
+    return <Navigate to="/dashboard" replace />;
+};
+
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
         children: [
-            { index: true, element: <Navigate to="/dashboard" replace /> },
+            { index: true, element: <IndexRedirect /> },
             { path: 'login', element: <Login /> },
             { path: 'register', element: <Register /> },
             {

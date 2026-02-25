@@ -26,5 +26,6 @@ export interface SessionDto {
     trainingType: TrainingType;
     trainerId: TrainerDto;
     maxCapacity?: number;
-    hallId?: number;
+    trainingHallId?: string;
+    trainingHallName?: string;
 }

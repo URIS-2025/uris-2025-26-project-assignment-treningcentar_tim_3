@@ -1,11 +1,19 @@
 import { authService } from './authService';
 
 const API_BASE_URL = 'http://localhost:5286/api/session';
+const TRAINING_HALL_API = 'http://localhost:5286/api/traininghall';
 
 export interface TrainerDto {
     id: string;
     firstName: string;
     lastName: string;
+}
+
+export interface TrainingHallDto {
+    trainingHallId: string;
+    trainingHallName: string;
+    description?: string;
+    capacity: number;
 }
 
 export interface SessionDto {
@@ -17,7 +25,8 @@ export interface SessionDto {
     trainingType: number; // Enum: Strength=0, Hypertrophy=1, etc.
     trainerId: TrainerDto;
     maxCapacity?: number;
-    hallId?: number;
+    trainingHallId?: string;
+    trainingHallName?: string;
 }
 
 export interface SessionCreateDto {
@@ -28,7 +37,7 @@ export interface SessionCreateDto {
     trainingType: number;
     trainerId: string;
     maxCapacity?: number;
-    hallId?: number;
+    trainingHallId?: string;
     isGroup: boolean;
 }
 
@@ -97,5 +106,12 @@ export const sessionService = {
             headers: getHeaders(),
         });
         if (!response.ok) throw new Error('Failed to delete session');
+    },
+
+    async getTrainingHalls(): Promise<TrainingHallDto[]> {
+        const response = await fetch(`${TRAINING_HALL_API}`, { headers: getHeaders() });
+        if (response.status === 204) return [];
+        if (!response.ok) throw new Error('Failed to fetch training halls');
+        return response.json();
     }
 };

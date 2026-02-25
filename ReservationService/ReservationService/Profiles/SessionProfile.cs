@@ -19,17 +19,19 @@ namespace ReservationService.Profiles
                 .ForMember(dest => dest.TrainingType, opt => opt.MapFrom(src => src.trainingType))
                 .ForMember(dest => dest.TrainerId, opt => opt.MapFrom(src => new TrainerDto { Id = src.trainerId }))
                 .ForMember(dest => dest.MaxCapacity, opt => opt.Ignore())
-                .ForMember(dest => dest.HallId, opt => opt.Ignore());
+                .ForMember(dest => dest.TrainingHallId, opt => opt.Ignore())
+                .ForMember(dest => dest.TrainingHallName, opt => opt.Ignore());
 
             CreateMap<GroupSession, SessionDto>()
                 .IncludeBase<Session, SessionDto>()
                 .ForMember(dest => dest.MaxCapacity, opt => opt.MapFrom(src => src.maxCapacity))
-                .ForMember(dest => dest.HallId, opt => opt.MapFrom(src => src.hallId));
+                .ForMember(dest => dest.TrainingHallId, opt => opt.MapFrom(src => src.trainingHallId));
 
             CreateMap<PersonalSession, SessionDto>()
                 .IncludeBase<Session, SessionDto>()
                 .ForMember(dest => dest.MaxCapacity, opt => opt.Ignore())
-                .ForMember(dest => dest.HallId, opt => opt.Ignore());
+                .ForMember(dest => dest.TrainingHallId, opt => opt.Ignore())
+                .ForMember(dest => dest.TrainingHallName, opt => opt.Ignore());
 
             // DTO -> Entity
             CreateMap<SessionDto, GroupSession>()
@@ -39,7 +41,7 @@ namespace ReservationService.Profiles
                 .ForMember(dest => dest.trainingType, opt => opt.MapFrom(src => src.TrainingType))
                 .ForMember(dest => dest.trainerId, opt => opt.MapFrom(src => src.TrainerId != null ? src.TrainerId.Id : Guid.Empty))
                 .ForMember(dest => dest.maxCapacity, opt => opt.MapFrom(src => src.MaxCapacity ?? 0))
-                .ForMember(dest => dest.hallId, opt => opt.MapFrom(src => src.HallId ?? 0));
+                .ForMember(dest => dest.trainingHallId, opt => opt.MapFrom(src => src.TrainingHallId ?? Guid.Empty));
 
             CreateMap<SessionDto, PersonalSession>()
                 .ForMember(dest => dest.sessionId, opt => opt.MapFrom(src => src.SessionId))

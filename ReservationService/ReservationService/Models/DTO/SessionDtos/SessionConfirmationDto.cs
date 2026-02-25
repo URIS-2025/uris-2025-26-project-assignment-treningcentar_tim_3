@@ -18,5 +18,6 @@ public class SessionConfirmationDto
 
     // Samo za GroupSession
     public int? MaxCapacity { get; set; }
-    public int? HallId { get; set; }
+    public Guid? TrainingHallId { get; set; }
+    public string? TrainingHallName { get; set; }
 }

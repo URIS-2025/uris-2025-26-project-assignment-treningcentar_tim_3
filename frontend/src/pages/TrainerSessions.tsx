@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Calendar, Users, Plus, AlertCircle } from 'lucide-react';
-import { sessionService, type SessionDto, type SessionCreateDto } from '../services/sessionService';
+import { Calendar, Users, Plus, AlertCircle, MapPin } from 'lucide-react';
+import { sessionService, type SessionDto, type SessionCreateDto, type TrainingHallDto } from '../services/sessionService';
 import SessionForm from '../components/sessions/SessionForm';
 import RegisteredMembersModal from '../components/sessions/RegisteredMembersModal';
 import { useSelector } from 'react-redux';
@@ -126,6 +126,12 @@ const TrainerSessions: React.FC = () => {
                                                 <Calendar className="w-4 h-4" />
                                                 {new Date(session.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(session.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                             </span>
+                                            {session.trainingType === 1 && session.trainingHallName && (
+                                                <span className="flex items-center gap-1">
+                                                    <MapPin className="w-4 h-4" />
+                                                    {session.trainingHallName}
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
