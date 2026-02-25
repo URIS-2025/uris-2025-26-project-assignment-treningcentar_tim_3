@@ -16,7 +16,8 @@ namespace ReservationService.Models.DTO
         
         // Samo za group session
         public int? MaxCapacity { get; set; }
-        public int? HallId { get; set; }
+        public Guid? TrainingHallId { get; set; }
+        public string? TrainingHallName { get; set; }
 
     }
 }

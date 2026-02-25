@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import type { SessionCreateDto } from '../../services/sessionService';
-import { X, Calendar as CalendarIcon, Clock, Users } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { sessionService, type SessionCreateDto, type TrainingHallDto } from '../../services/sessionService';
+import { X, Calendar as CalendarIcon, Clock, Users, MapPin } from 'lucide-react';
 
 interface Props {
     trainerId: string;
@@ -14,11 +14,29 @@ const SessionForm: React.FC<Props> = ({ trainerId, onClose, onSubmit }) => {
     const [endTime, setEndTime] = useState('');
     const [capacity, setCapacity] = useState<number>(1);
     const [trainingType, setTrainingType] = useState<number>(0); // 0 Personal, 1 Group
+    const [trainingHalls, setTrainingHalls] = useState<TrainingHallDto[]>([]);
+    const [selectedHallId, setSelectedHallId] = useState<string>('');
+    const [hallsLoading, setHallsLoading] = useState(false);
+
+    useEffect(() => {
+        if (trainingType === 1) {
+            setHallsLoading(true);
+            sessionService.getTrainingHalls()
+                .then((halls) => {
+                    setTrainingHalls(halls);
+                    if (halls.length > 0 && !selectedHallId) {
+                        setSelectedHallId(halls[0].trainingHallId);
+                    }
+                })
+                .catch((err) => console.error('Failed to load training halls', err))
+                .finally(() => setHallsLoading(false));
+        }
+    }, [trainingType]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Construct full Date objects for C# DateTime
+        // Konvertovanje lokalnog vremena u ISO format koji backend očekuje
         const localStart = new Date(`${date}T${startTime}`);
         const localEnd = new Date(`${date}T${endTime}`);
 
@@ -26,10 +44,11 @@ const SessionForm: React.FC<Props> = ({ trainerId, onClose, onSubmit }) => {
             name: trainingType === 0 ? 'Personal Training' : 'Group Training',
             startTime: localStart.toISOString(),
             endTime: localEnd.toISOString(),
-            status: 0, // Upcoming
+            status: 0, //Upcoming je default status za nove termine
             trainingType: trainingType,
             trainerId: trainerId,
             maxCapacity: trainingType === 0 ? 1 : capacity,
+            trainingHallId: trainingType === 1 ? selectedHallId : undefined,
             isGroup: trainingType === 1
         });
     };
@@ -120,6 +139,35 @@ const SessionForm: React.FC<Props> = ({ trainerId, onClose, onSubmit }) => {
                                 onChange={(e) => setCapacity(parseInt(e.target.value))}
                                 className="w-full bg-amber-50/50 border border-amber-100 rounded-xl px-4 py-3 text-amber-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all font-medium"
                             />
+                        </div>
+                    )}
+
+                    {trainingType === 1 && (
+                        <div>
+                            <label className="block text-xs font-black text-amber-900/40 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                <MapPin className="w-3 h-3" /> Training Hall
+                            </label>
+                            {hallsLoading ? (
+                                <div className="flex items-center gap-2 py-3 px-4 text-amber-900/40 text-sm">
+                                    <div className="w-4 h-4 border-2 border-amber-300 border-t-transparent rounded-full animate-spin"></div>
+                                    Loading halls...
+                                </div>
+                            ) : trainingHalls.length === 0 ? (
+                                <p className="text-sm text-amber-900/40 italic py-2">No training halls available. Please add halls first.</p>
+                            ) : (
+                                <select
+                                    required
+                                    value={selectedHallId}
+                                    onChange={(e) => setSelectedHallId(e.target.value)}
+                                    className="w-full bg-amber-50/50 border border-amber-100 rounded-xl px-4 py-3 text-amber-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all font-medium"
+                                >
+                                    {trainingHalls.map((hall) => (
+                                        <option key={hall.trainingHallId} value={hall.trainingHallId}>
+                                            {hall.trainingHallName} (kapacitet: {hall.capacity})
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
                         </div>
                     )}
 

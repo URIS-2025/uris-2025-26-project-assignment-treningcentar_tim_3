@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, CheckCircle2, Users, User as PersonIcon, TrendingUp } from 'lucide-react';
+import { Calendar as CalendarIcon, CheckCircle2, Users, User as PersonIcon } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store';
 import { reservationService } from '../services/reservationService';

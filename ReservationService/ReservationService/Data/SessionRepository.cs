@@ -60,7 +60,7 @@ namespace ReservationService.Data
                     trainingType = sessionDto.TrainingType,
                     trainerId = sessionDto.TrainerId,
                     maxCapacity = sessionDto.MaxCapacity ?? 10,
-                    hallId = sessionDto.HallId ?? 1
+                    trainingHallId = sessionDto.TrainingHallId ?? Guid.Empty
                 };
             }
             else
@@ -99,14 +99,42 @@ namespace ReservationService.Data
                 TrainingType = newSession.trainingType,
                 TrainerName = trainer.FirstName + " " + trainer.LastName,
                 MaxCapacity = sessionDto.IsGroup ? sessionDto.MaxCapacity : null,
-                HallId = sessionDto.IsGroup ? sessionDto.HallId : null
+                TrainingHallId = sessionDto.IsGroup ? sessionDto.TrainingHallId : null,
+                TrainingHallName = sessionDto.IsGroup && sessionDto.TrainingHallId.HasValue
+                    ? _context.TrainingHalls.FirstOrDefault(h => h.trainingHallId == sessionDto.TrainingHallId.Value)?.trainingHallName
+                    : null
             };
+        }
+
+        private void EnrichWithHallNames(IEnumerable<SessionDto> dtos)
+        {
+            var hallIds = dtos
+                .Where(d => d.TrainingHallId.HasValue && d.TrainingHallId.Value != Guid.Empty)
+                .Select(d => d.TrainingHallId!.Value)
+                .Distinct()
+                .ToList();
+
+            if (!hallIds.Any()) return;
+
+            var hallNames = _context.TrainingHalls
+                .Where(h => hallIds.Contains(h.trainingHallId))
+                .ToDictionary(h => h.trainingHallId, h => h.trainingHallName);
+
+            foreach (var dto in dtos)
+            {
+                if (dto.TrainingHallId.HasValue && hallNames.TryGetValue(dto.TrainingHallId.Value, out var name))
+                {
+                    dto.TrainingHallName = name;
+                }
+            }
         }
 
         public IEnumerable<SessionDto> GetAllSessions()
         {
             var sessions = _context.Sessions.ToList();
-            return _mapper.Map<IEnumerable<SessionDto>>(sessions);
+            var dtos = _mapper.Map<IEnumerable<SessionDto>>(sessions).ToList();
+            EnrichWithHallNames(dtos);
+            return dtos;
         }
 
         public IEnumerable<SessionDto> GetPersonalSessions()
@@ -118,14 +146,18 @@ namespace ReservationService.Data
         public IEnumerable<SessionDto> GetGroupSessions()
         {
             var sessions = _context.Sessions.OfType<GroupSession>().ToList();
-            return _mapper.Map<IEnumerable<SessionDto>>(sessions);
+            var dtos = _mapper.Map<IEnumerable<SessionDto>>(sessions).ToList();
+            EnrichWithHallNames(dtos);
+            return dtos;
         }
 
         public SessionDto GetSessionById(Guid id)
         {
             var session = _context.Sessions.FirstOrDefault(s => s.sessionId == id);
             if (session == null) return null;
-            return _mapper.Map<SessionDto>(session);
+            var dto = _mapper.Map<SessionDto>(session);
+            EnrichWithHallNames(new[] { dto });
+            return dto;
         }
 
         public SessionConfirmationDto UpdateSession(SessionUpdateDTO sessionDto)
@@ -169,7 +201,7 @@ namespace ReservationService.Data
             if (existingSession is GroupSession groupSession)
             {
                 groupSession.maxCapacity = sessionDto.MaxCapacity ?? groupSession.maxCapacity;
-                groupSession.hallId = sessionDto.HallId ?? groupSession.hallId;
+                groupSession.trainingHallId = sessionDto.TrainingHallId ?? groupSession.trainingHallId;
             }
 
             _context.SaveChanges();
@@ -193,7 +225,7 @@ namespace ReservationService.Data
                 TrainingType = existingSession.trainingType,
                 TrainerName = trainer.FirstName + " " + trainer.LastName,
                 MaxCapacity = existingSession is GroupSession gs ? gs.maxCapacity : null,
-                HallId = existingSession is GroupSession gs2 ? gs2.hallId : null
+                TrainingHallId = existingSession is GroupSession gs2 ? gs2.trainingHallId : null
             };
         }
 
@@ -243,7 +275,9 @@ namespace ReservationService.Data
                     query = query.OfType<PersonalSession>();
             }
 
-            return _mapper.Map<IEnumerable<SessionDto>>(query.ToList());
+            var dtos = _mapper.Map<IEnumerable<SessionDto>>(query.ToList()).ToList();
+            EnrichWithHallNames(dtos);
+            return dtos;
         }
     }
 }
