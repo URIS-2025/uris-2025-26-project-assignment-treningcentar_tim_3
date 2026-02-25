@@ -261,11 +261,14 @@ namespace ReservationService.Data
             }
         }
         
-        public IEnumerable<SessionDto> GetSessionsByDateRange(DateTime from, DateTime to, bool? isGroup)
+        public IEnumerable<SessionDto> GetSessionsByDateRange(DateTime from, DateTime to, bool? isGroup, Guid? currentUserId = null)
         {
+            // Fetch all upcoming sessions in range
             IQueryable<Session> query = _context.Sessions
                 .Where(s => s.StartTime >= from && s.StartTime <= to
                                                 && s.status == SessionStatus.Upcoming);
+            
+            Console.WriteLine("sessions: ", query);
 
             if (isGroup.HasValue)
             {
@@ -275,9 +278,65 @@ namespace ReservationService.Data
                     query = query.OfType<PersonalSession>();
             }
 
-            var dtos = _mapper.Map<IEnumerable<SessionDto>>(query.ToList()).ToList();
-            EnrichWithHallNames(dtos);
-            return dtos;
+            var sessions = query.ToList();
+            var dtos = _mapper.Map<IEnumerable<SessionDto>>(sessions).ToList();
+
+            // Calculate current bookings for each session
+            var sessionReservations = _context.Reservations
+                .Where(r => r.status == ReservationStatus.Booked)
+                .GroupBy(r => r.sessionId)
+                .Select(g => new { SessionId = g.Key, Count = g.Count() })
+                .ToDictionary(g => g.SessionId, g => g.Count);
+            
+            Console.WriteLine("sessionReservations: ", sessionReservations);
+
+            // Get sessions already booked by CURRENT user
+            var userBookedSessionIds = new HashSet<Guid>();
+            if (currentUserId.HasValue)
+            {
+                userBookedSessionIds = _context.Reservations
+                    .Where(r => r.userId == currentUserId.Value && r.status == ReservationStatus.Booked)
+                    .Select(r => r.sessionId)
+                    .ToHashSet();
+            }
+
+            var result = new List<SessionDto>();
+
+            foreach (var dto in dtos)
+            {
+                // Set current bookings count
+                dto.CurrentBookings = sessionReservations.ContainsKey(dto.SessionId) ? sessionReservations[dto.SessionId] : 0;
+                
+                // Set flag for current user
+                dto.IsBookedByCurrentUser = userBookedSessionIds.Contains(dto.SessionId);
+
+                // FILTERING LOGIC:
+                // If I already booked it, I want to see it regardless of capacity (to see "Already Booked" status)
+                if (dto.IsBookedByCurrentUser)
+                {
+                    result.Add(dto);
+                    continue;
+                }
+
+                // If it's a Group session (MaxCapacity has value)
+                if (dto.MaxCapacity.HasValue)
+                {
+                    // Hide only if it's FULL
+                    if (dto.CurrentBookings >= dto.MaxCapacity.Value)
+                        continue;
+                }
+                else
+                {
+                    // It's a Personal session - hide if anyone booked it
+                    if (dto.CurrentBookings >= 1)
+                        continue;
+                }
+
+                result.Add(dto);
+            }
+
+            EnrichWithHallNames(result);
+            return result;
         }
     }
 }

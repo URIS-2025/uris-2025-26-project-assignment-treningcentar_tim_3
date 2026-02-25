@@ -57,8 +57,10 @@ const Header: React.FC = () => {
                                 <>
                                     <Link to="/dashboard" className={NAV_CLS}>Dashboard</Link>
                                     <Link to="/membership" className={NAV_CLS}>Membership</Link>
+                                    <Link to="/nutrition" className={NAV_CLS}>Nutrition</Link>
                                     <Link to="/services" className={NAV_CLS}>Services</Link>
                                     <Link to="/sessions" className={NAV_CLS}>Sessions</Link>
+                                    <Link to="/edit-profile" className={NAV_CLS}>Edit Profile</Link>
                                 </>
                             )}
                         </div>

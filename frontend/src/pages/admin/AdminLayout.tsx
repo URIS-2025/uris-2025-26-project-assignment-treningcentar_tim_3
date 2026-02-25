@@ -14,6 +14,8 @@ import {
     ChevronLeft,
     ChevronRight,
     Zap,
+    ShoppingBag,
+    Layers
 } from 'lucide-react';
 import { authService } from '../../services/authService';
 
@@ -29,6 +31,8 @@ const navItems: NavItem[] = [
     { label: 'Trainers', path: '/admin/trainers', icon: <UserCheck className="w-5 h-5" /> },
     { label: 'Trainings', path: '/admin/trainings', icon: <Dumbbell className="w-5 h-5" /> },
     { label: 'Schedule', path: '/admin/schedule', icon: <Calendar className="w-5 h-5" /> },
+    { label: 'Packages', path: '/admin/packages', icon: <Layers className="w-5 h-5" /> },
+    { label: 'Offerings', path: '/admin/services', icon: <ShoppingBag className="w-5 h-5" /> },
     { label: 'Reservations', path: '/admin/reservations', icon: <BookOpen className="w-5 h-5" /> },
     { label: 'Memberships', path: '/admin/memberships', icon: <CreditCard className="w-5 h-5" /> },
     { label: 'Payments', path: '/admin/payments', icon: <CreditCard className="w-5 h-5" /> },

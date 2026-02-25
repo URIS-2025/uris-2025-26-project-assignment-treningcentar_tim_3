@@ -102,6 +102,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ConnectionStrings__MembershipDB=Host=membership-db;Port=5432;Database=membership_db;Username=postgres;Password=postgres
+      - Services__AuthService=http://auth-service:8080/
+      - Services__LoggerService=http://logger-service:8080/
     ports:
       - "5118:8080"
     depends_on:

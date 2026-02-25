@@ -16,7 +16,7 @@ namespace MembershipService.ServiceCalls.Auth
         {
             using (HttpClient client = new HttpClient())
             {
-                Uri url = new Uri($"{_configuration["Services:AuthService"]}api/auth/user/{userId}");
+                Uri url = new Uri($"{_configuration["Services:AuthService"]}api/auth/{userId}");
 
                 try
                 {

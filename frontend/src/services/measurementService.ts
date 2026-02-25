@@ -90,4 +90,10 @@ export const measurementService = {
         });
         return handleResponse<void>(res);
     },
+
+    async getAllGuidelines(): Promise<GuidelineDTO[]> {
+        const res = await fetch(GUIDELINE_BASE, { headers: getHeaders() });
+        if (res.status === 204) return [];
+        return handleResponse<GuidelineDTO[]>(res);
+    },
 };

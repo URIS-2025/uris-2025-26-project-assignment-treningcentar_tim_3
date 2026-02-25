@@ -103,6 +103,32 @@ export const reservationService = {
     return response.json();
   },
 
+  async createReservation(userId: string, sessionId: string, token: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/Reservation`, {
+      method: 'POST',
+      headers: getHeaders(token),
+      body: JSON.stringify({ userId, sessionId })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || 'Failed to create reservation');
+    }
+
+    return response.json();
+  },
+
+  async cancelReservation(reservationId: string, token: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/Reservation/${reservationId}`, {
+      method: 'DELETE',
+      headers: getHeaders(token)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to cancel reservation');
+    }
+  },
+
   async getSessionReservations(sessionId: string): Promise<ReservationDto[]> {
     const allReservations = await this.getAllReservations();
     return allReservations.filter(res => res.sessionId === sessionId);

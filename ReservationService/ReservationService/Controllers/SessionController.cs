@@ -61,7 +61,16 @@ namespace ReservationService.Controllers
             if (from > to)
                 return BadRequest("'from' date must be before 'to' date.");
 
-            var sessions = _sessionRepository.GetSessionsByDateRange(from, to, isGroup);
+            Guid? userId = null;
+            var userIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                            ?? User.FindFirst("sub")?.Value;
+            
+            if (Guid.TryParse(userIdStr, out Guid parsedId))
+            {
+                userId = parsedId;
+            }
+
+            var sessions = _sessionRepository.GetSessionsByDateRange(from, to, isGroup, userId);
 
             if (sessions == null || !sessions.Any())
                 return NoContent();

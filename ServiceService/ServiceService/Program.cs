@@ -2,8 +2,6 @@
 using ServiceService.Context;
 using ServiceService.Data;
 using ServiceService.Profiles;
-using AutoMapper;
-using Microsoft.Extensions.Logging;
 using ServiceService.ServiceCalls.Measurement;
 using ServiceService.ServiceCalls.Membership;
 using ServiceService.ServiceCalls.Payment;
@@ -30,15 +28,8 @@ builder.Services.AddHttpClient<ILoggerService, LoggerService>(client =>
     client.Timeout = TimeSpan.FromSeconds(2);
 });
 
-// AutoMapper ali za verziju 16
-var loggerFactory = LoggerFactory.Create(b => b.AddConsole());
-
-var mapperConfig = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new ServiceProfile());
-}, loggerFactory);
-
-builder.Services.AddSingleton(mapperConfig.CreateMapper());
+// ✅ AutoMapper (ispravno za verziju 12+ / .NET 8)
+builder.Services.AddAutoMapper(typeof(ServiceProfile));
 
 builder.Services.AddCors();
 
@@ -54,8 +45,10 @@ app.UseCors(policy =>
     policy.WithOrigins("http://localhost:5173")
           .AllowAnyHeader()
           .AllowAnyMethod());
+
 app.UseAuthorization();
 app.MapControllers();
+
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ServiceContext>();

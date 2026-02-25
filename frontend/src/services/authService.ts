@@ -112,5 +112,36 @@ export const authService = {
             return userRole.includes(requiredRole);
         }
         return userRole === requiredRole;
+    },
+
+    async getUserProfile(userId: string) {
+        const token = this.getToken();
+        const response = await fetch(`${API_BASE_URL}/${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch user profile');
+        return response.json();
+    },
+
+    async updateProfile(dto: { firstName: string, lastName: string, email: string }) {
+        const token = this.getToken();
+        const response = await fetch(`${API_BASE_URL}/profile`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(dto)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Failed to update profile');
+        }
+
+        return response.json();
     }
 };

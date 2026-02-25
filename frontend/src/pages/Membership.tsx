@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, CheckCircle, ArrowUpCircle, Package, Info } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Calendar, CheckCircle, ArrowUpCircle, Package, Info, Loader2 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store';
 import { membershipService } from '../services/membershipService';
+import { paymentService, PaymentMethod, PaymentStatus } from '../services/paymentService';
+import StripePaymentModal from '../components/payment/StripePaymentModal';
 import type { UserMembershipDto, MembershipPackageDto } from '../types/membership';
 
 interface MembershipPageData {
@@ -17,40 +19,45 @@ const Membership: React.FC = () => {
         userMembership: null,
         availablePackages: []
     });
+    const [loading, setLoading] = useState(false);
+    
+    // Stripe Modal State
+    const [stripeSecret, setStripeSecret] = useState<string | null>(null);
+    const [pendingPaymentId, setPendingPaymentId] = useState<string | null>(null);
+    const [selectedPackage, setSelectedPackage] = useState<MembershipPackageDto | null>(null);
 
-    useEffect(() => {
+    const fetchData = useCallback(() => {
         // Fetch Packages
         membershipService.getPackages()
             .then(packages => {
                 setData(prev => ({ ...prev, availablePackages: packages }));
+                
+                // Fetch User Membership
+                if (user?.id && token) {
+                    membershipService.getUserMembership(user.id, token)
+                        .then(realMembership => {
+                            if (realMembership) {
+                                const pkg = packages.find(p => p.packageId === realMembership.packageId);
+                                setData(prev => ({
+                                    ...prev,
+                                    userMembership: {
+                                        ...realMembership,
+                                        packageName: pkg ? pkg.name : 'Active Plan'
+                                    }
+                                }));
+                            } else {
+                                setData(prev => ({ ...prev, userMembership: null }));
+                            }
+                        })
+                        .catch(err => console.error("Error fetching user membership:", err));
+                }
             })
             .catch(error => console.error("Error fetching packages:", error));
-
-        // Fetch User Membership
-        if (user?.id && token) {
-            membershipService.getUserMembership(user.id, token)
-                .then(realMembership => {
-                    if (realMembership) {
-                        setData(prev => {
-                            const pkg = prev.availablePackages.find(p => p.packageId === realMembership.packageId);
-                            return {
-                                ...prev,
-                                userMembership: {
-                                    ...realMembership,
-                                    packageName: pkg ? pkg.name : 'Active Plan'
-                                }
-                            };
-                        });
-                    } else {
-                        setData(prev => ({ ...prev, userMembership: null }));
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching real membership:", error);
-                    setData(prev => ({ ...prev, userMembership: null }));
-                });
-        }
     }, [user?.id, token]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const getStatusLabel = (status: number) => {
         switch (status) {
@@ -70,17 +77,81 @@ const Membership: React.FC = () => {
         });
     };
 
-    const handleUpgrade = (packageName: string) => {
-        console.log(`Upgrading to ${packageName}`);
-        // Logic for upgrade API call would go here
+    const handleUpgrade = async (pkg: MembershipPackageDto) => {
+        if (!user || !token) return;
+        setLoading(true);
+        try {
+            // 1. Create Payment Intent on Backend
+            const payment = await paymentService.createPayment({
+                amount: pkg.price,
+                paymentDate: new Date().toISOString(),
+                method: PaymentMethod.Card,
+                serviceId: pkg.packageId
+            });
+
+            if (payment.clientSecret) {
+                setStripeSecret(payment.clientSecret);
+                setPendingPaymentId(payment.paymentId);
+                setSelectedPackage(pkg);
+            } else {
+                console.error("No clientSecret received from backend", payment);
+                alert("Payment initiation failed: No secure secret received.");
+            }
+        } catch (error: any) {
+            console.error("Payment error:", error);
+            alert(error.message || "Failed to initiate payment");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handlePaymentSuccess = async () => {
+        if (!pendingPaymentId || !selectedPackage || !user || !token) return;
+
+        try {
+            // 1. Update Payment Status to Completed
+            await paymentService.updatePaymentStatus(pendingPaymentId, PaymentStatus.Completed);
+
+            // 2. Create the Membership Record
+            const startDate = new Date();
+            const endDate = new Date();
+            endDate.setDate(startDate.getDate() + selectedPackage.duration);
+
+            await membershipService.createMembership({
+                userId: user.id,
+                packageId: selectedPackage.packageId,
+                status: 1, // Active
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString()
+            }, token);
+
+            alert(`Successfully purchased ${selectedPackage.name}!`);
+            setStripeSecret(null);
+            fetchData();
+        } catch (error: any) {
+            alert("Payment successful but failed to update membership. Please contact support.");
+        }
     };
 
     return (
         <div className="p-8 max-w-7xl mx-auto space-y-12 animate-in fade-in duration-700">
+            {/* Stripe Modal */}
+            {stripeSecret && selectedPackage && (
+                <StripePaymentModal
+                    clientSecret={stripeSecret}
+                    amount={selectedPackage.price}
+                    onSuccess={handlePaymentSuccess}
+                    onClose={() => setStripeSecret(null)}
+                />
+            )}
+
             {/* Page Header */}
-            <div>
-                <h1 className="text-4xl font-black text-amber-950 tracking-tight">Membership</h1>
-                <p className="text-amber-800/60 font-medium">Manage your subscription and packages</p>
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-4xl font-black text-amber-950 tracking-tight">Membership</h1>
+                    <p className="text-amber-800/60 font-medium">Manage your subscription and packages</p>
+                </div>
+                {loading && <div className="flex items-center gap-2 text-amber-600 font-bold text-sm"><Loader2 className="animate-spin w-4 h-4" /> Initiating Payment...</div>}
             </div>
 
             {/* Current Membership Section */}
@@ -186,8 +257,8 @@ const Membership: React.FC = () => {
                                 </div>
 
                                 <button
-                                    onClick={() => handleUpgrade(pkg.name)}
-                                    disabled={isCurrent}
+                                    onClick={() => handleUpgrade(pkg)}
+                                    disabled={isCurrent || loading}
                                     className={`w-full py-4 rounded-2xl font-bold text-sm transition-all shadow-lg ${
                                         isCurrent
                                         ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed shadow-none'

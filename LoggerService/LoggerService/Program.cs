@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using LoggerService.Context;
+﻿using LoggerService.Context;
 using LoggerService.Data;
 using LoggerService.Profiles;
-using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,14 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<LoggerContext>();
 builder.Services.AddScoped<ILoggerRepository, LoggerRepository>();
 
-// AutoMapper ručno 
-var loggerFactory = LoggerFactory.Create(_ => { });
-var mapperConfig = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new LoggerProfile());
-}, loggerFactory);
-
-builder.Services.AddSingleton(mapperConfig.CreateMapper());
+// ✅ AutoMapper ispravno za verziju 12+
+builder.Services.AddAutoMapper(typeof(LoggerProfile));
 
 builder.Services.AddCors();
 
@@ -36,8 +28,10 @@ app.UseCors(policy =>
     policy.WithOrigins("http://localhost:5173")
           .AllowAnyHeader()
           .AllowAnyMethod());
+
 app.UseAuthorization();
 app.MapControllers();
+
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<LoggerContext>();

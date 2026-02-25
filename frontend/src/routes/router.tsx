@@ -7,6 +7,7 @@ import ProtectedRoute from './ProtectedRoute';
 import { Role } from '../types/auth';
 import UserDashboard from '../pages/UserDashboard';
 import Membership from '../pages/Membership';
+import Nutrition from '../pages/Nutrition';
 import Services from '../pages/Services';
 import Sessions from '../pages/Sessions';
 import AdminLayout from '../pages/admin/AdminLayout';
@@ -20,12 +21,15 @@ import AdminMemberships from '../pages/admin/AdminMemberships';
 import AdminPayments from '../pages/admin/AdminPayments';
 import AdminSystemLogs from '../pages/admin/AdminSystemLogs';
 import AdminSettings from '../pages/admin/AdminSettings';
+import AdminServices from '../pages/admin/AdminServices';
+import AdminPackages from '../pages/admin/AdminPackages';
 import TrainerDashboard from '../pages/TrainerDashboard';
 import TrainerSessions from '../pages/TrainerSessions';
 import TrainerClientMeasurements from '../pages/TrainerClientMeasurements';
 import MeasurementAppointments from '../pages/nutritionist/MeasurementAppointments';
 import AppointmentDetails from '../pages/nutritionist/AppointmentDetails';
 import NutritionistHome from '../pages/nutritionist/NutritionistHome';
+import EditProfile from '../pages/EditProfile';
 
 
 
@@ -38,10 +42,17 @@ export const router = createBrowserRouter([
             { path: 'login', element: <Login /> },
             { path: 'register', element: <Register /> },
             {
+                element: <ProtectedRoute />,
+                children: [
+                    { path: 'edit-profile', element: <EditProfile /> }
+                ]
+            },
+            {
                 element: <ProtectedRoute requiredRole={Role.Member} />,
                 children: [
                     { path: 'dashboard', element: <UserDashboard /> },
                     { path: 'membership', element: <Membership /> },
+                    { path: 'nutrition', element: <Nutrition /> },
                     { path: 'services', element: <Services /> },
                     { path: 'sessions', element: <Sessions /> }
                 ]
@@ -76,6 +87,8 @@ export const router = createBrowserRouter([
                     { path: 'trainers', element: <AdminTrainers /> },
                     { path: 'trainings', element: <AdminTrainings /> },
                     { path: 'schedule', element: <AdminSchedule /> },
+                    { path: 'packages', element: <AdminPackages /> },
+                    { path: 'services', element: <AdminServices /> },
                     { path: 'reservations', element: <AdminReservations /> },
                     { path: 'memberships', element: <AdminMemberships /> },
                     { path: 'payments', element: <AdminPayments /> },

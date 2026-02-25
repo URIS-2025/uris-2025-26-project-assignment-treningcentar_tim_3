@@ -9,5 +9,6 @@ namespace PaymentService.Models.DTO.Payment
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
         public PaymentMethod Method { get; set; }
+        public string? ClientSecret { get; set; }
     }
 }

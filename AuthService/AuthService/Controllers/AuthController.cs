@@ -35,7 +35,7 @@ namespace AuthService.Controllers
                 Username = dto.Username,
                 Email = dto.Email,
                 PasswordHash = PasswordHelper.HashPassword(dto.Password),
-                Role = Models.Role.Member, //member
+                Role = (User.IsInRole("Admin") && dto.Role.HasValue) ? dto.Role.Value : Role.Member,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName
             };
@@ -190,6 +190,35 @@ namespace AuthService.Controllers
                 user.Role
             });
         }
-    }
 
+        [HttpPut("profile")]
+        [Authorize]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDTO dto, [FromServices] IAuthHelper authHelper)
+        {
+            // Extract user ID from token
+            var userIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdStr) || !Guid.TryParse(userIdStr, out Guid userId))
+                return Unauthorized("Invalid user identification in token");
+
+            var user = await _repository.GetUserByIdAsync(userId);
+            if (user == null)
+                return NotFound("User not found");
+
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.Email = dto.Email;
+
+            await _repository.UpdateUserAsync(user);
+
+            return Ok(new
+            {
+                user.Id,
+                user.Username,
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Role
+            });
+        }
+    }
 }

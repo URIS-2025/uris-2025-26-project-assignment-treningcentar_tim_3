@@ -34,13 +34,75 @@ export interface AssignMembershipDTO {
     startDate: string;
 }
 
+export interface Package {
+    packageId: string;
+    name: string;
+    description: string;
+    price: number;
+    duration: number;
+    services: string[];
+}
+
+export interface PackageCreateDTO {
+    name: string;
+    description: string;
+    price: number;
+    duration: number;
+    services: string[];
+}
+
 const getHeaders = () => ({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${authService.getToken()}`,
 });
 
 export const membershipAdminService = {
-    // Membership Types
+    // Packages (Membership Plans)
+    async getAllPackages(): Promise<Package[]> {
+        const response = await fetch(`${MEMBERSHIP_API}/packages`, { headers: getHeaders() });
+        if (response.status === 204) return [];
+        if (!response.ok) throw new Error('Failed to fetch packages');
+        return response.json();
+    },
+
+    async createPackage(dto: PackageCreateDTO): Promise<Package> {
+        const response = await fetch(`${MEMBERSHIP_API}/packages`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(dto),
+        });
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(err || 'Failed to create package');
+        }
+        return response.json();
+    },
+
+    async updatePackage(id: string, dto: PackageCreateDTO): Promise<Package> {
+        const response = await fetch(`${MEMBERSHIP_API}/packages/${id}`, {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify(dto),
+        });
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(err || 'Failed to update package');
+        }
+        return response.json();
+    },
+
+    async deletePackage(id: string): Promise<void> {
+        const response = await fetch(`${MEMBERSHIP_API}/packages/${id}`, {
+            method: 'DELETE',
+            headers: getHeaders(),
+        });
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(err || 'Failed to delete package');
+        }
+    },
+
+    // Legacy Membership Types
     async getAllMembershipTypes(): Promise<MembershipType[]> {
         const response = await fetch(`${MEMBERSHIP_API}/MembershipType`, { headers: getHeaders() });
         if (response.status === 204) return [];
@@ -56,24 +118,6 @@ export const membershipAdminService = {
         });
         if (!response.ok) throw new Error('Failed to create membership type');
         return response.json();
-    },
-
-    async updateMembershipType(id: string, dto: MembershipTypeCreateDTO): Promise<MembershipType> {
-        const response = await fetch(`${MEMBERSHIP_API}/MembershipType/${id}`, {
-            method: 'PUT',
-            headers: getHeaders(),
-            body: JSON.stringify(dto),
-        });
-        if (!response.ok) throw new Error('Failed to update membership type');
-        return response.json();
-    },
-
-    async deleteMembershipType(id: string): Promise<void> {
-        const response = await fetch(`${MEMBERSHIP_API}/MembershipType/${id}`, {
-            method: 'DELETE',
-            headers: getHeaders(),
-        });
-        if (!response.ok) throw new Error('Failed to delete membership type');
     },
 
     // Active Memberships
