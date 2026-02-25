@@ -19,7 +19,7 @@ export const authService = {
         }
 
         const data = await response.json();
-        
+
         // Map capitalized keys from backend to lowercase interface keys
         const formattedData: loginResponse = {
             user: data.User || data.user,
@@ -73,10 +73,11 @@ export const authService = {
         if (!token) return null;
         try {
             const decoded = jwtDecode<DecodedToken>(token);
+            const id = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] || decoded.sub || decoded.nameid || '';
             const firstName = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"] || decoded.firstName || '';
             const lastName = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"] || decoded.lastName || '';
             const fullName = firstName && lastName ? `${firstName} ${lastName}` : (decoded.unique_name || 'User');
-            
+
             const rawRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
             const role = (Array.isArray(rawRole) ? rawRole[0] : rawRole) as Role;
 
@@ -106,9 +107,9 @@ export const authService = {
     hasRole(requiredRole: Role): boolean {
         const user = this.getCurrentUser();
         if (!user) return false;
-        
+
         const userRole = user["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || user.role;
-        
+
         if (Array.isArray(userRole)) {
             return userRole.includes(requiredRole);
         }

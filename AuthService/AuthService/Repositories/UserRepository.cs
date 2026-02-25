@@ -42,6 +42,28 @@ namespace AuthService.Repositories
                 return user;
             }
 
+            public async Task<UserEntity?> GetUserByIdAsync(Guid id)
+            {
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == id);
+
+                await Task.Run(() => _logger.CreateLog(
+                    new LogCreationDTO
+                    {
+                        Level = user != null ? LogLevels.Info : LogLevels.Warning,
+                        ServiceName = "AuthService",
+                        Action = "GetUserById",
+                        Message = user != null
+                            ? $"User {id} found"
+                            : $"User {id} not found",
+                        EntityType = "User",
+                        EntityId = user?.Id
+                    }
+                ));
+
+                return user;
+            }
+
             public async Task AddUserAsync(UserEntity user)
             {
                 _context.Users.Add(user);
