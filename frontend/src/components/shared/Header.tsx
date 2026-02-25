@@ -41,6 +41,13 @@ const Header: React.FC = () => {
                                     <a href="/trainer-sessions" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">My Sessions</a>
                                     <a href="/trainer-measurements" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Client Measurements</a>
                                 </>
+                            ) : user.role === 'Receptionist' ? (
+                                <>
+                                    <a href="/receptionist" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Check-In</a>
+                                    <a href="/receptionist/membership" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Membership</a>
+                                    <a href="/receptionist/schedule" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Schedule</a>
+                                    <a href="/receptionist/payment" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Payment</a>
+                                </>
                             ) : (
                                 <>
                                     <a href="/dashboard" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Dashboard</a>

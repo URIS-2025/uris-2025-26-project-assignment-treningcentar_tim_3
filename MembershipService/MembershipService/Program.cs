@@ -58,7 +58,7 @@ builder.Services.AddDbContext<MembershipContext>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5174")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -88,6 +88,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
 
 
 

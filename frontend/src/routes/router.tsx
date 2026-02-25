@@ -4,7 +4,6 @@ import Register from '../pages/Register';
 import App from '../App';
 import ProtectedRoute from './ProtectedRoute';
 import { Role } from '../types/auth';
-import { authService } from '../services/authService';
 import UserDashboard from '../pages/UserDashboard';
 import Membership from '../pages/Membership';
 import Services from '../pages/Services';
@@ -23,6 +22,11 @@ import AdminSettings from '../pages/admin/AdminSettings';
 import TrainerDashboard from '../pages/TrainerDashboard';
 import TrainerSessions from '../pages/TrainerSessions';
 import TrainerClientMeasurements from '../pages/TrainerClientMeasurements';
+import ReceptionistLayout from '../pages/receptionist/ReceptionistLayout';
+import ReceptionistCheckIn from '../pages/receptionist/ReceptionistCheckIn';
+import ReceptionistMembership from '../pages/receptionist/ReceptionistMembership';
+import ReceptionistSchedule from '../pages/receptionist/ReceptionistSchedule';
+import ReceptionistPayment from '../pages/receptionist/ReceptionistPayment';
 
 export const router = createBrowserRouter([
     {
@@ -68,6 +72,21 @@ export const router = createBrowserRouter([
                     { path: 'payments', element: <AdminPayments /> },
                     { path: 'logs', element: <AdminSystemLogs /> },
                     { path: 'settings', element: <AdminSettings /> }
+                ]
+            }
+        ]
+    },
+    {
+        path: '/receptionist',
+        element: <ProtectedRoute requiredRole={Role.Receptionist} />,
+        children: [
+            {
+                element: <ReceptionistLayout />,
+                children: [
+                    { index: true, element: <ReceptionistCheckIn /> },
+                    { path: 'membership', element: <ReceptionistMembership /> },
+                    { path: 'schedule', element: <ReceptionistSchedule /> },
+                    { path: 'payment', element: <ReceptionistPayment /> }
                 ]
             }
         ]
