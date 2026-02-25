@@ -1,10 +1,10 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
+import RoleRedirect from './RoleRedirect';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import App from '../App';
 import ProtectedRoute from './ProtectedRoute';
 import { Role } from '../types/auth';
-import { authService } from '../services/authService';
 import UserDashboard from '../pages/UserDashboard';
 import Membership from '../pages/Membership';
 import Services from '../pages/Services';
@@ -23,13 +23,16 @@ import AdminSettings from '../pages/admin/AdminSettings';
 import TrainerDashboard from '../pages/TrainerDashboard';
 import TrainerSessions from '../pages/TrainerSessions';
 import TrainerClientMeasurements from '../pages/TrainerClientMeasurements';
+import MeasurementAppointments from '../pages/nutritionist/MeasurementAppointments';
+import AppointmentDetails from '../pages/nutritionist/AppointmentDetails';
+import NutritionistHome from '../pages/nutritionist/NutritionistHome';
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
         children: [
-            { index: true, element: <Navigate to="/dashboard" replace /> },
+            { index: true, element: <RoleRedirect /> },
             { path: 'login', element: <Login /> },
             { path: 'register', element: <Register /> },
             {
@@ -47,6 +50,14 @@ export const router = createBrowserRouter([
                     { path: 'trainer-dashboard', element: <TrainerDashboard /> },
                     { path: 'trainer-sessions', element: <TrainerSessions /> },
                     { path: 'trainer-measurements', element: <TrainerClientMeasurements /> }
+                ]
+            },
+            {
+                element: <ProtectedRoute requiredRole={Role.Nutritionist} />,
+                children: [
+                    { path: 'nutritionist', element: <NutritionistHome /> },
+                    { path: 'nutritionist/measurement-appointments', element: <MeasurementAppointments /> },
+                    { path: 'nutritionist/measurement-appointments/:id', element: <AppointmentDetails /> }
                 ]
             }
         ]

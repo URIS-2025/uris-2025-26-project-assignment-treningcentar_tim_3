@@ -73,6 +73,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ConnectionStrings__DefaultConnection=Host=measurment-db;Port=5432;Database=training_center_measurement;Username=postgres;Password=postgres
+      # Internal Docker URLs for Service-to-Service communication
+      - Services__LoggerServiceBaseUrl=http://logger-service:8080/
+      - Services__ServiceServiceBaseUrl=http://service-service:8080/
     ports:
       - "5225:8080"
     depends_on:
