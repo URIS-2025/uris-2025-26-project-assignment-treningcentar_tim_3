@@ -14,7 +14,10 @@ const ProtectedRoute = ({ requiredRole }: ProtectedRouteProps) => {
   }
 
   if (requiredRole && !authService.hasRole(requiredRole)) {
-    // If user is authenticated but doesn't have the role, redirect to a default authorized page or home
+    // If user is authenticated but doesn't have the role, redirect to a default authorized page
+    if (authService.hasRole(Role.Admin)) {
+      return <Navigate to="/admin" replace />;
+    }
     return <Navigate to="/" replace />;
   }
 

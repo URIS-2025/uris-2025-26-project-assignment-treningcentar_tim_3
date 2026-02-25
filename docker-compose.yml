@@ -20,6 +20,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ConnectionStrings__AuthDb=Host=auth-db;Port=5432;Database=AuthDb;Username=postgres;Password=postgres
+      - Services__LoggerService=http://logger-service:8080/
     ports:
       - "5220:8080"
     depends_on:
