@@ -22,6 +22,7 @@ namespace AuthService.Repositories
         Task<List<UserEntity>> GetAllUsersAsync();
 
         Task UpdateUserAsync(UserEntity user);
+        Task DeleteUserAsync(Guid id);
     }
 }
 

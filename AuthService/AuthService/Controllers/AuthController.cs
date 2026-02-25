@@ -81,6 +81,61 @@ namespace AuthService.Controllers
             return Ok($"Role of {user.Username} updated to {dto.NewRole}");
         }
 
+        [HttpGet("users")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _repository.GetAllUsersAsync();
+            var dtoList = users.Select(u => new
+            {
+                Id = u.Id.ToString(),
+                u.Username,
+                u.Email,
+                u.FirstName,
+                u.LastName,
+                Role = u.Role.ToString()
+            });
+
+            return Ok(dtoList);
+        }
+
+        [HttpPut("users/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserDTO dto)
+        {
+            var users = await _repository.GetAllUsersAsync();
+            var user = users.FirstOrDefault(u => u.Id.ToString() == id);
+
+            if (user == null)
+                return NotFound("User not found");
+
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.Email = dto.Email;
+            user.Username = dto.Username;
+
+            await _repository.UpdateUserAsync(user);
+
+            return Ok("User updated successfully");
+        }
+
+        [HttpDelete("users/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            if (!Guid.TryParse(id, out Guid guid))
+                return BadRequest("Invalid ID format");
+
+            var users = await _repository.GetAllUsersAsync();
+            var user = users.FirstOrDefault(u => u.Id == guid);
+
+            if (user == null)
+                return NotFound("User not found");
+
+            await _repository.DeleteUserAsync(guid);
+            return Ok("User deleted successfully");
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {

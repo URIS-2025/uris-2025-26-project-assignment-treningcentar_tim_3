@@ -40,6 +40,8 @@ var mapperConfig = new MapperConfiguration(cfg =>
 
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -48,7 +50,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(policy =>
+    policy.WithOrigins("http://localhost:5173")
+          .AllowAnyHeader()
+          .AllowAnyMethod());
 app.UseAuthorization();
 app.MapControllers();
 using (var scope = app.Services.CreateScope())
