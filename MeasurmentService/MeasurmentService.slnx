@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="MeasurmentService/MeasurmentService.csproj" />
+  <Project Path="MeasurmentService.Tests/MeasurmentService.Tests.csproj" />
 </Solution>
