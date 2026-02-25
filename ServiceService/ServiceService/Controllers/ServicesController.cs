@@ -8,7 +8,6 @@ using ServiceService.ServiceCalls.Logger.DTO;
 
 namespace ServiceService.Controllers
 {
-    // [Authorize] ubaciti kad se uradi 
     [ApiController]
     [Route("api/service")]
     public class ServicesController : ControllerBase
