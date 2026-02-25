@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DollarSign, AlertTriangle } from 'lucide-react';
+import { DollarSign, AlertTriangle, Search } from 'lucide-react';
 import { authService } from '../../services/authService';
 
 interface Payment {
@@ -51,67 +51,72 @@ const AdminPayments: React.FC = () => {
     const total = filtered.reduce((sum, p) => sum + (p.amount || 0), 0);
 
     const statusBadge = (s: string) => {
-        if (s === 'Completed' || s === 'Success') return 'bg-emerald-500/20 text-emerald-400';
-        if (s === 'Failed') return 'bg-rose-500/20 text-rose-400';
-        if (s === 'Pending') return 'bg-amber-500/20 text-amber-400';
-        return 'bg-neutral-700 text-neutral-300';
+        if (s === 'Completed' || s === 'Success') return 'bg-emerald-100 text-emerald-700';
+        if (s === 'Failed') return 'bg-rose-100 text-rose-700';
+        if (s === 'Pending') return 'bg-amber-100 text-amber-700';
+        return 'bg-neutral-100 text-neutral-600';
     };
 
     return (
-        <div className="p-8 max-w-7xl mx-auto space-y-6">
-            <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-teal-500/10">
-                    <DollarSign className="w-6 h-6 text-teal-400" />
-                </div>
-                <div>
-                    <h1 className="text-2xl font-black text-white">Payments</h1>
-                    <p className="text-neutral-500 text-sm">{payments.length} transactions · Total: ${total.toFixed(2)}</p>
+        <div className="p-8 max-w-7xl mx-auto space-y-8">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-xl bg-amber-100">
+                        <DollarSign className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div>
+                        <h1 className="text-2xl font-black text-amber-950 tracking-tight">Payments</h1>
+                        <p className="text-amber-900/40 text-sm font-medium">{payments.length} transactions · Volume: <span className="text-emerald-600 font-bold">${total.toFixed(2)}</span></p>
+                    </div>
                 </div>
             </div>
 
             {error && (
-                <div className="flex items-center gap-3 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-400 text-sm">
+                <div className="flex items-center gap-3 p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-700 text-sm font-medium animate-in fade-in">
                     <AlertTriangle className="w-4 h-4 flex-shrink-0" /> {error}
                 </div>
             )}
 
-            <input
-                className="w-full bg-neutral-900 border border-white/5 rounded-xl px-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
-                placeholder="Search by user, status, or ID..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-            />
+            <div className="relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-900/30 group-focus-within:text-amber-500 transition-colors" />
+                <input
+                    className="w-full bg-white border-2 border-amber-100 rounded-2xl pl-11 pr-4 py-3 text-amber-950 text-sm placeholder-amber-900/20 focus:outline-none focus:border-amber-400 focus:ring-4 focus:ring-amber-500/5 transition-all shadow-sm"
+                    placeholder="Search by user, status, or transaction ID..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+            </div>
 
-            <div className="bg-neutral-900 border border-white/5 rounded-2xl overflow-hidden">
+            <div className="bg-white border border-amber-100 rounded-[2.5rem] overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-white/5">
+                            <tr className="border-b border-amber-50">
                                 {['ID', 'User', 'Membership', 'Amount', 'Status', 'Date'].map((h) => (
-                                    <th key={h} className="text-left px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">{h}</th>
+                                    <th key={h} className="text-left px-8 py-5 text-xs font-black text-amber-900/40 uppercase tracking-widest">{h}</th>
                                 ))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5">
+                        <tbody className="divide-y divide-amber-50">
                             {loading ? (
                                 Array.from({ length: 6 }).map((_, i) => (
                                     <tr key={i}>{Array.from({ length: 6 }).map((_, j) => (
-                                        <td key={j} className="px-5 py-4"><div className="h-4 bg-neutral-800 rounded animate-pulse" /></td>
+                                        <td key={j} className="px-8 py-5"><div className="h-4 bg-amber-50 rounded-full animate-pulse" /></td>
                                     ))}</tr>
                                 ))
                             ) : filtered.length === 0 ? (
-                                <tr><td colSpan={6} className="text-center py-12 text-neutral-500">No payments found</td></tr>
+                                <tr><td colSpan={6} className="text-center py-20 text-amber-900/40 font-bold uppercase tracking-widest text-xs">No transactions recorded</td></tr>
                             ) : (
                                 filtered.map((p) => (
-                                    <tr key={p.id} className="hover:bg-white/2 transition-colors">
-                                        <td className="px-5 py-4 font-mono text-xs text-neutral-400">{p.id?.slice(0, 8)}…</td>
-                                        <td className="px-5 py-4 text-white font-semibold">{p.username || p.userId?.slice(0, 8) + '…'}</td>
-                                        <td className="px-5 py-4 text-neutral-300">{p.membershipTypeName || '—'}</td>
-                                        <td className="px-5 py-4 text-emerald-400 font-bold">${p.amount?.toFixed(2)} {p.currency}</td>
-                                        <td className="px-5 py-4">
-                                            <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${statusBadge(p.status)}`}>{p.status}</span>
+                                    <tr key={p.id} className="hover:bg-amber-50/50 transition-colors">
+                                        <td className="px-8 py-5 font-mono text-[10px] text-amber-900/30">{p.id?.slice(0, 8)}…</td>
+                                        <td className="px-8 py-5 text-amber-950 font-bold">{p.username || p.userId?.slice(0, 8)}</td>
+                                        <td className="px-8 py-5 text-amber-900/70 font-medium">{p.membershipTypeName || 'One-time Fee'}</td>
+                                        <td className="px-8 py-5 text-emerald-600 font-black">${p.amount?.toFixed(2)} <span className="text-[10px] font-bold opacity-50">{p.currency}</span></td>
+                                        <td className="px-8 py-5">
+                                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${statusBadge(p.status)}`}>{p.status}</span>
                                         </td>
-                                        <td className="px-5 py-4 text-neutral-400">
+                                        <td className="px-8 py-5 text-amber-900/40 font-medium">
                                             {p.createdAt ? new Date(p.createdAt).toLocaleDateString() : '—'}
                                         </td>
                                     </tr>

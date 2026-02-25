@@ -11,27 +11,27 @@ type SortKey = keyof AdminUser;
 type SortDir = 'asc' | 'desc';
 
 const Modal: React.FC<{ title: string; onClose: () => void; children: React.ReactNode }> = ({ title, onClose, children }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div className="bg-neutral-900 border border-white/10 rounded-2xl w-full max-w-md mx-4 shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-                <h3 className="text-white font-bold text-lg">{title}</h3>
-                <button onClick={onClose} className="text-neutral-400 hover:text-white transition-colors">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-amber-950/20 backdrop-blur-sm">
+        <div className="bg-white border border-amber-100 rounded-[2rem] w-full max-w-md mx-4 shadow-2xl animate-in zoom-in duration-300">
+            <div className="flex items-center justify-between px-8 py-6 border-b border-amber-50">
+                <h3 className="text-amber-950 font-black text-xl tracking-tight">{title}</h3>
+                <button onClick={onClose} className="p-2 rounded-full hover:bg-amber-50 text-amber-900/40 hover:text-amber-600 transition-all">
                     <X className="w-5 h-5" />
                 </button>
             </div>
-            <div className="p-6">{children}</div>
+            <div className="p-8">{children}</div>
         </div>
     </div>
 );
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
     <div className="space-y-1.5">
-        <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">{label}</label>
+        <label className="text-xs font-bold text-amber-900/60 uppercase tracking-widest ml-1">{label}</label>
         {children}
     </div>
 );
 
-const inputCls = 'w-full bg-neutral-800 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors';
+const inputCls = 'w-full bg-amber-50/30 border-2 border-amber-100 rounded-2xl px-4 py-2.5 text-amber-950 text-sm placeholder-amber-900/20 focus:outline-none focus:border-amber-400 focus:ring-4 focus:ring-amber-500/10 transition-all';
 
 const AdminUsers: React.FC = () => {
     const [users, setUsers] = useState<AdminUser[]>([]);
@@ -98,20 +98,20 @@ const AdminUsers: React.FC = () => {
 
     const SortIcon: React.FC<{ col: SortKey }> = ({ col }) => (
         <span className="inline-flex flex-col ml-1">
-            <ChevronUp className={`w-2.5 h-2.5 ${sortKey === col && sortDir === 'asc' ? 'text-amber-400' : 'text-neutral-600'}`} />
-            <ChevronDown className={`w-2.5 h-2.5 ${sortKey === col && sortDir === 'desc' ? 'text-amber-400' : 'text-neutral-600'}`} />
+            <ChevronUp className={`w-2.5 h-2.5 ${sortKey === col && sortDir === 'asc' ? 'text-amber-600' : 'text-amber-200'}`} />
+            <ChevronDown className={`w-2.5 h-2.5 ${sortKey === col && sortDir === 'desc' ? 'text-amber-600' : 'text-amber-200'}`} />
         </span>
     );
 
     const roleBadge = (role: string) => {
         const map: Record<string, string> = {
-            Admin: 'bg-amber-500/20 text-amber-400',
-            Trainer: 'bg-blue-500/20 text-blue-400',
-            Member: 'bg-emerald-500/20 text-emerald-400',
-            Nutritionist: 'bg-purple-500/20 text-purple-400',
-            Receptionist: 'bg-rose-500/20 text-rose-400',
+            Admin: 'bg-amber-100 text-amber-700',
+            Trainer: 'bg-blue-100 text-blue-700',
+            Member: 'bg-emerald-100 text-emerald-700',
+            Nutritionist: 'bg-purple-100 text-purple-700',
+            Receptionist: 'bg-rose-100 text-rose-700',
         };
-        return map[role] || 'bg-neutral-700 text-neutral-300';
+        return map[role] || 'bg-neutral-100 text-neutral-600';
     };
 
     // Handlers
@@ -167,51 +167,51 @@ const AdminUsers: React.FC = () => {
     return (
         <div className="p-8 max-w-7xl mx-auto space-y-6">
             {toast && (
-                <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-500 text-white px-5 py-3 rounded-xl shadow-xl font-semibold text-sm animate-in fade-in">
+                <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-sm animate-in slide-in-from-right-full duration-300">
                     <Check className="w-4 h-4" /> {toast}
                 </div>
             )}
 
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-xl bg-blue-500/10">
-                        <Users className="w-6 h-6 text-blue-400" />
+                    <div className="p-2 rounded-xl bg-amber-100">
+                        <Users className="w-6 h-6 text-amber-600" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-black text-white">Users</h1>
-                        <p className="text-neutral-500 text-sm">{users.length} total users</p>
+                        <h1 className="text-2xl font-black text-amber-950">Users</h1>
+                        <p className="text-amber-900/40 text-sm font-medium">{users.length} total users</p>
                     </div>
                 </div>
                 <button
                     onClick={() => setShowCreate(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold rounded-xl transition-colors"
+                    className="flex items-center gap-2 px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white text-sm font-bold rounded-2xl transition-all shadow-lg shadow-amber-600/20 active:scale-95"
                 >
                     <Plus className="w-4 h-4" /> Add User
                 </button>
             </div>
 
             {error && (
-                <div className="flex items-center gap-3 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-400 text-sm">
+                <div className="flex items-center gap-3 p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-700 text-sm font-medium animate-in fade-in">
                     <AlertTriangle className="w-4 h-4 flex-shrink-0" />
                     {error}
                 </div>
             )}
 
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+            <div className="relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-900/30 group-focus-within:text-amber-500 transition-colors" />
                 <input
-                    className="w-full bg-neutral-900 border border-white/5 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
-                    placeholder="Search..."
+                    className="w-full bg-white border-2 border-amber-100 rounded-2xl pl-11 pr-4 py-3 text-amber-950 text-sm placeholder-amber-900/20 focus:outline-none focus:border-amber-400 focus:ring-4 focus:ring-amber-500/5 transition-all shadow-sm"
+                    placeholder="Search users..."
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
                 />
             </div>
 
-            <div className="bg-neutral-900 border border-white/5 rounded-2xl overflow-hidden">
+            <div className="bg-white border border-amber-100 rounded-[2rem] overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-white/5">
+                            <tr className="border-b border-amber-50">
                                 {[
                                     { key: 'username' as SortKey, label: 'Username' },
                                     { key: 'firstName' as SortKey, label: 'First Name' },
@@ -221,40 +221,40 @@ const AdminUsers: React.FC = () => {
                                 ].map(({ key, label }) => (
                                     <th
                                         key={key}
-                                        className="text-left px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider cursor-pointer hover:text-neutral-300 transition-colors"
+                                        className="text-left px-6 py-5 text-xs font-black text-amber-900/40 uppercase tracking-widest cursor-pointer hover:text-amber-600 transition-colors"
                                         onClick={() => handleSort(key)}
                                     >
                                         <span className="flex items-center gap-1">{label}<SortIcon col={key} /></span>
                                     </th>
                                 ))}
-                                <th className="text-right px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">Actions</th>
+                                <th className="text-right px-6 py-5 text-xs font-black text-amber-900/40 uppercase tracking-widest">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5">
+                        <tbody className="divide-y divide-amber-50">
                             {loading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i}>
                                         {Array.from({ length: 6 }).map((_, j) => (
-                                            <td key={j} className="px-5 py-4"><div className="h-4 bg-neutral-800 rounded animate-pulse" /></td>
+                                            <td key={j} className="px-6 py-5"><div className="h-4 bg-amber-50 rounded-full animate-pulse" /></td>
                                         ))}
                                     </tr>
                                 ))
                             ) : paginated.length === 0 ? (
-                                <tr><td colSpan={6} className="text-center py-12 text-neutral-500">No users found</td></tr>
+                                <tr><td colSpan={6} className="text-center py-16 text-amber-900/40 font-medium">No users found</td></tr>
                             ) : (
                                 paginated.map((u) => (
-                                    <tr key={u.id} className="hover:bg-white/2 transition-colors">
-                                        <td className="px-5 py-4 font-semibold text-white">{u.username}</td>
-                                        <td className="px-5 py-4 text-neutral-300">{u.firstName}</td>
-                                        <td className="px-5 py-4 text-neutral-300">{u.lastName}</td>
-                                        <td className="px-5 py-4 text-neutral-400">{u.email}</td>
-                                        <td className="px-5 py-4">
-                                            <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${roleBadge(u.role)}`}>{u.role}</span>
+                                    <tr key={u.id} className="hover:bg-amber-50/50 transition-colors group">
+                                        <td className="px-6 py-5 font-bold text-amber-950">{u.username}</td>
+                                        <td className="px-6 py-5 text-amber-900/70 font-medium">{u.firstName}</td>
+                                        <td className="px-6 py-5 text-amber-900/70 font-medium">{u.lastName}</td>
+                                        <td className="px-6 py-5 text-amber-900/50 font-medium">{u.email}</td>
+                                        <td className="px-6 py-5">
+                                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${roleBadge(u.role)}`}>{u.role}</span>
                                         </td>
-                                        <td className="px-5 py-4 text-right">
-                                            <div className="flex justify-end gap-2">
-                                                <button onClick={() => openEdit(u)} className="p-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><Edit2 className="w-4 h-4" /></button>
-                                                <button onClick={() => setDeleteUser(u)} className="p-1.5 rounded-lg text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"><Trash2 className="w-4 h-4" /></button>
+                                        <td className="px-6 py-5 text-right">
+                                            <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button onClick={() => openEdit(u)} className="p-2 rounded-xl text-amber-900/40 hover:text-blue-600 hover:bg-blue-50 transition-all"><Edit2 className="w-4 h-4" /></button>
+                                                <button onClick={() => setDeleteUser(u)} className="p-2 rounded-xl text-amber-900/40 hover:text-rose-600 hover:bg-rose-50 transition-all"><Trash2 className="w-4 h-4" /></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -265,11 +265,11 @@ const AdminUsers: React.FC = () => {
                 </div>
 
                 {totalPages > 1 && (
-                    <div className="flex items-center justify-between px-5 py-4 border-t border-white/5">
-                        <span className="text-xs text-neutral-500">Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} of {filtered.length}</span>
-                        <div className="flex gap-1">
+                    <div className="flex items-center justify-between px-8 py-5 border-t border-amber-50 bg-amber-50/20">
+                        <span className="text-xs font-bold text-amber-900/40 uppercase tracking-widest">Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} of {filtered.length}</span>
+                        <div className="flex gap-2">
                             {Array.from({ length: totalPages }).map((_, i) => (
-                                <button key={i} onClick={() => setPage(i + 1)} className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${page === i + 1 ? 'bg-amber-500 text-white' : 'text-neutral-400 hover:bg-white/5'}`}>{i + 1}</button>
+                                <button key={i} onClick={() => setPage(i + 1)} className={`w-9 h-9 rounded-xl text-xs font-black transition-all ${page === i + 1 ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/20' : 'text-amber-900/40 hover:bg-white hover:text-amber-600'}`}>{i + 1}</button>
                             ))}
                         </div>
                     </div>
@@ -278,8 +278,8 @@ const AdminUsers: React.FC = () => {
 
             {showCreate && (
                 <Modal title="Create New User" onClose={() => setShowCreate(false)}>
-                    <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-6">
+                        <div className="grid grid-cols-2 gap-4">
                             <Field label="First Name">
                                 <input className={inputCls} placeholder="John" value={createForm.firstName}
                                     onChange={(e) => setCreateForm(prev => ({ ...prev, firstName: e.target.value }))} />
@@ -307,9 +307,9 @@ const AdminUsers: React.FC = () => {
                                 {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
                             </select>
                         </Field>
-                        <div className="flex gap-3 pt-2">
-                            <button onClick={() => setShowCreate(false)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
-                            <button onClick={handleCreate} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold transition-colors disabled:opacity-50">{formLoading ? 'Creating...' : 'Create User'}</button>
+                        <div className="flex gap-4 pt-4">
+                            <button onClick={() => setShowCreate(false)} className="flex-1 py-4 rounded-2xl border-2 border-amber-100 text-amber-900/60 text-sm font-bold hover:bg-amber-50 transition-all">Cancel</button>
+                            <button onClick={handleCreate} disabled={formLoading} className="flex-1 py-4 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-black transition-all shadow-lg shadow-amber-600/20 disabled:opacity-50">{formLoading ? 'Creating...' : 'Create'}</button>
                         </div>
                     </div>
                 </Modal>
@@ -317,8 +317,8 @@ const AdminUsers: React.FC = () => {
 
             {editUser && (
                 <Modal title="Edit User" onClose={() => setEditUser(null)}>
-                    <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-6">
+                        <div className="grid grid-cols-2 gap-4">
                             <Field label="First Name">
                                 <input className={inputCls} value={editForm.firstName}
                                     onChange={(e) => setEditForm(prev => ({ ...prev, firstName: e.target.value }))} />
@@ -336,9 +336,9 @@ const AdminUsers: React.FC = () => {
                             <input className={inputCls} type="email" value={editForm.email}
                                 onChange={(e) => setEditForm(prev => ({ ...prev, email: e.target.value }))} />
                         </Field>
-                        <div className="flex gap-3 pt-2">
-                            <button onClick={() => setEditUser(null)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
-                            <button onClick={handleUpdate} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-white text-sm font-bold transition-colors disabled:opacity-50">{formLoading ? 'Saving...' : 'Save Changes'}</button>
+                        <div className="flex gap-4 pt-4">
+                            <button onClick={() => setEditUser(null)} className="flex-1 py-4 rounded-2xl border-2 border-amber-100 text-amber-900/60 text-sm font-bold hover:bg-amber-50 transition-all">Cancel</button>
+                            <button onClick={handleUpdate} disabled={formLoading} className="flex-1 py-4 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-black transition-all shadow-lg shadow-amber-600/20 disabled:opacity-50">{formLoading ? 'Saving...' : 'Save'}</button>
                         </div>
                     </div>
                 </Modal>
@@ -346,14 +346,17 @@ const AdminUsers: React.FC = () => {
 
             {deleteUser && (
                 <Modal title="Delete User" onClose={() => setDeleteUser(null)}>
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-3 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl">
-                            <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0" />
-                            <p className="text-sm text-rose-300">Are you sure you want to delete <strong>{deleteUser.username}</strong>?</p>
+                    <div className="space-y-6 text-center">
+                        <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-2">
+                            <AlertTriangle className="w-10 h-10 text-rose-500" />
                         </div>
-                        <div className="flex gap-3">
-                            <button onClick={() => setDeleteUser(null)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
-                            <button onClick={handleDelete} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white text-sm font-bold transition-colors disabled:opacity-50">{formLoading ? 'Deleting...' : 'Delete'}</button>
+                        <div>
+                            <p className="text-amber-950 font-black text-xl mb-2">Are you sure?</p>
+                            <p className="text-amber-900/50 font-medium">You are about to delete user <strong className="text-amber-950">{deleteUser.username}</strong>. This action cannot be undone.</p>
+                        </div>
+                        <div className="flex gap-4 pt-2">
+                            <button onClick={() => setDeleteUser(null)} className="flex-1 py-4 rounded-2xl border-2 border-amber-100 text-amber-900/60 text-sm font-bold hover:bg-amber-50 transition-all">Cancel</button>
+                            <button onClick={handleDelete} disabled={formLoading} className="flex-1 py-4 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white text-sm font-black transition-all shadow-lg shadow-rose-600/20 disabled:opacity-50">{formLoading ? 'Deleting...' : 'Delete'}</button>
                         </div>
                     </div>
                 </Modal>

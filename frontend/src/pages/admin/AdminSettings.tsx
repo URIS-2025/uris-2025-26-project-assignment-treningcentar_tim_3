@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Settings, AlertTriangle, Check, ShieldCheck } from 'lucide-react';
+import { Settings, AlertTriangle, Check, ShieldCheck, Search } from 'lucide-react';
 import { adminService, type AdminUser } from '../../services/adminService';
 
 const ROLES = ['Member', 'Trainer', 'Nutritionist', 'Receptionist', 'Admin'];
 
 const ROLE_COLORS: Record<string, string> = {
-    Admin: 'text-amber-400',
-    Trainer: 'text-blue-400',
-    Member: 'text-emerald-400',
-    Nutritionist: 'text-purple-400',
-    Receptionist: 'text-rose-400',
+    Admin: 'text-amber-600',
+    Trainer: 'text-blue-600',
+    Member: 'text-emerald-600',
+    Nutritionist: 'text-purple-600',
+    Receptionist: 'text-rose-600',
 };
 
 const AdminSettings: React.FC = () => {
@@ -65,107 +65,114 @@ const AdminSettings: React.FC = () => {
     );
 
     return (
-        <div className="p-8 max-w-4xl mx-auto space-y-6">
+        <div className="p-8 max-w-5xl mx-auto space-y-6">
             {toast && (
-                <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-500 text-white px-5 py-3 rounded-xl shadow-xl font-semibold text-sm">
+                <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-600 text-white px-5 py-3 rounded-[1.2rem] shadow-xl font-bold text-sm animate-in slide-in-from-right-full duration-300">
                     <Check className="w-4 h-4" /> {toast}
                 </div>
             )}
 
             <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-neutral-700/50">
-                    <Settings className="w-6 h-6 text-neutral-300" />
+                <div className="p-2 rounded-xl bg-amber-100">
+                    <Settings className="w-6 h-6 text-amber-600" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-black text-white">Settings</h1>
-                    <p className="text-neutral-500 text-sm">Role & access management</p>
+                    <h1 className="text-2xl font-black text-amber-950">Settings</h1>
+                    <p className="text-amber-900/40 text-sm font-medium">Role & access management</p>
                 </div>
             </div>
 
             {/* Info banner */}
-            <div className="flex items-start gap-3 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-                <ShieldCheck className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-amber-300">
-                    <strong>Role Management</strong> — Only Admin users can change roles. Assigning the Admin role grants full system access.
-                    Role changes take effect immediately on next login.
+            <div className="flex items-start gap-3 p-5 bg-amber-50 border border-amber-100 rounded-[1.5rem] shadow-sm">
+                <ShieldCheck className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-amber-900/70 font-medium leading-relaxed">
+                    <strong className="text-amber-950 font-black uppercase tracking-wider text-[10px] block mb-1">Security Notice</strong>
+                    Only Admin users can change roles. Assigning the Admin role grants full system access.
+                    Changes take effect immediately on next login.
                 </div>
             </div>
 
             {error && (
-                <div className="flex items-center gap-3 p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-400 text-sm">
+                <div className="flex items-center gap-3 p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-700 text-sm font-medium">
                     <AlertTriangle className="w-4 h-4 flex-shrink-0" /> {error}
                 </div>
             )}
 
-            <div className="relative">
+            <div className="relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-900/30 group-focus-within:text-amber-500 transition-colors" />
                 <input
-                    className="w-full bg-neutral-900 border border-white/5 rounded-xl pl-4 pr-10 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-white border-2 border-amber-100 rounded-2xl pl-11 pr-4 py-3 text-amber-950 text-sm placeholder-amber-900/20 focus:outline-none focus:border-amber-400 focus:ring-4 focus:ring-amber-500/5 transition-all shadow-sm"
                     placeholder="Search users by name, username or email..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
 
-            <div className="bg-neutral-900 border border-white/5 rounded-2xl overflow-hidden">
-                <div className="px-5 py-4 border-b border-white/5">
-                    <h2 className="text-white font-bold">User Roles</h2>
-                    <p className="text-neutral-500 text-sm">Change user roles to control system access</p>
+            <div className="bg-white border border-amber-100 rounded-[2rem] overflow-hidden shadow-sm">
+                <div className="px-8 py-5 border-b border-amber-50 flex items-center justify-between bg-amber-50/10">
+                    <div>
+                        <h2 className="text-amber-950 font-black">User Roles</h2>
+                        <p className="text-amber-900/40 text-[10px] font-black uppercase tracking-widest mt-0.5">Permissions Control</p>
+                    </div>
+                    <span className="text-[10px] font-black text-amber-600 bg-amber-100 px-3 py-1 rounded-full uppercase tracking-widest">
+                        {filteredUsers.length} Users Found
+                    </span>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-white/5">
-                                <th className="text-left px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">User</th>
-                                <th className="text-left px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">Email</th>
-                                <th className="text-left px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">Current Role</th>
-                                <th className="text-left px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">New Role</th>
-                                <th className="text-right px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">Apply</th>
+                            <tr className="border-b border-amber-50">
+                                <th className="text-left px-8 py-4 text-xs font-black text-amber-900/40 uppercase tracking-widest">User</th>
+                                <th className="text-left px-8 py-4 text-xs font-black text-amber-900/40 uppercase tracking-widest">Email</th>
+                                <th className="text-left px-8 py-4 text-xs font-black text-amber-900/40 uppercase tracking-widest">Current Role</th>
+                                <th className="text-left px-8 py-4 text-xs font-black text-amber-900/40 uppercase tracking-widest">New Role</th>
+                                <th className="text-right px-8 py-4 text-xs font-black text-amber-900/40 uppercase tracking-widest">Apply</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5">
+                        <tbody className="divide-y divide-amber-50">
                             {loading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i}>{Array.from({ length: 5 }).map((_, j) => (
-                                        <td key={j} className="px-5 py-4"><div className="h-4 bg-neutral-800 rounded animate-pulse" /></td>
+                                        <td key={j} className="px-8 py-5"><div className="h-4 bg-amber-50 rounded-full animate-pulse" /></td>
                                     ))}</tr>
                                 ))
                             ) : filteredUsers.length === 0 ? (
-                                <tr><td colSpan={5} className="text-center py-12 text-neutral-500">No users match your search</td></tr>
+                                <tr><td colSpan={5} className="text-center py-16 text-amber-900/40 font-bold">No users match your search</td></tr>
                             ) : (
                                 filteredUsers.map((u) => {
                                     const pending = pendingRoles[u.username];
                                     const hasChange = pending && pending !== u.role;
                                     return (
-                                        <tr key={u.id} className="hover:bg-white/2 transition-colors">
-                                            <td className="px-5 py-4">
+                                        <tr key={u.id} className="hover:bg-amber-50/50 transition-colors group">
+                                            <td className="px-8 py-5">
                                                 <div>
-                                                    <p className="text-white font-semibold">{u.username}</p>
-                                                    <p className="text-neutral-500 text-xs">{u.firstName} {u.lastName}</p>
+                                                    <p className="text-amber-950 font-bold">{u.username}</p>
+                                                    <p className="text-amber-900/40 text-[10px] font-black uppercase tracking-widest mt-0.5">{u.firstName} {u.lastName}</p>
                                                 </div>
                                             </td>
-                                            <td className="px-5 py-4 text-neutral-400">{u.email}</td>
-                                            <td className="px-5 py-4">
-                                                <span className={`font-bold ${ROLE_COLORS[u.role] || 'text-neutral-300'}`}>{u.role}</span>
+                                            <td className="px-8 py-5 text-amber-900/50 font-medium">{u.email}</td>
+                                            <td className="px-8 py-5">
+                                                <span className={`font-black text-xs uppercase tracking-wider ${ROLE_COLORS[u.role] || 'text-amber-900/30'}`}>{u.role}</span>
                                             </td>
-                                            <td className="px-5 py-4">
+                                            <td className="px-8 py-5">
                                                 <select
-                                                    className="bg-neutral-800 border border-white/10 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                                                    className="bg-amber-50/50 border-2 border-amber-100 rounded-xl px-4 py-2 text-amber-950 text-xs font-bold focus:outline-none focus:border-amber-400 transition-all cursor-pointer"
                                                     value={pending ?? u.role}
                                                     onChange={(e) => handleRoleChange(u.username, e.target.value)}
                                                 >
                                                     {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
                                                 </select>
                                             </td>
-                                            <td className="px-5 py-4 text-right">
+                                            <td className="px-8 py-5 text-right">
                                                 <button
                                                     onClick={() => handleSaveRole(u)}
                                                     disabled={!hasChange || saving === u.username}
-                                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${hasChange
-                                                        ? 'bg-amber-500 hover:bg-amber-400 text-white'
-                                                        : 'bg-neutral-800 text-neutral-600 cursor-not-allowed'
+                                                    className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${hasChange
+                                                        ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-lg shadow-amber-600/20 active:scale-95'
+                                                        : 'bg-amber-50 text-amber-900/20 cursor-not-allowed border border-amber-100'
                                                         }`}
                                                 >
-                                                    {saving === u.username ? 'Saving...' : 'Apply'}
+                                                    {saving === u.username ? 'Saving...' : 'Apply Change'}
                                                 </button>
                                             </td>
                                         </tr>
