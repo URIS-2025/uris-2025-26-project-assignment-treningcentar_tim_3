@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Users, UserCheck, Dumbbell, CalendarDays, BookOpen, TrendingUp, Activity, RefreshCw } from 'lucide-react';
+import { Users, UserCheck, Dumbbell, Ruler, BookOpen, TrendingUp, Activity, RefreshCw } from 'lucide-react';
 import { adminService } from '../../services/adminService';
 import { reservationAdminService } from '../../services/reservationAdminService';
 import { membershipAdminService } from '../../services/membershipAdminService';
+import { measurementAdminService } from '../../services/measurementAdminService';
 
 interface Stats {
     totalUsers: number;
     totalTrainers: number;
     activeMemberships: number;
     scheduledTrainings: number;
-    totalReservations: number;
+    totalMeasurements: number;
 }
 
 const StatCard: React.FC<{
@@ -20,15 +21,15 @@ const StatCard: React.FC<{
     glow: string;
     loading?: boolean;
 }> = ({ label, value, icon, color, glow, loading }) => (
-    <div className={`relative overflow-hidden rounded-2xl bg-neutral-900 border border-white/5 p-6 group hover:border-white/10 transition-all duration-300`}>
+    <div className={`relative overflow-hidden rounded-2xl bg-white border border-amber-100 shadow-sm p-6 group hover:border-amber-200 hover:shadow-md transition-all duration-300`}>
         <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${glow}`} />
         <div className="relative z-10">
             <div className={`inline-flex p-3 rounded-xl mb-4 ${color}`}>
                 {icon}
             </div>
-            <div className="text-3xl font-black text-white mb-1">
+            <div className="text-3xl font-black text-neutral-800 mb-1">
                 {loading ? (
-                    <div className="h-8 w-20 bg-neutral-800 rounded-lg animate-pulse" />
+                    <div className="h-8 w-20 bg-amber-100 rounded-lg animate-pulse" />
                 ) : (
                     value
                 )}
@@ -44,7 +45,7 @@ const AdminDashboard: React.FC = () => {
         totalTrainers: 0,
         activeMemberships: 0,
         scheduledTrainings: 0,
-        totalReservations: 0,
+        totalMeasurements: 0,
     });
     const [loading, setLoading] = useState(true);
     const [lastUpdated, setLastUpdated] = useState(new Date());
@@ -52,24 +53,24 @@ const AdminDashboard: React.FC = () => {
     const fetchStats = async () => {
         setLoading(true);
         try {
-            const [users, sessions, memberships, reservations] = await Promise.allSettled([
+            const [users, sessions, memberships, measurements] = await Promise.allSettled([
                 adminService.getAllUsers(),
                 reservationAdminService.getAllSessions(),
                 membershipAdminService.getAllMemberships(),
-                reservationAdminService.getAllReservations(),
+                measurementAdminService.getAllAppointments(),
             ]);
 
             const usersData = users.status === 'fulfilled' ? users.value : [];
             const sessionsData = sessions.status === 'fulfilled' ? sessions.value : [];
             const membershipsData = memberships.status === 'fulfilled' ? memberships.value : [];
-            const reservationsData = reservations.status === 'fulfilled' ? reservations.value : [];
+            const measurementsData = measurements.status === 'fulfilled' ? measurements.value : [];
 
             setStats({
                 totalUsers: usersData.length,
                 totalTrainers: usersData.filter((u) => u.role === 'Trainer').length,
                 activeMemberships: membershipsData.filter((m) => m.isActive).length,
                 scheduledTrainings: sessionsData.length,
-                totalReservations: reservationsData.length,
+                totalMeasurements: measurementsData.length,
             });
         } finally {
             setLoading(false);
@@ -109,9 +110,9 @@ const AdminDashboard: React.FC = () => {
             glow: 'bg-gradient-to-br from-purple-500/5 to-transparent',
         },
         {
-            label: 'Total Reservations',
-            value: stats.totalReservations,
-            icon: <CalendarDays className="w-5 h-5 text-rose-400" />,
+            label: 'Measurement Appointments',
+            value: stats.totalMeasurements,
+            icon: <Ruler className="w-5 h-5 text-rose-400" />,
             color: 'bg-rose-500/10',
             glow: 'bg-gradient-to-br from-rose-500/5 to-transparent',
         },
@@ -129,7 +130,7 @@ const AdminDashboard: React.FC = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-black text-white">Dashboard</h1>
+                    <h1 className="text-3xl font-black text-neutral-800">Dashboard</h1>
                     <p className="text-neutral-500 text-sm mt-1">
                         System overview · Last updated {lastUpdated.toLocaleTimeString()}
                     </p>
@@ -137,7 +138,7 @@ const AdminDashboard: React.FC = () => {
                 <button
                     onClick={fetchStats}
                     disabled={loading}
-                    className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-white text-sm font-bold rounded-xl transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-neutral-800 text-sm font-bold rounded-xl transition-colors"
                 >
                     <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                     Refresh
@@ -152,15 +153,15 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Quick info */}
-            <div className="p-6 rounded-2xl bg-neutral-900 border border-white/5">
+            <div className="p-6 rounded-2xl bg-white border border-amber-100 shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
-                    <BookOpen className="w-5 h-5 text-amber-400" />
-                    <h2 className="text-white font-bold">System Status</h2>
+                    <BookOpen className="w-5 h-5 text-amber-500" />
+                    <h2 className="text-neutral-800 font-bold">System Status</h2>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     {['AuthService', 'ReservationService', 'MembershipService', 'LoggerService'].map((service) => (
-                        <div key={service} className="flex items-center gap-2 text-neutral-400">
-                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <div key={service} className="flex items-center gap-2 text-neutral-600">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                             {service}
                         </div>
                     ))}

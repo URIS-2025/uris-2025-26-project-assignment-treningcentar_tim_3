@@ -58,12 +58,16 @@ public class MembershipRepository : IMembershipRepository
             throw new InvalidOperationException("User already has an active membership.");
         }
         
+        // Ensure all dates are UTC for PostgreSQL
+        var startDate = DateTime.SpecifyKind(dto.StartDate, DateTimeKind.Utc);
+        var endDate = DateTime.SpecifyKind(dto.EndDate, DateTimeKind.Utc);
+        
         var membership = new Membership
         {
             UserId = dto.UserId,
             PackageId = dto.PackageId,
-            StartDate = dto.StartDate,
-            EndDate = dto.EndDate,
+            StartDate = startDate,
+            EndDate = endDate,
             CreatedDate = DateTime.UtcNow,
             Status = MembershipStatus.Active 
         };

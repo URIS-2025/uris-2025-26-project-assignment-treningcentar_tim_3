@@ -118,6 +118,9 @@ public class MeasurementAppointmentsController : ControllerBase
         }
 
         var entity = _mapper.Map<MeasurementAppointment>(dto);
+        
+        // Ensure UTC for PostgreSQL
+        entity.Date = DateTime.SpecifyKind(entity.Date, DateTimeKind.Utc);
 
         // Ako Nutritionist kreira -> on je owner
         if (User.IsInRole("Nutritionist"))
@@ -188,7 +191,7 @@ public class MeasurementAppointmentsController : ControllerBase
 
         entity.MemberId = dto.MemberId;
         entity.EmployeeId = dto.EmployeeId;
-        entity.Date = dto.Date;
+        entity.Date = DateTime.SpecifyKind(dto.Date, DateTimeKind.Utc);
         entity.Notes = dto.Notes;
         entity.ServiceId = dto.ServiceId;
 

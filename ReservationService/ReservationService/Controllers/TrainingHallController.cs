@@ -39,7 +39,7 @@ namespace ReservationService.Controllers
             try
             {
                 var newTrainingHall = _repository.AddTrainingHall(trainingHall);
-                return Created(nameof(GetTrainingHallById), newTrainingHall);
+                return CreatedAtAction(nameof(GetTrainingHallById), new { id = newTrainingHall.TrainingHallId }, newTrainingHall);
             }
             catch
             {

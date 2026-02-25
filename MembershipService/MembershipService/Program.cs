@@ -50,7 +50,7 @@ builder.Services.AddScoped<IPackageRepository, PackageRepository>();
 builder.Services.AddScoped<ICheckinRepository, CheckinRepository>();
 
 //Automatsko mapiranje između entiteta i DTO-a
-builder.Services.AddAutoMapper(config => config.AddMaps(typeof(Program).Assembly));
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 //DB
 builder.Services.AddDbContext<MembershipContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("MembershipDB")));

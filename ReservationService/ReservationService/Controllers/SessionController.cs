@@ -79,7 +79,7 @@ namespace ReservationService.Controllers
             return Ok(session);
         }
 
-        [Authorize(Roles = nameof(UserRole.Trainer))]
+        [Authorize(Roles = "Trainer,Admin")]
         [HttpPost]
         public ActionResult<SessionDto> AddSession([FromBody] SessionCreateDTO sessionDto)
         {
@@ -90,11 +90,11 @@ namespace ReservationService.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(new { error = ex.Message, innerError = ex.InnerException?.Message, stackTrace = ex.StackTrace });
             }
         }
 
-        [Authorize(Roles = nameof(UserRole.Trainer))]
+        [Authorize(Roles = "Trainer,Admin")]
         [HttpPut]
         public ActionResult<SessionDto> UpdateSession([FromBody] SessionUpdateDTO sessionDto)
         {
@@ -113,7 +113,7 @@ namespace ReservationService.Controllers
             }
         }
 
-        [Authorize(Roles = nameof(UserRole.Trainer))]
+        [Authorize(Roles = "Trainer,Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeleteSession(Guid id)
         {

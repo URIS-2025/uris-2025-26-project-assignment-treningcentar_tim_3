@@ -44,13 +44,21 @@ namespace PaymentService.Data
 
             if (payment.Method == PaymentMethod.Card)
             {
-                var paymentIntentId = _stripePaymentService
-                    .CreatePaymentIntentAsync(payment.Amount)
-                    .GetAwaiter()
-                    .GetResult();
+                try
+                {
+                    var paymentIntentId = _stripePaymentService
+                        .CreatePaymentIntentAsync(payment.Amount)
+                        .GetAwaiter()
+                        .GetResult();
 
-                newPayment.StripePaymentIntentId = paymentIntentId;
-                newPayment.Status = PaymentStatus.Completed;
+                    newPayment.StripePaymentIntentId = paymentIntentId;
+                    newPayment.Status = PaymentStatus.Completed;
+                }
+                catch (Exception)
+                {
+                    // Stripe not configured or failed - mark as pending for manual processing
+                    newPayment.Status = PaymentStatus.Pending;
+                }
             }
 
             _context.Payments.Add(newPayment);
