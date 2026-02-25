@@ -16,7 +16,10 @@ namespace MembershipService.ServiceCalls.Auth
         {
             using (HttpClient client = new HttpClient())
             {
-                Uri url = new Uri($"{_configuration["Services:AuthService"]}api/auth/user/{userId}");
+                var baseUrl = _configuration["Services:AuthService"] ?? "http://auth-service:8080/";
+                // Ensure trailing slash
+                if (!baseUrl.EndsWith("/")) baseUrl += "/";
+                Uri url = new Uri($"{baseUrl}api/auth/{userId}");
 
                 try
                 {

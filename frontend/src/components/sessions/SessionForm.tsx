@@ -48,7 +48,7 @@ const SessionForm: React.FC<Props> = ({ trainerId, onClose, onSubmit }) => {
             trainingType: trainingType,
             trainerId: trainerId,
             maxCapacity: trainingType === 0 ? 1 : capacity,
-            trainingHallId: trainingType === 1 ? selectedHallId : undefined,
+            trainingHallId: (trainingType === 1 && selectedHallId) ? selectedHallId : undefined,
             isGroup: trainingType === 1
         });
     };

@@ -4,14 +4,14 @@ import { loggerAdminService, type SystemLog } from '../../services/loggerAdminSe
 
 const LEVELS = ['All', 'Info', 'Warning', 'Error'];
 const LEVEL_COLORS: Record<string, string> = {
-    Info: 'bg-blue-500/20 text-blue-400',
-    Warning: 'bg-amber-500/20 text-amber-400',
-    Error: 'bg-rose-500/20 text-rose-400',
+    Info: 'bg-blue-100 text-blue-600',
+    Warning: 'bg-amber-100 text-amber-600',
+    Error: 'bg-rose-100 text-rose-600',
 };
 const LEVEL_DOT: Record<string, string> = {
-    Info: 'bg-blue-400',
-    Warning: 'bg-amber-400',
-    Error: 'bg-rose-400',
+    Info: 'bg-blue-500',
+    Warning: 'bg-amber-500',
+    Error: 'bg-rose-500',
 };
 
 const AdminSystemLogs: React.FC = () => {
@@ -51,16 +51,16 @@ const AdminSystemLogs: React.FC = () => {
         <div className="p-8 max-w-7xl mx-auto space-y-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-xl bg-neutral-700/50">
-                        <ScrollText className="w-6 h-6 text-neutral-300" />
+                    <div className="p-2 rounded-xl bg-amber-100">
+                        <ScrollText className="w-6 h-6 text-amber-600" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-black text-white">System Logs</h1>
+                        <h1 className="text-2xl font-black text-neutral-800">System Logs</h1>
                         <p className="text-neutral-500 text-sm">{filtered.length} of {logs.length} entries</p>
                     </div>
                 </div>
                 <button onClick={fetchLogs}
-                    className="flex items-center gap-2 px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-sm font-bold rounded-xl transition-colors border border-white/5">
+                    className="flex items-center gap-2 px-4 py-2 bg-amber-50 hover:bg-amber-100 text-neutral-600 text-sm font-bold rounded-xl transition-colors border border-amber-100">
                     <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                     Refresh
                 </button>
@@ -76,54 +76,54 @@ const AdminSystemLogs: React.FC = () => {
             <div className="flex gap-3 flex-wrap">
                 <div className="relative flex-1 min-w-48">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
-                    <input className="w-full bg-neutral-900 border border-white/5 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
+                    <input className="w-full bg-white border border-amber-100 shadow-sm rounded-xl pl-10 pr-4 py-2.5 text-neutral-800 text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
                         placeholder="Search messages, actions..."
                         value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
-                <div className="flex items-center gap-2 bg-neutral-900 border border-white/5 rounded-xl px-3">
+                <div className="flex items-center gap-2 bg-white border border-amber-100 shadow-sm rounded-xl px-3">
                     <Filter className="w-4 h-4 text-neutral-500" />
-                    <select className="bg-transparent text-sm text-neutral-300 focus:outline-none py-2.5" value={levelFilter} onChange={(e) => setLevelFilter(e.target.value)}>
+                    <select className="bg-transparent text-sm text-neutral-600 focus:outline-none py-2.5" value={levelFilter} onChange={(e) => setLevelFilter(e.target.value)}>
                         {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
                     </select>
                 </div>
-                <div className="flex items-center gap-2 bg-neutral-900 border border-white/5 rounded-xl px-3">
+                <div className="flex items-center gap-2 bg-white border border-amber-100 shadow-sm rounded-xl px-3">
                     <Filter className="w-4 h-4 text-neutral-500" />
-                    <select className="bg-transparent text-sm text-neutral-300 focus:outline-none py-2.5" value={serviceFilter} onChange={(e) => setServiceFilter(e.target.value)}>
+                    <select className="bg-transparent text-sm text-neutral-600 focus:outline-none py-2.5" value={serviceFilter} onChange={(e) => setServiceFilter(e.target.value)}>
                         {services.map((s) => <option key={s} value={s}>{s}</option>)}
                     </select>
                 </div>
             </div>
 
             {/* Logs */}
-            <div className="bg-neutral-900 border border-white/5 rounded-2xl overflow-hidden">
+            <div className="bg-white border border-amber-100 shadow-sm rounded-2xl overflow-hidden">
                 {loading ? (
                     <div className="space-y-px p-4">
                         {Array.from({ length: 8 }).map((_, i) => (
                             <div key={i} className="flex gap-4 p-3 animate-pulse">
-                                <div className="w-16 h-4 bg-neutral-800 rounded" />
-                                <div className="flex-1 h-4 bg-neutral-800 rounded" />
-                                <div className="w-24 h-4 bg-neutral-800 rounded" />
+                                <div className="w-16 h-4 bg-amber-50 rounded" />
+                                <div className="flex-1 h-4 bg-amber-50 rounded" />
+                                <div className="w-24 h-4 bg-amber-50 rounded" />
                             </div>
                         ))}
                     </div>
                 ) : filtered.length === 0 ? (
                     <div className="py-16 text-center text-neutral-500">No log entries found</div>
                 ) : (
-                    <div className="divide-y divide-white/5 font-mono text-xs max-h-[60vh] overflow-y-auto">
+                    <div className="divide-y divide-amber-100 font-mono text-xs max-h-[60vh] overflow-y-auto">
                         {filtered.map((log) => (
-                            <div key={log.id} className="flex gap-4 items-start px-5 py-3 hover:bg-white/2 transition-colors">
+                            <div key={log.id} className="flex gap-4 items-start px-5 py-3 hover:bg-amber-50 transition-colors">
                                 <span className="text-neutral-600 flex-shrink-0 w-36">
                                     {log.timestamp ? new Date(log.timestamp).toLocaleString() : '—'}
                                 </span>
                                 <span className={`flex-shrink-0 flex items-center gap-1.5 w-20`}>
                                     <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${LEVEL_DOT[log.level] || 'bg-neutral-500'}`} />
-                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${LEVEL_COLORS[log.level] || 'bg-neutral-700 text-neutral-300'}`}>
+                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${LEVEL_COLORS[log.level] || 'bg-neutral-100 text-neutral-600'}`}>
                                         {log.level}
                                     </span>
                                 </span>
                                 <span className="text-neutral-500 flex-shrink-0 w-32">{log.serviceName}</span>
-                                <span className="text-amber-300 flex-shrink-0 w-28">{log.action}</span>
-                                <span className="text-neutral-300 flex-1 break-all">{log.message}</span>
+                                <span className="text-amber-600 flex-shrink-0 w-28">{log.action}</span>
+                                <span className="text-neutral-700 flex-1 break-all">{log.message}</span>
                                 {log.entityType && (
                                     <span className="text-neutral-600 flex-shrink-0">{log.entityType}</span>
                                 )}

@@ -33,7 +33,7 @@ export const authService = {
                 const decoded = jwtDecode<DecodedToken>(formattedData.token);
                 formattedData.id = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] || decoded.nameid || decoded.sub;
             } catch (err) {
-                console.error("Error decoding token for ID:", err);
+                // Silent error handling for token decoding
             }
         }
         return formattedData;

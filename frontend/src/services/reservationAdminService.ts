@@ -2,37 +2,48 @@ import { authService } from './authService';
 
 const RESERVATION_API = 'http://localhost:5286/api';
 
+export interface TrainerDto {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+}
+
 export interface SessionDto {
     sessionId: string;
     name: string;
-    description: string;
-    sessionType: string;
-    trainerId: string;
-    trainerName?: string;
-    dateTime: string;
-    capacity: number;
-    reservationCount?: number;
+    startTime: string;
+    endTime: string;
+    status: string;
+    trainingType: string;
+    trainerId: TrainerDto;
+    maxCapacity?: number;
     trainingHallId?: string;
+    trainingHallName?: string;
 }
 
 export interface SessionCreateDTO {
     name: string;
-    description: string;
-    sessionType: string;
+    startTime: string;
+    endTime: string;
+    status: string;
+    trainingType: string;
     trainerId: string;
-    dateTime: string;
-    capacity: number;
+    maxCapacity?: number;
     trainingHallId?: string;
+    isGroup: boolean;
 }
 
 export interface SessionUpdateDTO {
     sessionId: string;
     name: string;
-    description: string;
-    sessionType: string;
+    startTime: string;
+    endTime: string;
+    status: string;
+    trainingType: string;
     trainerId: string;
-    dateTime: string;
-    capacity: number;
+    maxCapacity?: number;
     trainingHallId?: string;
 }
 
@@ -61,7 +72,10 @@ export const reservationAdminService = {
     async getAllSessions(): Promise<SessionDto[]> {
         const response = await fetch(`${RESERVATION_API}/Session`, { headers: getHeaders() });
         if (response.status === 204) return [];
-        if (!response.ok) throw new Error('Failed to fetch sessions');
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch sessions: ${errorText}`);
+        }
         return response.json();
     },
 
@@ -71,7 +85,16 @@ export const reservationAdminService = {
             headers: getHeaders(),
             body: JSON.stringify(dto),
         });
-        if (!response.ok) throw new Error('Failed to create session');
+        if (!response.ok) {
+            const errorText = await response.text();
+            try {
+                const errorJson = JSON.parse(errorText);
+                console.error('Backend error:', errorJson);
+                throw new Error(errorJson.error || 'Failed to create session');
+            } catch {
+                throw new Error(errorText || 'Failed to create session');
+            }
+        }
         return response.json();
     },
 
@@ -81,7 +104,10 @@ export const reservationAdminService = {
             headers: getHeaders(),
             body: JSON.stringify(dto),
         });
-        if (!response.ok) throw new Error('Failed to update session');
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to update session`);
+        }
         return response.json();
     },
 
@@ -90,7 +116,10 @@ export const reservationAdminService = {
             method: 'DELETE',
             headers: getHeaders(),
         });
-        if (!response.ok) throw new Error('Failed to delete session');
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to delete session: ${errorText}`);
+        }
     },
 
     // Reservations

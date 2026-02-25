@@ -15,11 +15,11 @@ import AdminUsers from '../pages/admin/AdminUsers';
 import AdminTrainers from '../pages/admin/AdminTrainers';
 import AdminTrainings from '../pages/admin/AdminTrainings';
 import AdminSchedule from '../pages/admin/AdminSchedule';
-import AdminReservations from '../pages/admin/AdminReservations';
 import AdminMemberships from '../pages/admin/AdminMemberships';
 import AdminPayments from '../pages/admin/AdminPayments';
 import AdminSystemLogs from '../pages/admin/AdminSystemLogs';
 import AdminSettings from '../pages/admin/AdminSettings';
+import AdminMeasurements from '../pages/admin/AdminMeasurements';
 import TrainerDashboard from '../pages/TrainerDashboard';
 import TrainerSessions from '../pages/TrainerSessions';
 import TrainerClientMeasurements from '../pages/TrainerClientMeasurements';
@@ -69,8 +69,8 @@ export const router = createBrowserRouter([
                     { path: 'trainers', element: <AdminTrainers /> },
                     { path: 'trainings', element: <AdminTrainings /> },
                     { path: 'schedule', element: <AdminSchedule /> },
-                    { path: 'reservations', element: <AdminReservations /> },
                     { path: 'memberships', element: <AdminMemberships /> },
+                    { path: 'measurements', element: <AdminMeasurements /> },
                     { path: 'payments', element: <AdminPayments /> },
                     { path: 'logs', element: <AdminSystemLogs /> },
                     { path: 'settings', element: <AdminSettings /> }

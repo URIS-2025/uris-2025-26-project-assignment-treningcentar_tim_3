@@ -67,6 +67,7 @@ builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<ITrainingHallRepository, TrainingHallRepository>();
 
 // ===== Service calls =====
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IServiceLogger, ServiceLogger>();
 

@@ -15,12 +15,14 @@ namespace MembershipService.Controllers
     {
         private readonly IMembershipRepository _repository;
         private readonly ICheckinRepository _checkinRepository;
+        private readonly IPackageRepository _packageRepository;
         private readonly IMapper _mapper;
 
-        public MembershipController(IMembershipRepository repository, ICheckinRepository checkinRepository, IMapper mapper)
+        public MembershipController(IMembershipRepository repository, ICheckinRepository checkinRepository, IPackageRepository packageRepository, IMapper mapper)
         {
             _repository = repository;
             _checkinRepository = checkinRepository;
+            _packageRepository = packageRepository;
             _mapper = mapper;
         }
 
@@ -107,6 +109,46 @@ namespace MembershipService.Controllers
 
             var memberships = _repository.GetMembershipsByStatus(membershipStatus);
             return Ok(memberships);
+        }
+
+        // Admin assign membership to a user
+        [HttpPost("admin/assign")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult<MembershipDto> AdminAssignMembership([FromBody] AdminAssignMembershipDto dto)
+        {
+            // Get package to calculate end date
+            var package = _packageRepository.GetPackageById(dto.PackageId);
+            if (package == null)
+                return BadRequest("Package not found");
+
+            // Ensure dates are in UTC for PostgreSQL
+            var startDateUtc = DateTime.SpecifyKind(dto.StartDate, DateTimeKind.Utc);
+            var endDateUtc = startDateUtc.AddDays(package.Duration);
+
+            var createDto = new CreateMembershipDto
+            {
+                UserId = dto.UserId,
+                PackageId = dto.PackageId,
+                StartDate = startDateUtc,
+                EndDate = endDateUtc,
+                Status = MembershipService.Models.Enums.MembershipStatus.Active
+            };
+
+            var membership = _repository.CreateMembership(createDto);
+            return CreatedAtAction(nameof(GetMembershipById), new { id = membership.MembershipId }, membership);
+        }
+
+        // Admin deactivate membership
+        [HttpPut("{id}/deactivate")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeactivateMembership(Guid id)
+        {
+            var membership = _repository.GetMembershipById(id);
+            if (membership == null)
+                return NotFound("Membership not found");
+
+            _repository.DeactivateMembership(id);
+            return Ok("Membership deactivated successfully");
         }
 
         // Receptionist endpoints
