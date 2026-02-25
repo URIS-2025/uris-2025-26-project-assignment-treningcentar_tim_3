@@ -1,48 +1,93 @@
 import { authService } from './authService';
+import type {
+    MeasurementAppointmentDTO,
+    MeasurementAppointmentCreateDTO,
+    MeasurementResultsDTO,
+    GuidelineDTO,
+    GuidelineCreateDTO,
+} from '../types/measurement';
 
-const API_BASE_URL = 'http://localhost:5225/api/measurementAppointment';
+const APPT_BASE = 'http://localhost:5225/api/measurementAppointment';
+const GUIDELINE_BASE = 'http://localhost:5225/api/guidelines';
 
-export interface MeasurementAppointmentDto {
-    appointmentId: string;
-    memberId: string;
-    employeeId: string;
-    nutritionistId: string;
-    date: string;
-    weightKg?: number;
-    heightCm?: number;
-    bodyFatPercent?: number;
-    notes?: string;
-    serviceId?: string;
-    guidelineId?: string;
-}
-
-const getHeaders = () => {
+const getHeaders = (): HeadersInit => {
     const token = authService.getToken();
     return {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
 };
 
+async function handleResponse<T>(res: Response): Promise<T> {
+    if (res.status === 204) return undefined as unknown as T;
+    if (!res.ok) {
+        const text = await res.text().catch(() => res.statusText);
+        throw new Error(text || `HTTP ${res.status}`);
+    }
+    return res.json() as Promise<T>;
+}
+
 export const measurementService = {
-    async getAllAppointments(): Promise<MeasurementAppointmentDto[]> {
-        const response = await fetch(`${API_BASE_URL}`, { headers: getHeaders() });
-        if (response.status === 204) return [];
-        if (!response.ok) throw new Error('Failed to fetch measurements');
-        return response.json();
+    // ── Appointments ──────────────────────────────────────────────────────
+    async getAllAppointments(): Promise<MeasurementAppointmentDTO[]> {
+        const res = await fetch(APPT_BASE, { headers: getHeaders() });
+        if (res.status === 204) return [];
+        return handleResponse<MeasurementAppointmentDTO[]>(res);
     },
 
-    async getAppointmentById(id: string): Promise<MeasurementAppointmentDto> {
-        const response = await fetch(`${API_BASE_URL}/${id}`, { headers: getHeaders() });
-        if (!response.ok) throw new Error('Failed to fetch measurement');
-        return response.json();
+    async getAppointmentById(id: string): Promise<MeasurementAppointmentDTO> {
+        const res = await fetch(`${APPT_BASE}/${id}`, { headers: getHeaders() });
+        return handleResponse<MeasurementAppointmentDTO>(res);
+    },
+
+    async createAppointment(dto: MeasurementAppointmentCreateDTO): Promise<MeasurementAppointmentDTO> {
+        const res = await fetch(APPT_BASE, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(dto),
+        });
+        return handleResponse<MeasurementAppointmentDTO>(res);
     },
 
     async deleteAppointment(id: string): Promise<void> {
-        const response = await fetch(`${API_BASE_URL}/${id}`, {
+        const res = await fetch(`${APPT_BASE}/${id}`, {
             method: 'DELETE',
             headers: getHeaders(),
         });
-        if (!response.ok) throw new Error('Failed to delete measurement appointment');
-    }
+        return handleResponse<void>(res);
+    },
+
+    // ── Results ───────────────────────────────────────────────────────────
+    async updateResults(id: string, dto: MeasurementResultsDTO): Promise<void> {
+        const res = await fetch(`${APPT_BASE}/${id}/results`, {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify(dto),
+        });
+        return handleResponse<void>(res);
+    },
+
+    // ── Guidelines ────────────────────────────────────────────────────────
+    async createGuideline(appointmentId: string, dto: GuidelineCreateDTO): Promise<GuidelineDTO> {
+        const res = await fetch(`${APPT_BASE}/${appointmentId}/guidelines`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(dto),
+        });
+        return handleResponse<GuidelineDTO>(res);
+    },
+
+    async getGuidelineById(id: string): Promise<GuidelineDTO> {
+        const res = await fetch(`${GUIDELINE_BASE}/${id}`, { headers: getHeaders() });
+        return handleResponse<GuidelineDTO>(res);
+    },
+
+    async updateGuideline(id: string, dto: GuidelineCreateDTO): Promise<void> {
+        const res = await fetch(`${GUIDELINE_BASE}/${id}`, {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify(dto),
+        });
+        return handleResponse<void>(res);
+    },
 };
