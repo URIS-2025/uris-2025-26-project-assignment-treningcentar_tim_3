@@ -18,6 +18,6 @@ namespace ReservationService.Data
         IEnumerable<SessionDto> GetGroupSessions();
         SessionConfirmationDto UpdateSession(SessionUpdateDTO sessionDto);
         void DeleteSession(Guid id);
-        IEnumerable<SessionDto> GetSessionsByDateRange(DateTime from, DateTime to, bool? isGroup);
+        IEnumerable<SessionDto> GetSessionsByDateRange(DateTime from, DateTime to, bool? isGroup, Guid? currentUserId = null);
     }
 }

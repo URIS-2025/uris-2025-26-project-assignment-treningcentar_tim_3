@@ -1,16 +1,15 @@
-import React from 'react';
 import { ChevronLeft, ChevronRight, Clock, User, BookmarkCheck, Users as UsersIcon } from 'lucide-react';
-import type { SessionDto } from '../../types/reservation';
-import { TrainingType } from '../../types/reservation';
+import { type SessionDto } from '../../types/reservation';
 
 interface SessionSchedulerProps {
     title: string;
     sessions: SessionDto[];
     currentWeekStart: Date;
     onWeekChange: (days: number) => void;
+    onBook: (session: SessionDto) => void;
 }
 
-const SessionScheduler: React.FC<SessionSchedulerProps> = ({ title, sessions, currentWeekStart, onWeekChange }) => {
+const SessionScheduler: React.FC<SessionSchedulerProps> = ({ title, sessions, currentWeekStart, onWeekChange, onBook }) => {
     
     // Get array of 7 days starting from currentWeekStart
     const weekDays = Array.from({ length: 7 }, (_, i) => {
@@ -42,8 +41,8 @@ const SessionScheduler: React.FC<SessionSchedulerProps> = ({ title, sessions, cu
         }).sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
     };
 
-    const handleBook = (sessionName: string) => {
-        console.log(`Booking session: ${sessionName}`);
+    const handleBook = (session: SessionDto) => {
+        onBook(session);
     };
 
     return (
@@ -96,7 +95,7 @@ const SessionScheduler: React.FC<SessionSchedulerProps> = ({ title, sessions, cu
                                                 <div className="space-y-1">
                                                     <h4 className="font-black text-amber-950 leading-tight">{session.name}</h4>
                                                     <span className="inline-block px-2 py-0.5 bg-amber-50 text-[10px] font-bold text-amber-600 rounded uppercase tracking-wider">
-                                                        {session.trainingType === TrainingType.Personal ? 'Personal' : 'Group'}
+                                                        {session.maxCapacity !== undefined && session.maxCapacity !== null ? 'Group Session' : 'Personal Session'}
                                                     </span>
                                                 </div>
                                                 <div className="text-right">
@@ -124,20 +123,25 @@ const SessionScheduler: React.FC<SessionSchedulerProps> = ({ title, sessions, cu
                                                 {session.maxCapacity && (
                                                     <div className="flex items-center gap-2 text-right">
                                                         <div className="flex flex-col">
-                                                            <span className="text-[10px] font-black text-amber-800/30 uppercase tracking-wider">Capacity</span>
-                                                            <span className="text-xs font-bold text-amber-950">{session.maxCapacity}</span>
-                                                        </div>
-                                                        <UsersIcon className="w-4 h-4 text-amber-300" />
+                                                             <span className="text-[10px] font-black text-amber-800/30 uppercase tracking-wider">Capacity</span>
+                                                             <span className="text-xs font-bold text-amber-950">{session.currentBookings} / {session.maxCapacity}</span>
+                                                         </div>
+                                                         <UsersIcon className="w-4 h-4 text-amber-300" />
                                                     </div>
                                                 )}
                                             </div>
 
                                             <div className="mt-6">
                                                 <button 
-                                                    onClick={() => handleBook(session.name)}
-                                                    className="w-full py-3 bg-amber-600 hover:bg-amber-500 text-white text-xs font-black rounded-xl transition-all shadow-lg shadow-amber-600/10 flex items-center justify-center gap-2">
+                                                    onClick={() => handleBook(session)}
+                                                    disabled={session.isBookedByCurrentUser}
+                                                    className={`w-full py-3 text-xs font-black rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 ${
+                                                        session.isBookedByCurrentUser
+                                                        ? 'bg-emerald-50 text-emerald-600 cursor-default shadow-none'
+                                                        : 'bg-amber-600 hover:bg-amber-500 text-white shadow-amber-600/10 active:scale-95'
+                                                    }`}>
                                                     <BookmarkCheck className="w-4 h-4" /> 
-                                                    BOOK SESSION
+                                                    {session.isBookedByCurrentUser ? 'ALREADY BOOKED' : 'BOOK SESSION'}
                                                 </button>
                                             </div>
                                         </div>

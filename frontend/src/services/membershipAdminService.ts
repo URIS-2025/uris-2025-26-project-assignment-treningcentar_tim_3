@@ -8,7 +8,6 @@ export interface MembershipType {
     durationDays: number;
     price: number;
     description?: string;
-    services?: string[];
 }
 
 export interface MembershipTypeCreateDTO {
@@ -16,35 +15,7 @@ export interface MembershipTypeCreateDTO {
     durationDays: number;
     price: number;
     description?: string;
-    services?: string[];
 }
-
-// Backend DTO types for mapping
-interface BackendPackageDto {
-    packageId: string;
-    name: string;
-    description: string;
-    price: number;
-    duration: number;
-    services: string[];
-}
-
-const mapBackendToFrontend = (pkg: BackendPackageDto): MembershipType => ({
-    id: pkg.packageId,
-    name: pkg.name,
-    durationDays: pkg.duration,
-    price: pkg.price,
-    description: pkg.description,
-    services: pkg.services,
-});
-
-const mapFrontendToBackend = (dto: MembershipTypeCreateDTO) => ({
-    name: dto.name,
-    description: dto.description || '',
-    price: dto.price,
-    duration: dto.durationDays,
-    services: dto.services || [],
-});
 
 export interface ActiveMembership {
     id: string;
@@ -55,7 +26,6 @@ export interface ActiveMembership {
     startDate: string;
     endDate: string;
     isActive: boolean;
-    displayStatus: 'Scheduled' | 'Active' | 'Expired' | 'Cancelled';
 }
 
 export interface AssignMembershipDTO {
@@ -64,49 +34,90 @@ export interface AssignMembershipDTO {
     startDate: string;
 }
 
+export interface Package {
+    packageId: string;
+    name: string;
+    description: string;
+    price: number;
+    duration: number;
+    services: string[];
+}
+
+export interface PackageCreateDTO {
+    name: string;
+    description: string;
+    price: number;
+    duration: number;
+    services: string[];
+}
+
 const getHeaders = () => ({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${authService.getToken()}`,
 });
 
 export const membershipAdminService = {
-    // Membership Types (Packages)
-    async getAllMembershipTypes(): Promise<MembershipType[]> {
+    // Packages (Membership Plans)
+    async getAllPackages(): Promise<Package[]> {
         const response = await fetch(`${MEMBERSHIP_API}/packages`, { headers: getHeaders() });
         if (response.status === 204) return [];
-        if (!response.ok) throw new Error('Failed to fetch membership types');
-        const data: BackendPackageDto[] = await response.json();
-        return data.map(mapBackendToFrontend);
+        if (!response.ok) throw new Error('Failed to fetch packages');
+        return response.json();
     },
 
-    async createMembershipType(dto: MembershipTypeCreateDTO): Promise<MembershipType> {
+    async createPackage(dto: PackageCreateDTO): Promise<Package> {
         const response = await fetch(`${MEMBERSHIP_API}/packages`, {
             method: 'POST',
             headers: getHeaders(),
-            body: JSON.stringify(mapFrontendToBackend(dto)),
+            body: JSON.stringify(dto),
         });
-        if (!response.ok) throw new Error('Failed to create membership type');
-        const data: BackendPackageDto = await response.json();
-        return mapBackendToFrontend(data);
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(err || 'Failed to create package');
+        }
+        return response.json();
     },
 
-    async updateMembershipType(id: string, dto: MembershipTypeCreateDTO): Promise<MembershipType> {
+    async updatePackage(id: string, dto: PackageCreateDTO): Promise<Package> {
         const response = await fetch(`${MEMBERSHIP_API}/packages/${id}`, {
             method: 'PUT',
             headers: getHeaders(),
-            body: JSON.stringify(mapFrontendToBackend(dto)),
+            body: JSON.stringify(dto),
         });
-        if (!response.ok) throw new Error('Failed to update membership type');
-        const data: BackendPackageDto = await response.json();
-        return mapBackendToFrontend(data);
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(err || 'Failed to update package');
+        }
+        return response.json();
     },
 
-    async deleteMembershipType(id: string): Promise<void> {
+    async deletePackage(id: string): Promise<void> {
         const response = await fetch(`${MEMBERSHIP_API}/packages/${id}`, {
             method: 'DELETE',
             headers: getHeaders(),
         });
-        if (!response.ok) throw new Error('Failed to delete membership type');
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error(err || 'Failed to delete package');
+        }
+    },
+
+    // Legacy Membership Types
+    async getAllMembershipTypes(): Promise<MembershipType[]> {
+        const response = await fetch(`${MEMBERSHIP_API}/MembershipType`, { headers: getHeaders() });
+        if (response.status === 204) return [];
+        if (!response.ok) throw new Error('Failed to fetch membership types');
+        return response.json();
+    },
+
+    async createMembershipType(dto: MembershipTypeCreateDTO): Promise<MembershipType> {
+        const response = await fetch(`${MEMBERSHIP_API}/MembershipType`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(dto),
+        });
+        if (!response.ok) throw new Error('Failed to create membership type');
+        return response.json();
     },
 
     // Active Memberships
@@ -114,54 +125,16 @@ export const membershipAdminService = {
         const response = await fetch(`${MEMBERSHIP_API}/Membership`, { headers: getHeaders() });
         if (response.status === 204) return [];
         if (!response.ok) throw new Error('Failed to fetch memberships');
-        const data = await response.json();
-        const now = new Date();
-        // Map backend fields to frontend interface
-        return data.map((m: any) => {
-            const startDate = new Date(m.startDate);
-            const endDate = new Date(m.endDate);
-            const statusActive = m.status === 1 || m.status === 'Active';
-            
-            // Determine display status
-            let displayStatus: 'Scheduled' | 'Active' | 'Expired' | 'Cancelled' = 'Cancelled';
-            if (statusActive) {
-                if (now < startDate) {
-                    displayStatus = 'Scheduled';
-                } else if (now > endDate) {
-                    displayStatus = 'Expired';
-                } else {
-                    displayStatus = 'Active';
-                }
-            }
-            
-            return {
-                id: m.membershipId,
-                userId: m.userId,
-                membershipTypeId: m.packageId,
-                startDate: m.startDate,
-                endDate: m.endDate,
-                isActive: displayStatus === 'Active',
-                displayStatus,
-            };
-        });
+        return response.json();
     },
 
     async assignMembership(dto: AssignMembershipDTO): Promise<ActiveMembership> {
-        // Map frontend DTO to backend expected format
-        const backendDto = {
-            userId: dto.userId,
-            packageId: dto.membershipTypeId,
-            startDate: dto.startDate,
-        };
-        const response = await fetch(`${MEMBERSHIP_API}/Membership/admin/assign`, {
+        const response = await fetch(`${MEMBERSHIP_API}/Membership`, {
             method: 'POST',
             headers: getHeaders(),
-            body: JSON.stringify(backendDto),
+            body: JSON.stringify(dto),
         });
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || 'Failed to assign membership');
-        }
+        if (!response.ok) throw new Error('Failed to assign membership');
         return response.json();
     },
 

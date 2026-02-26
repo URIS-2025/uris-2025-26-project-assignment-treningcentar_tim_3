@@ -5,6 +5,7 @@ import {
     Users,
     Dumbbell,
     Calendar,
+    BookOpen,
     CreditCard,
     ScrollText,
     Settings,
@@ -13,7 +14,8 @@ import {
     ChevronLeft,
     ChevronRight,
     Zap,
-    Ruler,
+    ShoppingBag,
+    Layers
 } from 'lucide-react';
 import { authService } from '../../services/authService';
 
@@ -29,8 +31,10 @@ const navItems: NavItem[] = [
     { label: 'Trainers', path: '/admin/trainers', icon: <UserCheck className="w-5 h-5" /> },
     { label: 'Trainings', path: '/admin/trainings', icon: <Dumbbell className="w-5 h-5" /> },
     { label: 'Schedule', path: '/admin/schedule', icon: <Calendar className="w-5 h-5" /> },
+    { label: 'Packages', path: '/admin/packages', icon: <Layers className="w-5 h-5" /> },
+    { label: 'Offerings', path: '/admin/services', icon: <ShoppingBag className="w-5 h-5" /> },
+    { label: 'Reservations', path: '/admin/reservations', icon: <BookOpen className="w-5 h-5" /> },
     { label: 'Memberships', path: '/admin/memberships', icon: <CreditCard className="w-5 h-5" /> },
-    { label: 'Measurements', path: '/admin/measurements', icon: <Ruler className="w-5 h-5" /> },
     { label: 'Payments', path: '/admin/payments', icon: <CreditCard className="w-5 h-5" /> },
     { label: 'System Logs', path: '/admin/logs', icon: <ScrollText className="w-5 h-5" /> },
     { label: 'Settings', path: '/admin/settings', icon: <Settings className="w-5 h-5" /> },
@@ -47,21 +51,21 @@ const AdminLayout: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex bg-gradient-to-br from-amber-50 via-white to-orange-50">
+        <div className="min-h-screen flex bg-neutral-950">
             {/* Sidebar */}
             <aside
-                className={`flex flex-col bg-white border-r border-amber-100 shadow-lg transition-all duration-300 ease-in-out ${collapsed ? 'w-20' : 'w-64'
+                className={`flex flex-col bg-neutral-900 border-r border-white/5 transition-all duration-300 ease-in-out ${collapsed ? 'w-20' : 'w-64'
                     }`}
             >
                 {/* Logo */}
-                <div className="flex items-center gap-3 px-5 py-6 border-b border-amber-100">
+                <div className="flex items-center gap-3 px-5 py-6 border-b border-white/5">
                     <div className="flex-shrink-0 w-9 h-9 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/30">
-                        <Zap className="w-5 h-5 text-neutral-800" />
+                        <Zap className="w-5 h-5 text-white" />
                     </div>
                     {!collapsed && (
                         <div className="overflow-hidden">
-                            <p className="text-sm font-black text-neutral-800 tracking-tight leading-tight">Training</p>
-                            <p className="text-xs font-bold text-amber-600 tracking-widest uppercase">Admin Panel</p>
+                            <p className="text-sm font-black text-white tracking-tight leading-tight">Training</p>
+                            <p className="text-xs font-bold text-amber-400 tracking-widest uppercase">Admin Panel</p>
                         </div>
                     )}
                 </div>
@@ -75,8 +79,8 @@ const AdminLayout: React.FC = () => {
                             end={item.path === '/admin'}
                             className={({ isActive }) =>
                                 `group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-200 ${isActive
-                                    ? 'bg-amber-500 text-neutral-800 shadow-lg shadow-amber-500/25'
-                                    : 'text-neutral-600 hover:bg-amber-50 hover:text-amber-700'
+                                    ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/25'
+                                    : 'text-neutral-400 hover:bg-white/5 hover:text-white'
                                 }`
                             }
                             title={collapsed ? item.label : undefined}
@@ -88,23 +92,23 @@ const AdminLayout: React.FC = () => {
                 </nav>
 
                 {/* User info + logout */}
-                <div className="border-t border-amber-100 p-3">
+                <div className="border-t border-white/5 p-3">
                     {!collapsed && user && (
                         <div className="flex items-center gap-3 px-3 py-2 mb-2">
-                            <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                                <span className="text-xs font-black text-amber-600">
+                            <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                                <span className="text-xs font-black text-amber-400">
                                     {user.fullName.charAt(0).toUpperCase()}
                                 </span>
                             </div>
                             <div className="overflow-hidden">
-                                <p className="text-xs font-bold text-neutral-800 truncate">{user.fullName}</p>
+                                <p className="text-xs font-bold text-white truncate">{user.fullName}</p>
                                 <p className="text-[10px] text-neutral-500 uppercase tracking-wider">{user.role}</p>
                             </div>
                         </div>
                     )}
                     <button
                         onClick={handleLogout}
-                        className="group w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-neutral-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+                        className="group w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-neutral-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
                         title={collapsed ? 'Logout' : undefined}
                     >
                         <LogOut className="w-5 h-5 flex-shrink-0" />
@@ -115,7 +119,7 @@ const AdminLayout: React.FC = () => {
                 {/* Collapse toggle */}
                 <button
                     onClick={() => setCollapsed(!collapsed)}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-full w-5 h-10 bg-white border border-amber-200 flex items-center justify-center text-neutral-400 hover:text-amber-600 hover:bg-amber-50 transition-colors rounded-r-lg z-10 shadow-sm"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-full w-5 h-10 bg-neutral-800 border border-white/10 flex items-center justify-center text-neutral-500 hover:text-white hover:bg-neutral-700 transition-colors rounded-r-lg z-10"
                     style={{ marginLeft: collapsed ? '4.5rem' : '15.5rem', transition: 'margin 300ms' }}
                 >
                     {collapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
@@ -123,7 +127,7 @@ const AdminLayout: React.FC = () => {
             </aside>
 
             {/* Main */}
-            <main className="flex-1 overflow-auto">
+            <main className="flex-1 overflow-auto bg-neutral-950">
                 <Outlet />
             </main>
         </div>

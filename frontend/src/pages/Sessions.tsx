@@ -5,6 +5,7 @@ import type { RootState } from '../store';
 import SessionScheduler from '../components/session/SessionScheduler';
 import { reservationService } from '../services/reservationService';
 import type { SessionDto } from '../types/reservation';
+import { X, Check, AlertCircle } from 'lucide-react';
 
 const Sessions: React.FC = () => {
     const user = useSelector((state: RootState) => state.auth.user);
@@ -15,6 +16,9 @@ const Sessions: React.FC = () => {
     const [myBookings, setMyBookings] = useState<SessionDto[]>([]);
     const [historySessions, setHistorySessions] = useState<SessionDto[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [bookingSession, setBookingSession] = useState<SessionDto | null>(null);
+    const [toast, setToast] = useState<{ msg: string, type: 'success' | 'error' } | null>(null);
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const [currentWeekStart, setCurrentWeekStart] = useState(() => {
         const now = new Date();
@@ -58,6 +62,70 @@ const Sessions: React.FC = () => {
         fetchData();
     }, [currentWeekStart, activeTab, token, user?.id]);
 
+    const showToast = (msg: string, type: 'success' | 'error' = 'success') => {
+        setToast({ msg, type });
+        setTimeout(() => setToast(null), 3000);
+    };
+
+    const handleBookClick = (session: SessionDto) => {
+        setBookingSession(session);
+    };
+
+    const handleConfirmBooking = async () => {
+        if (!bookingSession || !user?.id || !token) return;
+        
+        setIsProcessing(true);
+        try {
+            await reservationService.createReservation(user.id, bookingSession.sessionId, token);
+            showToast(`Successfully booked ${bookingSession.name}!`);
+            setBookingSession(null);
+            
+            // Refresh available sessions
+            const weekEnd = new Date(currentWeekStart);
+            weekEnd.setDate(weekEnd.getDate() + 7);
+            const [personal, group] = await Promise.all([
+                reservationService.getSessionsByRange(currentWeekStart, weekEnd, token, false),
+                reservationService.getSessionsByRange(currentWeekStart, weekEnd, token, true)
+            ]);
+            setPersonalSessions(personal);
+            setGroupSessions(group);
+        } catch (err: any) {
+            showToast(err.message || "Failed to book session", 'error');
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    const handleCancelReservation = async (session: SessionDto) => {
+        if (!token || !user?.id) return;
+        
+        // Find the reservation ID for this session
+        // Note: The SessionDto returned by my-sessions should probably have the reservationId
+        // Let's assume for now we need to fetch user reservations to find it or it's already there
+        // Looking at renderMyBookings, it uses session.sessionId but we need reservationId to cancel.
+        
+        try {
+            // Need to get reservations to find the ID
+            const resData = await reservationService.getAllReservations();
+            const reservation = resData.find(r => 
+                r.sessionId === session.sessionId && 
+                `${r.member.firstName} ${r.member.lastName}` === user.fullName
+            );
+            
+            if (reservation) {
+                await reservationService.cancelReservation(reservation.reservationId, token);
+                showToast("Reservation cancelled");
+                // Refresh
+                const bookings = await reservationService.getUpcomingSessions(user.id, token);
+                setMyBookings(bookings);
+            } else {
+                showToast("Could not find reservation to cancel", 'error');
+            }
+        } catch (err) {
+            showToast("Failed to cancel reservation", 'error');
+        }
+    };
+
     const handleWeekChange = (days: number) => {
         const next = new Date(currentWeekStart);
         next.setDate(next.getDate() + days);
@@ -98,7 +166,9 @@ const Sessions: React.FC = () => {
                                 <User className="w-4 h-4" /> {session.trainerId.fullName}
                             </div>
                         </div>
-                        <button className="w-full py-3 bg-neutral-50 hover:bg-rose-50 text-neutral-400 hover:text-rose-600 text-xs font-black rounded-xl transition-all border border-transparent hover:border-rose-100">
+                        <button 
+                            onClick={() => handleCancelReservation(session)}
+                            className="w-full py-3 bg-neutral-50 hover:bg-rose-50 text-neutral-400 hover:text-rose-600 text-xs font-black rounded-xl transition-all border border-transparent hover:border-rose-100">
                             CANCEL RESERVATION
                         </button>
                     </div>
@@ -133,7 +203,7 @@ const Sessions: React.FC = () => {
                                     </td>
                                     <td className="px-8 py-5">
                                         <span className="text-xs font-bold text-amber-800/60">
-                                            {session.trainingType === 1 ? 'Personal' : 'Group'}
+                                            {session.maxCapacity !== undefined && session.maxCapacity !== null ? 'Group Session' : 'Personal Session'}
                                         </span>
                                     </td>
                                     <td className="px-8 py-5">
@@ -149,9 +219,9 @@ const Sessions: React.FC = () => {
                                     </td>
                                     <td className="px-8 py-5">
                                         <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                                            session.status === 2 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600'
+                                            session.status === 1 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600'
                                         }`}>
-                                            {session.status === 2 ? 'Completed' : 'Cancelled'}
+                                            {session.status === 1 ? 'Completed' : 'Cancelled'}
                                         </span>
                                     </td>
                                 </tr>
@@ -165,7 +235,15 @@ const Sessions: React.FC = () => {
 
     return (
         <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
-            {/* Page Header */}
+            {/* Toast Notifications */}
+            {toast && (
+                <div className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl font-bold text-sm animate-in fade-in slide-in-from-right-4 transition-all ${
+                    toast.type === 'success' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
+                }`}>
+                    {toast.type === 'success' ? <Check className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+                    {toast.msg}
+                </div>
+            )}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-amber-950 tracking-tight">Sessions</h1>
@@ -210,6 +288,7 @@ const Sessions: React.FC = () => {
                             sessions={personalSessions} 
                             currentWeekStart={currentWeekStart}
                             onWeekChange={handleWeekChange}
+                            onBook={handleBookClick}
                         />
 
                         {/* Group Training Scheduler */}
@@ -218,13 +297,57 @@ const Sessions: React.FC = () => {
                             sessions={groupSessions} 
                             currentWeekStart={currentWeekStart}
                             onWeekChange={handleWeekChange}
+                            onBook={handleBookClick}
                         />
                     </div>
                 )}
-
                 {activeTab === 'my-sessions' && renderMyBookings()}
                 {activeTab === 'history' && renderHistory()}
             </div>
+
+            {/* Confirmation Modal */}
+            {bookingSession && (
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-amber-950/20 backdrop-blur-md animate-in fade-in duration-300">
+                    <div className="bg-white rounded-[2.5rem] w-full max-w-md shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-amber-100">
+                        <div className="p-8">
+                            <div className="flex justify-between items-start mb-6">
+                                <div className="p-4 bg-amber-50 rounded-2xl">
+                                    <Calendar className="w-8 h-8 text-amber-600" />
+                                </div>
+                                <button onClick={() => setBookingSession(null)} className="p-2 hover:bg-neutral-100 rounded-xl transition-colors">
+                                    <X className="w-5 h-5 text-neutral-400" />
+                                </button>
+                            </div>
+                            
+                            <h3 className="text-2xl font-black text-amber-950 mb-2">Book Session?</h3>
+                            <p className="text-amber-800/60 font-medium mb-8">
+                                Are you sure you want to book <span className="text-amber-950 font-bold underline decoration-amber-300 underline-offset-4">{bookingSession.name}</span> with {bookingSession.trainerId.fullName}?
+                            </p>
+
+                            <div className="space-y-3 p-5 bg-neutral-50 rounded-[1.8rem] border border-amber-50 mb-8">
+                                <div className="flex items-center gap-3 text-sm font-bold text-amber-900">
+                                    <Clock className="w-4 h-4 text-amber-500" />
+                                    {formatDate(bookingSession.startTime)}
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <button 
+                                    onClick={() => setBookingSession(null)}
+                                    className="py-4 bg-white hover:bg-neutral-50 text-neutral-400 font-black text-xs uppercase tracking-widest rounded-2xl transition-all border border-neutral-100">
+                                    Cancel
+                                </button>
+                                <button 
+                                    onClick={handleConfirmBooking}
+                                    disabled={isProcessing}
+                                    className="py-4 bg-amber-600 hover:bg-amber-500 disabled:bg-amber-300 text-white font-black text-xs uppercase tracking-widest rounded-2xl transition-all shadow-lg shadow-amber-600/20">
+                                    {isProcessing ? 'Booking...' : 'Confirm Book'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -121,7 +121,7 @@ namespace PaymentService.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin,Receptionist")]
+        [Authorize(Roles = "Admin,Receptionist,Member")]
         public ActionResult<PaymentConfirmationDTO> UpdatePaymentStatus(Guid id, [FromBody] PaymentStatusUpdateDTO dto)
         {
             if (!ModelState.IsValid)

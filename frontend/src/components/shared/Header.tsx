@@ -53,19 +53,14 @@ const Header: React.FC = () => {
                                 <>
                                     <Link to="/admin" className={NAV_CLS}>Dashboard</Link>
                                 </>
-                            ) : user.role === 'Receptionist' ? (
-                                <>
-                                    <a href="/receptionist" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Check-In</a>
-                                    <a href="/receptionist/membership" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Membership</a>
-                                    <a href="/receptionist/schedule" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Schedule</a>
-                                    <a href="/receptionist/payment" className="text-xs font-black text-amber-900/40 uppercase tracking-widest hover:text-amber-600 transition-colors">Payment</a>
-                                </>
                             ) : (
                                 <>
                                     <Link to="/dashboard" className={NAV_CLS}>Dashboard</Link>
                                     <Link to="/membership" className={NAV_CLS}>Membership</Link>
+                                    <Link to="/nutrition" className={NAV_CLS}>Nutrition</Link>
                                     <Link to="/services" className={NAV_CLS}>Services</Link>
                                     <Link to="/sessions" className={NAV_CLS}>Sessions</Link>
+                                    <Link to="/edit-profile" className={NAV_CLS}>Edit Profile</Link>
                                 </>
                             )}
                         </div>

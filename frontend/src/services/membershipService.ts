@@ -36,5 +36,23 @@ export const membershipService = {
         }
 
         return await response.json();
+    },
+
+    async createMembership(dto: { userId: string; packageId: string; status: number; startDate: string; endDate: string }, token: string): Promise<any> {
+        const response = await fetch(`${API_BASE_URL}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dto)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Failed to create membership');
+        }
+
+        return await response.json();
     }
 };

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../store';
 import { reservationService } from '../services/reservationService';
 import { checkinService, type CheckinDto } from '../services/checkinService';
-import { TrainingType } from '../types/reservation';
+// No TrainingType/SessionType import needed as we check maxCapacity
 const UserDashboard: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const token = useSelector((state: RootState) => state.auth.token);
@@ -28,8 +28,8 @@ const UserDashboard: React.FC = () => {
             return;
           }
           setReservations(res);
-          const personal = res.filter(r => r.trainingType === TrainingType.Personal).length;
-          const group = res.filter(r => r.trainingType === TrainingType.Group).length;
+          const personal = res.filter(r => r.maxCapacity === undefined || r.maxCapacity === null).length;
+          const group = res.filter(r => r.maxCapacity !== undefined && r.maxCapacity !== null).length;
           setPersonalCount(personal);
           setGroupCount(group);
         })
@@ -98,8 +98,8 @@ const UserDashboard: React.FC = () => {
       const isToday = new Date().toDateString() === dayDate.toDateString();
 
       const dayCheckins = checkins.filter(c => new Date(c.timestamp).toDateString() === dayDate.toDateString());
-      const dayPersonal = reservations.filter(r => r.trainingType === TrainingType.Personal && new Date(r.startTime).toDateString() === dayDate.toDateString());
-      const dayGroup = reservations.filter(r => r.trainingType === TrainingType.Group && new Date(r.startTime).toDateString() === dayDate.toDateString());
+      const dayPersonal = reservations.filter(r => (r.maxCapacity === undefined || r.maxCapacity === null) && new Date(r.startTime).toDateString() === dayDate.toDateString());
+      const dayGroup = reservations.filter(r => (r.maxCapacity !== undefined && r.maxCapacity !== null) && new Date(r.startTime).toDateString() === dayDate.toDateString());
 
       days.push(
         <div key={d} className={`h-24 border border-amber-100 p-2 relative group hover:bg-amber-50/50 transition-colors ${isToday ? 'bg-amber-50/30' : 'bg-white'}`}>

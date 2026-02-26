@@ -71,10 +71,16 @@ const authSlice = createSlice({
     // Useful for rehydrating from token on app load if needed
     setUserFromToken: (state, action: PayloadAction<UserInfo>) => {
       state.user = action.payload;
+    },
+    updateUserInfo: (state, action: PayloadAction<{ fullName: string; email?: string }>) => {
+      if (state.user) {
+        state.user.fullName = action.payload.fullName;
+        localStorage.setItem('auth_user', JSON.stringify(state.user));
+      }
     }
   },
 });
 
-export const { setCredentials, logout, setUserFromToken } = authSlice.actions;
+export const { setCredentials, logout, setUserFromToken, updateUserInfo } = authSlice.actions;
 
 export default authSlice.reducer;

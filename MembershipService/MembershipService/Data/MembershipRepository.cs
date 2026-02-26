@@ -52,10 +52,13 @@ public class MembershipRepository : IMembershipRepository
             throw new InvalidOperationException($"User {dto.UserId} not found in AuthService.");
         }
 
-        if (_context.Memberships.Any(m => m.UserId == dto.UserId && m.Status == MembershipStatus.Active))
+        var activeMembership = await _context.Memberships.FirstOrDefaultAsync(m => m.UserId == dto.UserId && m.Status == MembershipStatus.Active);
+        if (activeMembership != null)
         {
-            await _loggerService.LogWarningAsync("CreateMembership", $"User {dto.UserId} already has an active membership.", dto.UserId);
-            throw new InvalidOperationException("User already has an active membership.");
+            activeMembership.Status = MembershipStatus.Cancelled;
+            activeMembership.CancelledDate = DateTime.UtcNow;
+            _context.Memberships.Update(activeMembership);
+            await _loggerService.LogInfoAsync("UpgradeMembership", $"User {dto.UserId} upgraded membership. Previous cancelled.", dto.UserId);
         }
         
         // Ensure all dates are UTC for PostgreSQL
@@ -66,8 +69,8 @@ public class MembershipRepository : IMembershipRepository
         {
             UserId = dto.UserId,
             PackageId = dto.PackageId,
-            StartDate = startDate,
-            EndDate = endDate,
+            StartDate = DateTime.SpecifyKind(dto.StartDate, DateTimeKind.Utc),
+            EndDate = DateTime.SpecifyKind(dto.EndDate, DateTimeKind.Utc),
             CreatedDate = DateTime.UtcNow,
             Status = MembershipStatus.Active 
         };

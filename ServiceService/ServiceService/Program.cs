@@ -30,7 +30,7 @@ builder.Services.AddHttpClient<ILoggerService, LoggerService>(client =>
     client.Timeout = TimeSpan.FromSeconds(2);
 });
 
-// AutoMapper registration
+// ✅ AutoMapper (ispravno za verziju 12+ / .NET 8)
 builder.Services.AddAutoMapper(typeof(ServiceProfile));
 
 builder.Services.AddCors();
@@ -49,6 +49,12 @@ app.UseCors(policy =>
           .AllowAnyMethod());
 app.UseAuthorization();
 app.MapControllers();
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ServiceContext>();
+    context.Database.EnsureCreated();
+}
+
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ServiceContext>();

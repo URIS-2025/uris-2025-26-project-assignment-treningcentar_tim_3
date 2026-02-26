@@ -67,17 +67,17 @@ const AdminSettings: React.FC = () => {
     return (
         <div className="p-8 max-w-4xl mx-auto space-y-6">
             {toast && (
-                <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-500 text-neutral-800 px-5 py-3 rounded-xl shadow-xl font-semibold text-sm">
+                <div className="fixed top-6 right-6 z-50 flex items-center gap-2 bg-emerald-500 text-white px-5 py-3 rounded-xl shadow-xl font-semibold text-sm">
                     <Check className="w-4 h-4" /> {toast}
                 </div>
             )}
 
             <div className="flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-neutral-700/50">
-                    <Settings className="w-6 h-6 text-neutral-600" />
+                    <Settings className="w-6 h-6 text-neutral-300" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-black text-neutral-800">Settings</h1>
+                    <h1 className="text-2xl font-black text-white">Settings</h1>
                     <p className="text-neutral-500 text-sm">Role & access management</p>
                 </div>
             </div>
@@ -99,22 +99,22 @@ const AdminSettings: React.FC = () => {
 
             <div className="relative">
                 <input
-                    className="w-full bg-white border border-amber-100 shadow-sm rounded-xl pl-4 pr-10 py-2.5 text-neutral-800 text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-neutral-900 border border-white/5 rounded-xl pl-4 pr-10 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
                     placeholder="Search users by name, username or email..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
 
-            <div className="bg-white border border-amber-100 shadow-sm rounded-2xl overflow-hidden">
-                <div className="px-5 py-4 border-b border-amber-100">
-                    <h2 className="text-neutral-800 font-bold">User Roles</h2>
+            <div className="bg-neutral-900 border border-white/5 rounded-2xl overflow-hidden">
+                <div className="px-5 py-4 border-b border-white/5">
+                    <h2 className="text-white font-bold">User Roles</h2>
                     <p className="text-neutral-500 text-sm">Change user roles to control system access</p>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-amber-100">
+                            <tr className="border-b border-white/5">
                                 <th className="text-left px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">User</th>
                                 <th className="text-left px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">Email</th>
                                 <th className="text-left px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">Current Role</th>
@@ -126,7 +126,7 @@ const AdminSettings: React.FC = () => {
                             {loading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i}>{Array.from({ length: 5 }).map((_, j) => (
-                                        <td key={j} className="px-5 py-4"><div className="h-4 bg-amber-50 rounded animate-pulse" /></td>
+                                        <td key={j} className="px-5 py-4"><div className="h-4 bg-neutral-800 rounded animate-pulse" /></td>
                                     ))}</tr>
                                 ))
                             ) : filteredUsers.length === 0 ? (
@@ -139,17 +139,17 @@ const AdminSettings: React.FC = () => {
                                         <tr key={u.id} className="hover:bg-white/2 transition-colors">
                                             <td className="px-5 py-4">
                                                 <div>
-                                                    <p className="text-neutral-800 font-semibold">{u.username}</p>
+                                                    <p className="text-white font-semibold">{u.username}</p>
                                                     <p className="text-neutral-500 text-xs">{u.firstName} {u.lastName}</p>
                                                 </div>
                                             </td>
                                             <td className="px-5 py-4 text-neutral-400">{u.email}</td>
                                             <td className="px-5 py-4">
-                                                <span className={`font-bold ${ROLE_COLORS[u.role] || 'text-neutral-600'}`}>{u.role}</span>
+                                                <span className={`font-bold ${ROLE_COLORS[u.role] || 'text-neutral-300'}`}>{u.role}</span>
                                             </td>
                                             <td className="px-5 py-4">
                                                 <select
-                                                    className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 text-neutral-800 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                                                    className="bg-neutral-800 border border-white/10 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-amber-500 transition-colors"
                                                     value={pending ?? u.role}
                                                     onChange={(e) => handleRoleChange(u.username, e.target.value)}
                                                 >
@@ -161,8 +161,8 @@ const AdminSettings: React.FC = () => {
                                                     onClick={() => handleSaveRole(u)}
                                                     disabled={!hasChange || saving === u.username}
                                                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${hasChange
-                                                        ? 'bg-amber-500 hover:bg-amber-400 text-neutral-800'
-                                                        : 'bg-amber-50 text-neutral-600 cursor-not-allowed'
+                                                        ? 'bg-amber-500 hover:bg-amber-400 text-white'
+                                                        : 'bg-neutral-800 text-neutral-600 cursor-not-allowed'
                                                         }`}
                                                 >
                                                     {saving === u.username ? 'Saving...' : 'Apply'}

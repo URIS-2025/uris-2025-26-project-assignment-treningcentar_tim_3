@@ -4,7 +4,7 @@ namespace PaymentService.ServiceCalls.Stripe
 {
     public class StripePaymentService : IStripePaymentService
     {
-        public async Task<string> CreatePaymentIntentAsync(decimal amount, string currency = "usd")
+        public async Task<(string id, string clientSecret)> CreatePaymentIntentAsync(decimal amount, string currency = "usd")
         {
             var options = new PaymentIntentCreateOptions
             {
@@ -16,7 +16,7 @@ namespace PaymentService.ServiceCalls.Stripe
             var service = new PaymentIntentService();
             var intent = await service.CreateAsync(options);
 
-            return intent.Id;
+            return (intent.Id, intent.ClientSecret);
         }
 
         public async Task<string> RefundPaymentAsync(string stripePaymentIntentId)

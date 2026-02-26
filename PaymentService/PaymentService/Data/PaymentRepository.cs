@@ -70,7 +70,8 @@ namespace PaymentService.Data
                 Status = newPayment.Status,
                 Amount = newPayment.Amount,
                 PaymentDate = newPayment.PaymentDate,
-                Method = newPayment.Method
+                Method = newPayment.Method,
+                ClientSecret = clientSecret
             };
         }
 
