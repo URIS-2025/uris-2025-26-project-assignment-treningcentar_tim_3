@@ -86,7 +86,7 @@ namespace PaymentService.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Member")]
+        [Authorize(Roles = "Admin,Receptionist,Member")]
         public ActionResult<PaymentConfirmationDTO> AddPayment([FromBody] PaymentCreationDTO dto)
         {
             if (!ModelState.IsValid)

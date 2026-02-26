@@ -3,11 +3,11 @@ import { Package as PackageIcon, Plus, Edit2, Trash2, X, AlertTriangle, Check, C
 import { membershipAdminService, type Package as PackageType, type PackageCreateDTO } from '../../services/membershipAdminService';
 
 const Modal: React.FC<{ title: string; onClose: () => void; children: React.ReactNode }> = ({ title, onClose, children }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div className="bg-neutral-900 border border-white/10 rounded-2xl w-full max-w-lg mx-4 shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-                <h3 className="text-white font-bold text-lg">{title}</h3>
-                <button onClick={onClose} className="text-neutral-400 hover:text-white transition-colors"><X className="w-5 h-5" /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="bg-white border border-neutral-200 rounded-2xl w-full max-w-lg mx-4 shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
+                <h3 className="text-neutral-900 font-bold text-lg">{title}</h3>
+                <button onClick={onClose} className="text-neutral-400 hover:text-neutral-900 transition-colors"><X className="w-5 h-5" /></button>
             </div>
             <div className="p-6">{children}</div>
         </div>
@@ -16,12 +16,12 @@ const Modal: React.FC<{ title: string; onClose: () => void; children: React.Reac
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
     <div className="space-y-1.5">
-        <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">{label}</label>
+        <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{label}</label>
         {children}
     </div>
 );
 
-const inputCls = 'w-full bg-neutral-800 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors';
+const inputCls = 'w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-2.5 text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:border-amber-500 transition-colors';
 
 const emptyForm = (): PackageCreateDTO => ({
     name: '',
@@ -149,13 +149,13 @@ const AdminPackages: React.FC = () => {
                         onChange={(e) => setServiceInput(e.target.value)} 
                         onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addService())}
                     />
-                    <button onClick={addService} className="px-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white transition-colors">
+                    <button onClick={addService} className="px-3 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-900 transition-colors">
                         <Plus className="w-4 h-4" />
                     </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                     {form.services.map((s, i) => (
-                        <span key={i} className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-500/10 text-amber-400 text-[10px] font-bold uppercase rounded-lg border border-amber-500/20">
+                <span key={i} className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-100 text-amber-600 text-[10px] font-bold uppercase rounded-lg border border-amber-500/20">
                             {s}
                             <button onClick={() => removeService(i)} className="hover:text-amber-200"><X className="w-3 h-3" /></button>
                         </span>
@@ -166,7 +166,7 @@ const AdminPackages: React.FC = () => {
 
             <div className="flex gap-3 pt-2">
                 <button onClick={() => { setShowCreate(false); setEditPkg(null); }}
-                    className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                    className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                 <button onClick={onSubmit} disabled={formLoading}
                     className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold transition-colors disabled:opacity-50">
                     {formLoading ? 'Saving...' : submitLabel}
@@ -186,10 +186,10 @@ const AdminPackages: React.FC = () => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-xl bg-amber-500/10">
-                        <PackageIcon className="w-6 h-6 text-amber-400" />
+                        <PackageIcon className="w-6 h-6 text-amber-600" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-black text-white">Membership Packages</h1>
+                        <h1 className="text-2xl font-black text-neutral-900">Membership Packages</h1>
                         <p className="text-neutral-500 text-sm">{packages.length} defined plans</p>
                     </div>
                 </div>
@@ -208,18 +208,18 @@ const AdminPackages: React.FC = () => {
             {loading ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                     {Array.from({ length: 3 }).map((_, i) => (
-                        <div key={i} className="h-56 bg-neutral-900 border border-white/5 rounded-2xl animate-pulse" />
+                        <div key={i} className="h-56 bg-white border border-neutral-200 rounded-2xl animate-pulse" />
                     ))}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {packages.length === 0 ? (
-                        <div className="col-span-full py-20 text-center text-neutral-500 border border-dashed border-white/5 rounded-3xl">
+                        <div className="col-span-full py-20 text-center text-neutral-500 border border-dashed border-neutral-200 rounded-3xl">
                             No membership packages found. Start by creating one.
                         </div>
                     ) : (
                         packages.map((pkg) => (
-                            <div key={pkg.packageId} className="group relative bg-neutral-900 border border-white/5 rounded-2xl p-6 hover:border-amber-500/30 transition-all">
+                            <div key={pkg.packageId} className="group relative bg-white border border-neutral-200 rounded-2xl p-6 hover:border-amber-500/50 transition-all">
                                 <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button onClick={() => openEdit(pkg)} className="p-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
                                         <Edit2 className="w-4 h-4" />
@@ -229,30 +229,30 @@ const AdminPackages: React.FC = () => {
                                     </button>
                                 </div>
                                 
-                                <h3 className="text-xl font-black text-white mb-2">{pkg.name}</h3>
+                                <h3 className="text-xl font-black text-neutral-900 mb-2">{pkg.name}</h3>
                                 <p className="text-neutral-500 text-xs mb-6 line-clamp-3 leading-relaxed h-12">
                                     {pkg.description}
                                 </p>
 
                                 <div className="grid grid-cols-2 gap-3 mb-6">
-                                    <div className="flex items-center gap-2 bg-neutral-800/50 rounded-xl p-3 border border-white/5">
+                                    <div className="flex items-center gap-2 bg-neutral-100 rounded-xl p-3 border border-neutral-200">
                                         <Clock className="w-4 h-4 text-amber-500/50" />
                                         <div>
                                             <p className="text-[10px] text-neutral-500 uppercase font-bold">Duration</p>
-                                            <p className="text-sm text-white font-black">{pkg.duration} Days</p>
+                                            <p className="text-sm text-neutral-900 font-black">{pkg.duration} Days</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2 bg-neutral-800/50 rounded-xl p-3 border border-white/5">
+                                    <div className="flex items-center gap-2 bg-neutral-100 rounded-xl p-3 border border-neutral-200">
                                         <Tag className="w-4 h-4 text-emerald-500/50" />
                                         <div>
                                             <p className="text-[10px] text-neutral-500 uppercase font-bold">Price</p>
-                                            <p className="text-sm text-emerald-400 font-black">${pkg.price}</p>
+                                            <p className="text-sm text-emerald-600 font-black">${pkg.price}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <p className="text-[10px] text-neutral-400 uppercase font-black tracking-widest">Included Services</p>
+                                    <p className="text-[10px] text-neutral-500 uppercase font-black tracking-widest">Included Services</p>
                                     <div className="flex flex-wrap gap-1.5">
                                         {pkg.services?.map((s, i) => (
                                             <span key={i} className="px-2 py-0.5 bg-white/5 text-neutral-300 text-[10px] font-bold rounded-md">
@@ -279,7 +279,7 @@ const AdminPackages: React.FC = () => {
                             <p className="text-sm text-rose-300">Delete <strong>{deletePkg.name}</strong>? This will remove this membership plan permanently.</p>
                         </div>
                         <div className="flex gap-3">
-                            <button onClick={() => setDeletePkg(null)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                            <button onClick={() => setDeletePkg(null)} className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                             <button onClick={handleDelete} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white text-sm font-bold transition-colors disabled:opacity-50">
                                 {formLoading ? 'Deleting...' : 'Delete'}
                             </button>

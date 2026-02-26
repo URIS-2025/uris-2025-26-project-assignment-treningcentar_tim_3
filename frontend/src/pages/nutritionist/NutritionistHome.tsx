@@ -16,10 +16,10 @@ const NutritionistHome: React.FC = () => {
 
                 {/* Greeting */}
                 <h1 className="text-4xl font-black text-amber-950 tracking-tight mb-2">
-                    Dobrodošli, {user?.fullName?.split(' ')[0] ?? 'Nutricionista'}!
+                    Welcome, {user?.fullName?.split(' ')[0] ?? 'Nutritionist'}!
                 </h1>
                 <p className="text-amber-900/50 text-lg mb-10">
-                    Nutricionista panel · Training Center
+                    Nutritionist Panel · Training Center
                 </p>
 
                 {/* Single action card */}
@@ -31,9 +31,9 @@ const NutritionistHome: React.FC = () => {
                         <span className="text-2xl group-hover:grayscale-0">📅</span>
                     </div>
                     <div className="flex-1">
-                        <p className="font-black text-amber-950 text-lg">Termini mjerenja</p>
+                        <p className="font-black text-amber-950 text-lg">Measurement Appointments</p>
                         <p className="text-sm text-amber-900/50 mt-0.5">
-                            Pregledi, kreiranje novih termina i praćenje rezultata
+                            View, create new appointments and track results
                         </p>
                     </div>
                     <span className="text-amber-300 group-hover:text-amber-600 text-xl transition-colors">→</span>

@@ -8,11 +8,11 @@ import {
 } from '../../services/membershipAdminService';
 
 const Modal: React.FC<{ title: string; onClose: () => void; children: React.ReactNode }> = ({ title, onClose, children }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div className="bg-neutral-900 border border-white/10 rounded-2xl w-full max-w-md mx-4 shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-                <h3 className="text-white font-bold text-lg">{title}</h3>
-                <button onClick={onClose} className="text-neutral-400 hover:text-white transition-colors"><X className="w-5 h-5" /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="bg-white border border-neutral-200 rounded-2xl w-full max-w-md mx-4 shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
+                <h3 className="text-neutral-900 font-bold text-lg">{title}</h3>
+                <button onClick={onClose} className="text-neutral-400 hover:text-neutral-900 transition-colors"><X className="w-5 h-5" /></button>
             </div>
             <div className="p-6">{children}</div>
         </div>
@@ -21,12 +21,12 @@ const Modal: React.FC<{ title: string; onClose: () => void; children: React.Reac
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
     <div className="space-y-1.5">
-        <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">{label}</label>
+        <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{label}</label>
         {children}
     </div>
 );
 
-const inputCls = 'w-full bg-neutral-800 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors';
+const inputCls = 'w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-2.5 text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:border-amber-500 transition-colors';
 
 const emptyTypeForm = (): MembershipTypeCreateDTO => ({ name: '', durationDays: 30, price: 0, description: '' });
 
@@ -152,7 +152,7 @@ const AdminMemberships: React.FC = () => {
             </Field>
             <div className="flex gap-3 pt-2">
                 <button onClick={() => { setShowCreateType(false); setEditType(null); }}
-                    className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                    className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                 <button onClick={onSubmit} disabled={formLoading}
                     className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold transition-colors disabled:opacity-50">
                     {formLoading ? 'Saving...' : submitLabel}
@@ -172,10 +172,10 @@ const AdminMemberships: React.FC = () => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-xl bg-emerald-500/10">
-                        <CreditCard className="w-6 h-6 text-emerald-400" />
+                        <CreditCard className="w-6 h-6 text-emerald-600" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-black text-white">Memberships</h1>
+                        <h1 className="text-2xl font-black text-neutral-900">Memberships</h1>
                         <p className="text-neutral-500 text-sm">{types.length} plans · {memberships.filter(m => m.isActive).length} active</p>
                     </div>
                 </div>
@@ -200,10 +200,10 @@ const AdminMemberships: React.FC = () => {
                 </div>
             )}
 
-            <div className="flex gap-1 bg-neutral-900 border border-white/5 rounded-xl p-1 w-fit">
+            <div className="flex gap-1 bg-white border border-neutral-200 rounded-xl p-1 w-fit">
                 {(['types', 'active'] as const).map((t) => (
                     <button key={t} onClick={() => setTab(t)}
-                        className={`px-5 py-2 rounded-lg text-sm font-bold capitalize transition-colors ${tab === t ? 'bg-amber-500 text-white' : 'text-neutral-400 hover:text-white'
+                        className={`px-5 py-2 rounded-lg text-sm font-bold capitalize transition-colors ${tab === t ? 'bg-amber-500 text-white' : 'text-neutral-500 hover:text-neutral-900'
                             }`}>
                         {t === 'types' ? 'Membership Plans' : 'Active Memberships'}
                     </button>
@@ -213,7 +213,7 @@ const AdminMemberships: React.FC = () => {
             {loading ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                     {Array.from({ length: 3 }).map((_, i) => (
-                        <div key={i} className="h-36 bg-neutral-900 border border-white/5 rounded-2xl animate-pulse" />
+                        <div key={i} className="h-36 bg-white border border-neutral-200 rounded-2xl animate-pulse" />
                     ))}
                 </div>
             ) : tab === 'types' ? (
@@ -221,9 +221,9 @@ const AdminMemberships: React.FC = () => {
                     {types.length === 0
                         ? <div className="col-span-3 py-16 text-center text-neutral-500">No membership plans yet</div>
                         : types.map((t) => (
-                            <div key={t.id} className="bg-neutral-900 border border-white/5 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                            <div key={t.id} className="bg-white border border-neutral-200 rounded-2xl p-6 hover:border-emerald-500/50 transition-all group">
                                 <div className="flex items-start justify-between mb-3">
-                                    <h3 className="text-white font-bold text-lg">{t.name}</h3>
+                                    <h3 className="text-neutral-900 font-bold text-lg">{t.name}</h3>
                                     <div className="flex gap-1">
                                         <button onClick={() => { setEditType(t); setTypeForm({ name: t.name, durationDays: t.durationDays, price: t.price, description: t.description || '' }); }}
                                             className="p-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
@@ -235,41 +235,41 @@ const AdminMemberships: React.FC = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <p className="text-neutral-400 text-sm mb-4">{t.description || 'No description'}</p>
+                                <p className="text-neutral-500 text-sm mb-4">{t.description || 'No description'}</p>
                                 <div className="flex gap-3">
-                                    <div className="flex-1 bg-neutral-800 rounded-xl p-3 text-center">
+                                    <div className="flex-1 bg-neutral-100 rounded-xl p-3 text-center">
                                         <p className="text-xs text-neutral-500 mb-0.5">Duration</p>
-                                        <p className="text-white font-bold">{t.durationDays}d</p>
+                                        <p className="text-neutral-900 font-bold">{t.durationDays}d</p>
                                     </div>
-                                    <div className="flex-1 bg-neutral-800 rounded-xl p-3 text-center">
+                                    <div className="flex-1 bg-neutral-100 rounded-xl p-3 text-center">
                                         <p className="text-xs text-neutral-500 mb-0.5">Price</p>
-                                        <p className="text-emerald-400 font-bold">${t.price}</p>
+                                        <p className="text-emerald-600 font-bold">${t.price}</p>
                                     </div>
                                 </div>
                             </div>
                         ))}
                 </div>
             ) : (
-                <div className="bg-neutral-900 border border-white/5 rounded-2xl overflow-hidden">
+                <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-white/5">
+                            <tr className="border-b border-neutral-200">
                                 {['User', 'Plan', 'Start Date', 'End Date', 'Status', 'Action'].map((h) => (
                                     <th key={h} className={`px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider ${h === 'Action' ? 'text-right' : 'text-left'}`}>{h}</th>
                                 ))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5">
+                        <tbody className="divide-y divide-neutral-200">
                             {memberships.length === 0
                                 ? <tr><td colSpan={6} className="text-center py-12 text-neutral-500">No memberships assigned</td></tr>
                                 : memberships.map((m) => (
-                                    <tr key={m.id} className="hover:bg-white/2 transition-colors">
-                                        <td className="px-5 py-4 text-white font-semibold">{m.username || m.userId?.slice(0, 8) + '…'}</td>
+                                    <tr key={m.id} className="hover:bg-neutral-50 transition-colors">
+                                        <td className="px-5 py-4 text-neutral-900 font-semibold">{m.username || m.userId?.slice(0, 8) + '…'}</td>
                                         <td className="px-5 py-4 text-neutral-300">{m.membershipTypeName || m.membershipTypeId?.slice(0, 8) + '…'}</td>
-                                        <td className="px-5 py-4 text-neutral-400">{m.startDate ? new Date(m.startDate).toLocaleDateString() : '—'}</td>
-                                        <td className="px-5 py-4 text-neutral-400">{m.endDate ? new Date(m.endDate).toLocaleDateString() : '—'}</td>
+                                        <td className="px-5 py-4 text-neutral-500">{m.startDate ? new Date(m.startDate).toLocaleDateString() : '—'}</td>
+                                        <td className="px-5 py-4 text-neutral-500">{m.endDate ? new Date(m.endDate).toLocaleDateString() : '—'}</td>
                                         <td className="px-5 py-4">
-                                            <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${m.isActive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-neutral-700 text-neutral-400'}`}>
+                                            <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${m.isActive ? 'bg-emerald-100 text-emerald-600' : 'bg-neutral-700 text-neutral-400'}`}>
                                                 {m.isActive ? 'Active' : 'Inactive'}
                                             </span>
                                         </td>
@@ -299,7 +299,7 @@ const AdminMemberships: React.FC = () => {
                             <p className="text-sm text-rose-300">Delete <strong>{deleteType.name}</strong>? This cannot be undone.</p>
                         </div>
                         <div className="flex gap-3">
-                            <button onClick={() => setDeleteType(null)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                            <button onClick={() => setDeleteType(null)} className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                             <button onClick={handleDeleteType} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white text-sm font-bold transition-colors disabled:opacity-50">
                                 {formLoading ? 'Deleting...' : 'Delete'}
                             </button>
@@ -327,7 +327,7 @@ const AdminMemberships: React.FC = () => {
                                 onChange={(e) => setAssignForm(p => ({ ...p, startDate: e.target.value }))} />
                         </Field>
                         <div className="flex gap-3 pt-2">
-                            <button onClick={() => setShowAssign(false)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                            <button onClick={() => setShowAssign(false)} className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                             <button onClick={handleAssign} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold transition-colors disabled:opacity-50">
                                 {formLoading ? 'Assigning...' : 'Assign'}
                             </button>
@@ -341,11 +341,11 @@ const AdminMemberships: React.FC = () => {
                 <Modal title="Deactivate Membership" onClose={() => setDeactivateTarget(null)}>
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-                            <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                            <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />
                             <p className="text-sm text-amber-300">Deactivate <strong>{deactivateTarget.username || deactivateTarget.userId?.slice(0, 8)}</strong>'s membership? They will lose access to training reservations.</p>
                         </div>
                         <div className="flex gap-3">
-                            <button onClick={() => setDeactivateTarget(null)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                            <button onClick={() => setDeactivateTarget(null)} className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                             <button onClick={handleDeactivate} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold transition-colors disabled:opacity-50">
                                 {formLoading ? 'Deactivating...' : 'Deactivate'}
                             </button>

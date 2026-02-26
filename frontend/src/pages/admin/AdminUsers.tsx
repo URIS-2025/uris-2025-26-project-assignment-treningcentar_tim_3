@@ -11,11 +11,11 @@ type SortKey = keyof AdminUser;
 type SortDir = 'asc' | 'desc';
 
 const Modal: React.FC<{ title: string; onClose: () => void; children: React.ReactNode }> = ({ title, onClose, children }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div className="bg-neutral-900 border border-white/10 rounded-2xl w-full max-w-md mx-4 shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-                <h3 className="text-white font-bold text-lg">{title}</h3>
-                <button onClick={onClose} className="text-neutral-400 hover:text-white transition-colors">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="bg-white border border-neutral-200 rounded-2xl w-full max-w-md mx-4 shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
+                <h3 className="text-neutral-900 font-bold text-lg">{title}</h3>
+                <button onClick={onClose} className="text-neutral-400 hover:text-neutral-900 transition-colors">
                     <X className="w-5 h-5" />
                 </button>
             </div>
@@ -26,12 +26,12 @@ const Modal: React.FC<{ title: string; onClose: () => void; children: React.Reac
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
     <div className="space-y-1.5">
-        <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">{label}</label>
+        <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{label}</label>
         {children}
     </div>
 );
 
-const inputCls = 'w-full bg-neutral-800 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors';
+const inputCls = 'w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-2.5 text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:border-amber-500 transition-colors';
 
 const AdminUsers: React.FC = () => {
     const [users, setUsers] = useState<AdminUser[]>([]);
@@ -98,18 +98,18 @@ const AdminUsers: React.FC = () => {
 
     const SortIcon: React.FC<{ col: SortKey }> = ({ col }) => (
         <span className="inline-flex flex-col ml-1">
-            <ChevronUp className={`w-2.5 h-2.5 ${sortKey === col && sortDir === 'asc' ? 'text-amber-400' : 'text-neutral-600'}`} />
-            <ChevronDown className={`w-2.5 h-2.5 ${sortKey === col && sortDir === 'desc' ? 'text-amber-400' : 'text-neutral-600'}`} />
+            <ChevronUp className={`w-2.5 h-2.5 ${sortKey === col && sortDir === 'asc' ? 'text-amber-600' : 'text-neutral-600'}`} />
+            <ChevronDown className={`w-2.5 h-2.5 ${sortKey === col && sortDir === 'desc' ? 'text-amber-600' : 'text-neutral-600'}`} />
         </span>
     );
 
     const roleBadge = (role: string) => {
         const map: Record<string, string> = {
-            Admin: 'bg-amber-500/20 text-amber-400',
-            Trainer: 'bg-blue-500/20 text-blue-400',
-            Member: 'bg-emerald-500/20 text-emerald-400',
-            Nutritionist: 'bg-purple-500/20 text-purple-400',
-            Receptionist: 'bg-rose-500/20 text-rose-400',
+            Admin: 'bg-amber-100 text-amber-600',
+            Trainer: 'bg-blue-100 text-blue-600',
+            Member: 'bg-emerald-100 text-emerald-600',
+            Nutritionist: 'bg-purple-100 text-purple-600',
+            Receptionist: 'bg-rose-100 text-rose-600',
         };
         return map[role] || 'bg-neutral-700 text-neutral-300';
     };
@@ -178,7 +178,7 @@ const AdminUsers: React.FC = () => {
                         <Users className="w-6 h-6 text-blue-400" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-black text-white">Users</h1>
+                        <h1 className="text-2xl font-black text-neutral-900">Users</h1>
                         <p className="text-neutral-500 text-sm">{users.length} total users</p>
                     </div>
                 </div>
@@ -200,18 +200,18 @@ const AdminUsers: React.FC = () => {
             <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
                 <input
-                    className="w-full bg-neutral-900 border border-white/5 rounded-xl pl-10 pr-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-white border border-neutral-200 rounded-xl pl-10 pr-4 py-2.5 text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:border-amber-500 transition-colors"
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
                 />
             </div>
 
-            <div className="bg-neutral-900 border border-white/5 rounded-2xl overflow-hidden">
+            <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-white/5">
+                            <tr className="border-b border-neutral-200">
                                 {[
                                     { key: 'username' as SortKey, label: 'Username' },
                                     { key: 'firstName' as SortKey, label: 'First Name' },
@@ -230,12 +230,12 @@ const AdminUsers: React.FC = () => {
                                 <th className="text-right px-5 py-3.5 text-xs font-bold text-neutral-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5">
+                        <tbody className="divide-y divide-neutral-200">
                             {loading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i}>
                                         {Array.from({ length: 6 }).map((_, j) => (
-                                            <td key={j} className="px-5 py-4"><div className="h-4 bg-neutral-800 rounded animate-pulse" /></td>
+                                            <td key={j} className="px-5 py-4"><div className="h-4 bg-neutral-100 rounded animate-pulse" /></td>
                                         ))}
                                     </tr>
                                 ))
@@ -243,11 +243,11 @@ const AdminUsers: React.FC = () => {
                                 <tr><td colSpan={6} className="text-center py-12 text-neutral-500">No users found</td></tr>
                             ) : (
                                 paginated.map((u) => (
-                                    <tr key={u.id} className="hover:bg-white/2 transition-colors">
-                                        <td className="px-5 py-4 font-semibold text-white">{u.username}</td>
+                                    <tr key={u.id} className="hover:bg-neutral-50 transition-colors">
+                                        <td className="px-5 py-4 font-semibold text-neutral-900">{u.username}</td>
                                         <td className="px-5 py-4 text-neutral-300">{u.firstName}</td>
                                         <td className="px-5 py-4 text-neutral-300">{u.lastName}</td>
-                                        <td className="px-5 py-4 text-neutral-400">{u.email}</td>
+                                        <td className="px-5 py-4 text-neutral-500">{u.email}</td>
                                         <td className="px-5 py-4">
                                             <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${roleBadge(u.role)}`}>{u.role}</span>
                                         </td>
@@ -265,11 +265,11 @@ const AdminUsers: React.FC = () => {
                 </div>
 
                 {totalPages > 1 && (
-                    <div className="flex items-center justify-between px-5 py-4 border-t border-white/5">
+                    <div className="flex items-center justify-between px-5 py-4 border-t border-neutral-200">
                         <span className="text-xs text-neutral-500">Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} of {filtered.length}</span>
                         <div className="flex gap-1">
                             {Array.from({ length: totalPages }).map((_, i) => (
-                                <button key={i} onClick={() => setPage(i + 1)} className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${page === i + 1 ? 'bg-amber-500 text-white' : 'text-neutral-400 hover:bg-white/5'}`}>{i + 1}</button>
+                                <button key={i} onClick={() => setPage(i + 1)} className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${page === i + 1 ? 'bg-amber-500 text-white' : 'text-neutral-500 hover:bg-neutral-100'}`}>{i + 1}</button>
                             ))}
                         </div>
                     </div>
@@ -308,7 +308,7 @@ const AdminUsers: React.FC = () => {
                             </select>
                         </Field>
                         <div className="flex gap-3 pt-2">
-                            <button onClick={() => setShowCreate(false)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                            <button onClick={() => setShowCreate(false)} className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                             <button onClick={handleCreate} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold transition-colors disabled:opacity-50">{formLoading ? 'Creating...' : 'Create User'}</button>
                         </div>
                     </div>
@@ -337,7 +337,7 @@ const AdminUsers: React.FC = () => {
                                 onChange={(e) => setEditForm(prev => ({ ...prev, email: e.target.value }))} />
                         </Field>
                         <div className="flex gap-3 pt-2">
-                            <button onClick={() => setEditUser(null)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                            <button onClick={() => setEditUser(null)} className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                             <button onClick={handleUpdate} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 text-white text-sm font-bold transition-colors disabled:opacity-50">{formLoading ? 'Saving...' : 'Save Changes'}</button>
                         </div>
                     </div>
@@ -352,7 +352,7 @@ const AdminUsers: React.FC = () => {
                             <p className="text-sm text-rose-300">Are you sure you want to delete <strong>{deleteUser.username}</strong>?</p>
                         </div>
                         <div className="flex gap-3">
-                            <button onClick={() => setDeleteUser(null)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                            <button onClick={() => setDeleteUser(null)} className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                             <button onClick={handleDelete} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white text-sm font-bold transition-colors disabled:opacity-50">{formLoading ? 'Deleting...' : 'Delete'}</button>
                         </div>
                     </div>

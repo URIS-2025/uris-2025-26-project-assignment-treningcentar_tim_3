@@ -24,7 +24,7 @@ const Modal: React.FC<{ title: string; onClose: () => void; children: React.Reac
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
     <div className="space-y-1.5">
-        <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">{label}</label>
+        <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{label}</label>
         {children}
     </div>
 );
@@ -211,12 +211,12 @@ const AdminMeasurements: React.FC = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center">
-                        <Ruler className="w-5 h-5 text-amber-400" />
+                    <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
+                        <Ruler className="w-5 h-5 text-amber-600" />
                     </div>
                     <div>
                         <h1 className="text-2xl font-black text-neutral-800">Measurements</h1>
-                        <p className="text-sm text-neutral-400">Manage measurement appointments and guidelines</p>
+                        <p className="text-sm text-neutral-500">Manage measurement appointments and guidelines</p>
                     </div>
                 </div>
                 {tab === 'appointments' && (
@@ -236,7 +236,7 @@ const AdminMeasurements: React.FC = () => {
 
             {/* Error */}
             {error && (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-red-400 text-sm">
+                <div className="bg-red-50 border border-red-500/20 rounded-xl px-4 py-3 text-red-500 text-sm">
                     {error}
                     <button onClick={() => setError('')} className="ml-2 underline">Dismiss</button>
                 </div>
@@ -245,18 +245,18 @@ const AdminMeasurements: React.FC = () => {
             {/* Tabs */}
             <div className="flex gap-2 border-b border-amber-100 pb-2">
                 <button onClick={() => setTab('appointments')}
-                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${tab === 'appointments' ? 'bg-amber-500 text-black' : 'text-neutral-400 hover:text-neutral-800'}`}>
+                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${tab === 'appointments' ? 'bg-amber-500 text-black' : 'text-neutral-500 hover:text-neutral-800'}`}>
                     Appointments ({appointments.length})
                 </button>
                 <button onClick={() => setTab('guidelines')}
-                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${tab === 'guidelines' ? 'bg-amber-500 text-black' : 'text-neutral-400 hover:text-neutral-800'}`}>
+                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${tab === 'guidelines' ? 'bg-amber-500 text-black' : 'text-neutral-500 hover:text-neutral-800'}`}>
                     Guidelines ({guidelines.length})
                 </button>
             </div>
 
             {/* Content */}
             {loading ? (
-                <div className="text-center py-12 text-neutral-400">Loading...</div>
+                <div className="text-center py-12 text-neutral-500">Loading...</div>
             ) : tab === 'appointments' ? (
                 <div className="space-y-3">
                     {appointments.length === 0 ? (
@@ -275,31 +275,31 @@ const AdminMeasurements: React.FC = () => {
                                         {!a.nutritionistId && a.employeeId && <span> • Staff: {getUserName(a.employeeId)}</span>}
                                     </div>
                                     {(a.weightKg || a.heightCm || a.bodyFatPercent) && (
-                                        <div className="text-xs text-amber-400 mt-1">
+                                        <div className="text-xs text-amber-600 mt-1">
                                             {a.weightKg && <span>Weight: {a.weightKg}kg </span>}
                                             {a.heightCm && <span>Height: {a.heightCm}cm </span>}
                                             {a.bodyFatPercent && <span>Body Fat: {a.bodyFatPercent}% </span>}
                                         </div>
                                     )}
-                                    {a.notes && <div className="text-xs text-neutral-400 italic">{a.notes}</div>}
+                                    {a.notes && <div className="text-xs text-neutral-500 italic">{a.notes}</div>}
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <button onClick={() => openResults(a)} title="Update Results"
-                                        className="p-2 rounded-lg bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-colors">
+                                        className="p-2 rounded-lg bg-green-100 text-green-600 hover:bg-green-500/20 transition-colors">
                                         <Scale className="w-4 h-4" />
                                     </button>
                                     {!a.guidelineId && (
                                         <button onClick={() => setGuidelineAppointment(a)} title="Add Guideline"
-                                            className="p-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors">
+                                            className="p-2 rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-500/20 transition-colors">
                                             <FileText className="w-4 h-4" />
                                         </button>
                                     )}
                                     <button onClick={() => openEdit(a)} title="Edit"
-                                        className="p-2 rounded-lg bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition-colors">
+                                        className="p-2 rounded-lg bg-amber-100 text-amber-600 hover:bg-amber-500/20 transition-colors">
                                         <Edit2 className="w-4 h-4" />
                                     </button>
                                     <button onClick={() => setDeleteAppointment(a)} title="Delete"
-                                        className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors">
+                                        className="p-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-500/20 transition-colors">
                                         <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
@@ -317,15 +317,15 @@ const AdminMeasurements: React.FC = () => {
                                 className="bg-white border border-amber-100 shadow-sm rounded-xl p-4 flex items-center justify-between">
                                 <div className="space-y-1">
                                     <div className="font-bold text-neutral-800">{g.title}</div>
-                                    <div className="text-xs text-neutral-400">
-                                        Category: <span className="text-amber-400">{g.category}</span>
+                                    <div className="text-xs text-neutral-500">
+                                        Category: <span className="text-amber-600">{g.category}</span>
                                         <span className="text-neutral-500 mx-2">•</span>
                                         Updated: {new Date(g.lastUpdated).toLocaleDateString()}
                                     </div>
                                     <div className="text-sm text-neutral-600 line-clamp-2">{g.content}</div>
                                 </div>
                                 <button onClick={() => setDeleteGuideline(g)} title="Delete"
-                                    className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors">
+                                    className="p-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-500/20 transition-colors">
                                     <Trash2 className="w-4 h-4" />
                                 </button>
                             </div>
@@ -462,7 +462,7 @@ const AdminMeasurements: React.FC = () => {
             {guidelineAppointment && (
                 <Modal title="Add Guideline" onClose={() => setGuidelineAppointment(null)}>
                     <div className="space-y-4">
-                        <p className="text-neutral-400 text-sm">
+                        <p className="text-neutral-500 text-sm">
                             Creating guideline for appointment with <strong className="text-neutral-800">{getUserName(guidelineAppointment.memberId)}</strong>
                         </p>
                         <Field label="Title *">

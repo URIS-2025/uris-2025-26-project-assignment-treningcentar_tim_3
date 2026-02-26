@@ -102,22 +102,36 @@ export const membershipAdminService = {
         }
     },
 
-    // Legacy Membership Types
+    // Membership Types (via packages endpoint)
     async getAllMembershipTypes(): Promise<MembershipType[]> {
-        const response = await fetch(`${MEMBERSHIP_API}/MembershipType`, { headers: getHeaders() });
+        const response = await fetch(`${MEMBERSHIP_API}/packages`, { headers: getHeaders() });
         if (response.status === 204) return [];
         if (!response.ok) throw new Error('Failed to fetch membership types');
-        return response.json();
+        const data = await response.json();
+        return data.map((pkg: any) => ({
+            id: pkg.packageId || pkg.id,
+            name: pkg.name,
+            durationDays: pkg.duration || pkg.durationDays,
+            price: pkg.price,
+            description: pkg.description,
+        }));
     },
 
     async createMembershipType(dto: MembershipTypeCreateDTO): Promise<MembershipType> {
-        const response = await fetch(`${MEMBERSHIP_API}/MembershipType`, {
+        const response = await fetch(`${MEMBERSHIP_API}/packages`, {
             method: 'POST',
             headers: getHeaders(),
             body: JSON.stringify(dto),
         });
         if (!response.ok) throw new Error('Failed to create membership type');
-        return response.json();
+        const pkg = await response.json();
+        return {
+            id: pkg.packageId || pkg.id,
+            name: pkg.name,
+            durationDays: pkg.duration || pkg.durationDays,
+            price: pkg.price,
+            description: pkg.description,
+        };
     },
 
     // Active Memberships

@@ -11,11 +11,11 @@ const CATEGORIES = [
 ];
 
 const Modal: React.FC<{ title: string; onClose: () => void; children: React.ReactNode }> = ({ title, onClose, children }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div className="bg-neutral-900 border border-white/10 rounded-2xl w-full max-w-md mx-4 shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-                <h3 className="text-white font-bold text-lg">{title}</h3>
-                <button onClick={onClose} className="text-neutral-400 hover:text-white transition-colors"><X className="w-5 h-5" /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="bg-white border border-neutral-200 rounded-2xl w-full max-w-md mx-4 shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
+                <h3 className="text-neutral-900 font-bold text-lg">{title}</h3>
+                <button onClick={onClose} className="text-neutral-400 hover:text-neutral-900 transition-colors"><X className="w-5 h-5" /></button>
             </div>
             <div className="p-6">{children}</div>
         </div>
@@ -24,12 +24,12 @@ const Modal: React.FC<{ title: string; onClose: () => void; children: React.Reac
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
     <div className="space-y-1.5">
-        <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">{label}</label>
+        <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{label}</label>
         {children}
     </div>
 );
 
-const inputCls = 'w-full bg-neutral-800 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors';
+const inputCls = 'w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-2.5 text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:border-amber-500 transition-colors';
 
 const emptyForm = (): ServiceCreateDto => ({ name: '', description: '', price: 0, category: 1 });
 
@@ -137,7 +137,7 @@ const AdminServices: React.FC = () => {
             </Field>
             <div className="flex gap-3 pt-2">
                 <button onClick={() => { setShowCreate(false); setEditService(null); }}
-                    className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                    className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                 <button onClick={onSubmit} disabled={formLoading}
                     className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-sm font-bold transition-colors disabled:opacity-50">
                     {formLoading ? 'Saving...' : submitLabel}
@@ -157,10 +157,10 @@ const AdminServices: React.FC = () => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-xl bg-amber-500/10">
-                        <ShoppingBag className="w-6 h-6 text-amber-400" />
+                        <ShoppingBag className="w-6 h-6 text-amber-600" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-black text-white">Packages & Services</h1>
+                        <h1 className="text-2xl font-black text-neutral-900">Packages & Services</h1>
                         <p className="text-neutral-500 text-sm">{services.length} active offerings</p>
                     </div>
                 </div>
@@ -179,20 +179,20 @@ const AdminServices: React.FC = () => {
             {loading ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                     {Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="h-44 bg-neutral-900 border border-white/5 rounded-2xl animate-pulse" />
+                        <div key={i} className="h-44 bg-white border border-neutral-200 rounded-2xl animate-pulse" />
                     ))}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-in fade-in duration-500">
                     {services.length === 0 ? (
-                        <div className="col-span-full py-20 text-center text-neutral-500 border border-dashed border-white/5 rounded-3xl">
+                        <div className="col-span-full py-20 text-center text-neutral-500 border border-dashed border-neutral-200 rounded-3xl">
                             No services or packages found.
                         </div>
                     ) : (
                         services.map((s) => (
-                            <div key={s.id} className="group bg-neutral-900 border border-white/5 rounded-2xl p-6 hover:border-amber-500/30 transition-all">
+                            <div key={s.id} className="group bg-white border border-neutral-200 rounded-2xl p-6 hover:border-amber-500/50 transition-all">
                                 <div className="flex items-start justify-between mb-4">
-                                    <div className={`p-2 rounded-lg bg-neutral-800 text-amber-400`}>
+                                    <div className={`p-2 rounded-lg bg-neutral-100 text-amber-600`}>
                                         {getCategoryIcon(s.category)}
                                     </div>
                                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -210,13 +210,13 @@ const AdminServices: React.FC = () => {
                                     <span className="text-[10px] font-black text-amber-500/50 uppercase tracking-widest">
                                         {getCategoryName(s.category)}
                                     </span>
-                                    <h3 className="text-white font-bold text-lg">{s.name}</h3>
+                                    <h3 className="text-neutral-900 font-bold text-lg">{s.name}</h3>
                                     <p className="text-neutral-500 text-xs line-clamp-2 leading-relaxed">
                                         {s.description || 'No description provided.'}
                                     </p>
                                 </div>
-                                <div className="pt-4 border-t border-white/5 flex items-center justify-between">
-                                    <span className="text-2xl font-black text-white">${s.price}</span>
+                                <div className="pt-4 border-t border-neutral-200 flex items-center justify-between">
+                                    <span className="text-2xl font-black text-neutral-900">${s.price}</span>
                                     <span className="text-[10px] font-bold text-neutral-500 uppercase">One-time</span>
                                 </div>
                             </div>
@@ -236,7 +236,7 @@ const AdminServices: React.FC = () => {
                             <p className="text-sm text-rose-300">Delete <strong>{deleteService.name}</strong>? This will remove it from the store for all users.</p>
                         </div>
                         <div className="flex gap-3">
-                            <button onClick={() => setDeleteService(null)} className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">Cancel</button>
+                            <button onClick={() => setDeleteService(null)} className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">Cancel</button>
                             <button onClick={handleDelete} disabled={formLoading} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-400 text-white text-sm font-bold transition-colors disabled:opacity-50">
                                 {formLoading ? 'Deleting...' : 'Delete'}
                             </button>

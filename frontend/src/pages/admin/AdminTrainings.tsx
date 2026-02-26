@@ -10,11 +10,11 @@ import {
 const SESSION_TYPES = ['Group', 'Personal'];
 
 const Modal: React.FC<{ title: string; onClose: () => void; children: React.ReactNode }> = ({ title, onClose, children }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div className="bg-neutral-900 border border-white/10 rounded-2xl w-full max-w-lg mx-4 shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
-                <h3 className="text-white font-bold text-lg">{title}</h3>
-                <button onClick={onClose} className="text-neutral-400 hover:text-white transition-colors"><X className="w-5 h-5" /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="bg-white border border-neutral-200 rounded-2xl w-full max-w-lg mx-4 shadow-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
+                <h3 className="text-neutral-900 font-bold text-lg">{title}</h3>
+                <button onClick={onClose} className="text-neutral-400 hover:text-neutral-900 transition-colors"><X className="w-5 h-5" /></button>
             </div>
             <div className="p-6">{children}</div>
         </div>
@@ -23,12 +23,12 @@ const Modal: React.FC<{ title: string; onClose: () => void; children: React.Reac
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
     <div className="space-y-1.5">
-        <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">{label}</label>
+        <label className="text-xs font-bold text-neutral-500 uppercase tracking-wider">{label}</label>
         {children}
     </div>
 );
 
-const inputCls = 'w-full bg-neutral-800 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-colors';
+const inputCls = 'w-full bg-neutral-100 border border-neutral-200 rounded-xl px-4 py-2.5 text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:border-amber-500 transition-colors';
 
 const emptyCreate = (): SessionCreateDTO => ({
     name: '', description: '', sessionType: 'Group', trainerId: '', dateTime: '', capacity: 10,
@@ -73,7 +73,7 @@ const SessionForm: React.FC<{
         </Field>
         <div className="flex gap-3 pt-2">
             <button onClick={onCancel}
-                className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">
+                className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">
                 Cancel
             </button>
             <button onClick={onSubmit} disabled={formLoading}
@@ -160,7 +160,7 @@ const AdminTrainings: React.FC = () => {
     };
 
     const typeBadge = (type: string) =>
-        type === 'Group' ? 'bg-purple-500/20 text-purple-400' : 'bg-blue-500/20 text-blue-400';
+        type === 'Group' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600';
 
     return (
         <div className="p-8 max-w-7xl mx-auto space-y-6">
@@ -173,10 +173,10 @@ const AdminTrainings: React.FC = () => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-xl bg-purple-500/10">
-                        <Dumbbell className="w-6 h-6 text-purple-400" />
+                        <Dumbbell className="w-6 h-6 text-purple-600" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-black text-white">Trainings</h1>
+                        <h1 className="text-2xl font-black text-neutral-900">Trainings</h1>
                         <p className="text-neutral-500 text-sm">{sessions.length} sessions</p>
                     </div>
                 </div>
@@ -195,13 +195,13 @@ const AdminTrainings: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                 {loading
                     ? Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="bg-neutral-900 border border-white/5 rounded-2xl p-6 animate-pulse h-44" />
+                        <div key={i} className="bg-white border border-neutral-200 rounded-2xl p-6 animate-pulse h-44" />
                     ))
                     : sessions.length === 0
                         ? <div className="col-span-3 py-20 text-center text-neutral-500">No training sessions found</div>
                         : sessions.map((s) => (
                             <div key={s.sessionId}
-                                className="bg-neutral-900 border border-white/5 rounded-2xl p-5 hover:border-white/10 transition-all group">
+                                className="bg-white border border-neutral-200 rounded-2xl p-5 hover:border-neutral-300 transition-all group">
                                 <div className="flex items-start justify-between mb-3">
                                     <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${typeBadge(s.sessionType)}`}>
                                         {s.sessionType}
@@ -217,16 +217,16 @@ const AdminTrainings: React.FC = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <h3 className="text-white font-bold text-lg mb-1">{s.name}</h3>
+                                <h3 className="text-neutral-900 font-bold text-lg mb-1">{s.name}</h3>
                                 <p className="text-neutral-500 text-sm mb-4 line-clamp-2">{s.description}</p>
                                 <div className="grid grid-cols-2 gap-2 text-xs">
-                                    <div className="bg-neutral-800 rounded-lg p-2 text-center">
+                                    <div className="bg-neutral-100 rounded-lg p-2 text-center">
                                         <p className="text-neutral-500 mb-0.5">Capacity</p>
-                                        <p className="text-white font-bold">{s.capacity}</p>
+                                        <p className="text-neutral-900 font-bold">{s.capacity}</p>
                                     </div>
-                                    <div className="bg-neutral-800 rounded-lg p-2 text-center">
+                                    <div className="bg-neutral-100 rounded-lg p-2 text-center">
                                         <p className="text-neutral-500 mb-0.5">Date</p>
-                                        <p className="text-white font-bold">
+                                        <p className="text-neutral-900 font-bold">
                                             {s.dateTime ? new Date(s.dateTime).toLocaleDateString() : '—'}
                                         </p>
                                     </div>
@@ -272,7 +272,7 @@ const AdminTrainings: React.FC = () => {
                         </div>
                         <div className="flex gap-3">
                             <button onClick={() => setDeleteSession(null)}
-                                className="flex-1 py-2.5 rounded-xl border border-white/10 text-neutral-300 text-sm font-semibold hover:bg-white/5 transition-colors">
+                                className="flex-1 py-2.5 rounded-xl border border-neutral-200 text-neutral-300 text-sm font-semibold hover:bg-neutral-100 transition-colors">
                                 Cancel
                             </button>
                             <button onClick={handleDelete} disabled={formLoading}

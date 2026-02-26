@@ -125,7 +125,7 @@ const StripePaymentModal: React.FC<StripePaymentModalProps> = ({ clientSecret, a
                 </div>
                 
                 <div className="p-8">
-                    <Elements stripe={stripePromise}>
+                    <Elements stripe={stripePromise} options={{ clientSecret }}>
                         <CheckoutForm 
                             clientSecret={clientSecret} 
                             amount={amount} 

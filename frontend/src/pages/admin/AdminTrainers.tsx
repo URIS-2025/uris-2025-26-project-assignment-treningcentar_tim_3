@@ -21,7 +21,7 @@ const AdminTrainers: React.FC = () => {
                     <UserCheck className="w-6 h-6 text-blue-400" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-black text-white">Trainers</h1>
+                    <h1 className="text-2xl font-black text-neutral-900">Trainers</h1>
                     <p className="text-neutral-500 text-sm">{trainers.length} trainers registered</p>
                 </div>
             </div>
@@ -35,10 +35,10 @@ const AdminTrainers: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {loading
                     ? Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="bg-neutral-900 border border-white/5 rounded-2xl p-6 animate-pulse">
-                            <div className="w-16 h-16 rounded-full bg-neutral-800 mb-4" />
-                            <div className="h-4 bg-neutral-800 rounded w-3/4 mb-2" />
-                            <div className="h-3 bg-neutral-800 rounded w-1/2" />
+                        <div key={i} className="bg-white border border-neutral-200 rounded-2xl p-6 animate-pulse">
+                            <div className="w-16 h-16 rounded-full bg-neutral-100 mb-4" />
+                            <div className="h-4 bg-neutral-100 rounded w-3/4 mb-2" />
+                            <div className="h-3 bg-neutral-100 rounded w-1/2" />
                         </div>
                     ))
                     : trainers.length === 0
@@ -50,23 +50,23 @@ const AdminTrainers: React.FC = () => {
                         : trainers.map((trainer) => (
                             <div
                                 key={trainer.id}
-                                className="bg-neutral-900 border border-white/5 rounded-2xl p-6 hover:border-blue-500/30 hover:bg-neutral-800/50 transition-all duration-200 group"
+                                className="bg-white border border-neutral-200 rounded-2xl p-6 hover:border-blue-500/30 hover:bg-neutral-50 transition-all duration-200 group"
                             >
-                                <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-200">
-                                    <span className="text-xl font-black text-blue-400">
+                                <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-200">
+                                    <span className="text-xl font-black text-blue-600">
                                         {trainer.firstName?.charAt(0)?.toUpperCase() || trainer.username?.charAt(0)?.toUpperCase()}
                                     </span>
                                 </div>
-                                <h3 className="text-white font-bold text-lg">
+                                <h3 className="text-neutral-900 font-bold text-lg">
                                     {trainer.firstName} {trainer.lastName}
                                 </h3>
-                                <p className="text-neutral-400 text-sm">@{trainer.username}</p>
+                                <p className="text-neutral-500 text-sm">@{trainer.username}</p>
                                 <div className="mt-4 flex items-center gap-2 text-neutral-500 text-sm">
                                     <Mail className="w-3.5 h-3.5" />
                                     <span className="truncate">{trainer.email}</span>
                                 </div>
                                 <div className="mt-3">
-                                    <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-500/20 text-blue-400">Trainer</span>
+                                    <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-600">Trainer</span>
                                 </div>
                             </div>
                         ))}
