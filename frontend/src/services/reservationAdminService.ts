@@ -1,6 +1,6 @@
 import { authService } from './authService';
 
-const RESERVATION_API = 'http://localhost:5286/api';
+const RESERVATION_API = 'https://reservation-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api';
 
 export interface SessionDto {
     sessionId: string;

@@ -1,11 +1,11 @@
 import { authService } from './authService';
 
 // ===== API Base URLs (from docker-compose) =====
-const AUTH_API = 'http://localhost:5220/api/auth';
-const MEMBERSHIP_API = 'http://localhost:5118/api';
-const RESERVATION_API = 'http://localhost:5286/api';
-const PAYMENT_API = 'http://localhost:5219/api';
-const SERVICE_API = 'http://localhost:5079/api';
+const AUTH_API = 'https://auth-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/auth';
+const MEMBERSHIP_API = 'https://membership-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api';
+const RESERVATION_API = 'https://reservation-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api';
+const PAYMENT_API = 'https://payment-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api';
+const SERVICE_API = 'https://service-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api';
 
 // ===== Shared helpers =====
 const getHeaders = () => ({

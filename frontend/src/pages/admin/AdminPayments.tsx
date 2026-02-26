@@ -13,7 +13,7 @@ interface Payment {
     membershipTypeName?: string;
 }
 
-const PAYMENT_API = 'http://localhost:5219/api';
+const PAYMENT_API = 'https://payment-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api';
 
 const AdminPayments: React.FC = () => {
     const [payments, setPayments] = useState<Payment[]>([]);

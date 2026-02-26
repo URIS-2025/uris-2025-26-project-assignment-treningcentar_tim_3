@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5118/api/checkins';
+const API_BASE_URL = 'https://membership-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/checkins';
 
 export interface CheckinDto {
     userId: string;

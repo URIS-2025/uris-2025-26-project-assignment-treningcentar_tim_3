@@ -7,8 +7,8 @@ import type {
     GuidelineCreateDTO,
 } from '../types/measurement';
 
-const APPT_BASE = 'http://localhost:5225/api/measurementAppointment';
-const GUIDELINE_BASE = 'http://localhost:5225/api/guidelines';
+const APPT_BASE = 'https://measurment-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/measurementAppointment';
+const GUIDELINE_BASE = 'https://measurment-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/guidelines';
 
 const getHeaders = (): HeadersInit => {
     const token = authService.getToken();

@@ -1,6 +1,6 @@
 import { authService } from './authService';
 
-const MEMBERSHIP_API = 'http://localhost:5118/api';
+const MEMBERSHIP_API = 'https://membership-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api';
 
 export interface MembershipType {
     id: string;

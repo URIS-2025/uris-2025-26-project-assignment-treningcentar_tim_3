@@ -1,7 +1,7 @@
 import { authService } from './authService';
 
-const API_BASE_URL = 'http://localhost:5286/api/session';
-const TRAINING_HALL_API = 'http://localhost:5286/api/traininghall';
+const API_BASE_URL = 'https://reservation-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/session';
+const TRAINING_HALL_API = 'https://reservation-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/traininghall';
 
 export interface TrainerDto {
     id: string;

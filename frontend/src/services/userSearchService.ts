@@ -9,7 +9,7 @@ export interface UserSearchResult {
     role: string;
 }
 
-const AUTH_BASE = 'http://localhost:5220/api/auth';
+const AUTH_BASE = 'https://auth-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/auth';
 
 export const userSearchService = {
     async search(q: string, role: 'Member' | 'Trainer'): Promise<UserSearchResult[]> {

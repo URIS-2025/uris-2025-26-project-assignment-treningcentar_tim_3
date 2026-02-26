@@ -1,6 +1,6 @@
 import { authService } from './authService';
 
-const LOGGER_API = 'http://localhost:5194/api/logger';
+const LOGGER_API = 'https://logger-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/logger';
 
 export interface SystemLog {
     id: string;

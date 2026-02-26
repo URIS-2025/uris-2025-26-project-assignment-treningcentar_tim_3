@@ -1,6 +1,6 @@
 import { authService } from './authService';
 
-const API_BASE_URL = 'http://localhost:5079/api/service';
+const API_BASE_URL = 'https://service-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/service';
 
 export interface ServiceDto {
     id: string;

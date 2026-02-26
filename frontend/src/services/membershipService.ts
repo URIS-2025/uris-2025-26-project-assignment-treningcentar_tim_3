@@ -1,6 +1,6 @@
 import type { UserMembershipDto, MembershipPackageDto } from '../types/membership';
 
-const API_BASE_URL = 'http://localhost:5118/api/Membership';
+const API_BASE_URL = 'https://membership-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/Membership';
 
 export const membershipService = {
     async getUserMembership(userId: string, token: string): Promise<UserMembershipDto | null> {

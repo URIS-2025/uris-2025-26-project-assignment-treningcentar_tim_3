@@ -1,6 +1,6 @@
 import { authService } from './authService';
 
-const AUTH_API = 'http://localhost:5220/api/auth';
+const AUTH_API = 'https://auth-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/auth';
 
 export interface AdminUser {
   id: string;

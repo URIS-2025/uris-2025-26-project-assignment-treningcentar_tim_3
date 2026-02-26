@@ -1,6 +1,6 @@
 import { authService } from './authService';
 
-const PAYMENT_API = 'http://localhost:5219/api/Payment';
+const PAYMENT_API = 'https://payment-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/Payment';
 
 export const PaymentMethod = {
     Card: 0,

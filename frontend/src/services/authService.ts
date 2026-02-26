@@ -1,7 +1,7 @@
 import type { DecodedToken, LoginDTO, loginResponse, RegisterDTO, Role, UserInfo } from '../types/auth';
 import { jwtDecode } from 'jwt-decode';
 
-const API_BASE_URL = 'http://localhost:5220/api/auth';
+const API_BASE_URL = 'https://auth-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/auth';
 
 export const authService = {
     async login(dto: LoginDTO) {

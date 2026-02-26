@@ -6,7 +6,7 @@ export interface ServiceOption {
     category: number;
 }
 
-const SERVICE_BASE = 'http://localhost:5079/api/service';
+const SERVICE_BASE = 'https://service-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api/service';
 
 export const servicePickerService = {
     async getAll(): Promise<ServiceOption[]> {

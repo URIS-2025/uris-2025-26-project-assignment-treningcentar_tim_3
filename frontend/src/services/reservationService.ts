@@ -1,7 +1,7 @@
 import type { SessionDto } from '../types/reservation';
 import { authService } from './authService';
 
-const API_BASE_URL = 'http://localhost:5286/api';
+const API_BASE_URL = 'https://reservation-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api';
 
 // ===== Trainer/Admin DTO =====
 export interface MemberDto {

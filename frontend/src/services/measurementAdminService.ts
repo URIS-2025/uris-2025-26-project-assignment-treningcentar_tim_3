@@ -1,6 +1,6 @@
 import { authService } from './authService';
 
-const MEASUREMENT_API = 'http://localhost:5225/api';
+const MEASUREMENT_API = 'https://measurment-service.happyisland-1ee81c4a.germanywestcentral.azurecontainerapps.io/api';
 
 export interface MeasurementAppointmentDto {
     appointmentId: string;
