@@ -18,6 +18,7 @@ public class MembershipControllerTests
 {
     private readonly Mock<IMembershipRepository> _mockRepo;
     private readonly Mock<ICheckinRepository> _mockCheckinRepo;
+    private readonly Mock<IPackageRepository> _mockPackageRepo;
     private readonly Mock<IMapper> _mockMapper;
     private readonly MembershipController _controller;
 
@@ -25,8 +26,9 @@ public class MembershipControllerTests
     {
         _mockRepo = new Mock<IMembershipRepository>();
         _mockCheckinRepo = new Mock<ICheckinRepository>();
+        _mockPackageRepo = new Mock<IPackageRepository>();
         _mockMapper = new Mock<IMapper>();
-        _controller = new MembershipController(_mockRepo.Object, _mockCheckinRepo.Object, _mockMapper.Object);
+        _controller = new MembershipController(_mockRepo.Object, _mockCheckinRepo.Object, _mockPackageRepo.Object, _mockMapper.Object);
 
         // Setup default authenticated user
         var userId = Guid.NewGuid();

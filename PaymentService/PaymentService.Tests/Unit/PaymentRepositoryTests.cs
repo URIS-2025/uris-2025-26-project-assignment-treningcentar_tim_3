@@ -144,7 +144,7 @@ namespace PaymentService.Tests.Unit
                 .Returns(new ServiceDTO { Id = serviceId, Name = "Personal Training", Price = 100 });
 
             _stripeServiceMock.Setup(s => s.CreatePaymentIntentAsync(100, "usd"))
-                .ReturnsAsync("pi_test_12345");
+                .ReturnsAsync(("pi_test_12345", "client_secret_test"));
 
             var dto = new PaymentCreationDTO
             {
@@ -157,7 +157,7 @@ namespace PaymentService.Tests.Unit
             var result = _repository.AddPayment(dto);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Status, Is.EqualTo(PaymentStatus.Completed));
+            Assert.That(result.Status, Is.EqualTo(PaymentStatus.Pending));
             _stripeServiceMock.Verify(s => s.CreatePaymentIntentAsync(100, "usd"), Times.Once);
 
             var saved = _context.Payments.First();

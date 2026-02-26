@@ -219,65 +219,7 @@ public class MeasurementAppointmentsController : ControllerBase
         return NoContent();
     }
 
-    // NOVO: upis rezultata merenja (Nutritionist/Admin)
-    [Authorize(Roles = "Nutritionist,Admin")]
-    [HttpPut("{id:guid}/results")]
-    public async Task<IActionResult> UpdateResults(Guid id, [FromBody] MeasurementResultsDTO dto)
-    {
-        var userId = CurrentUserId;
-
-        var entity = await _repo.GetByIdAsync(id);
-        if (entity == null) return NotFound();
-
-        if (!User.IsInRole("Admin") && !User.IsInRole("Receptionist") && entity.NutritionistId != userId)
-            return Forbid();
-
-        // (opciono) basic validacija
-        if (dto.WeightKg is < 0 || dto.HeightCm is < 0 || dto.BodyFatPercent is < 0)
-            return BadRequest("Measurements cannot be negative.");
-        if (dto.ServiceId.HasValue)
-        {
-            try
-            {
-                var exists = await _serviceClient.ServiceExistsAsync(dto.ServiceId.Value);
-                if (!exists) return BadRequest("ServiceId does not exist.");
-            }
-            catch
-            {
-                return StatusCode(503, "ServiceService is unavailable.");
-            }
-        }
-
-        entity.MemberId = dto.MemberId;
-        entity.EmployeeId = dto.EmployeeId;
-        entity.Date = dto.Date;
-        entity.Notes = dto.Notes;
-        entity.ServiceId = dto.ServiceId;
-
-        // NEMA više: entity.Measurements.* ovde!
-
-        await _repo.SaveAsync();
-
-        await _loggerClient.TryLogAsync(
-            new LogCreationDTO
-            {
-                Level = LogLevels.Info,
-                ServiceName = ServiceName,
-                Action = "UpdateAppointment",
-                Message = "Measurement appointment updated",
-                Details = $"AppointmentId={entity.AppointmentId}; MemberId={entity.MemberId}; EmployeeId={entity.EmployeeId}; ServiceId={entity.ServiceId}; Date={entity.Date:o}",
-                CorrelationId = CorrelationId,
-                EntityType = "MeasurementAppointment",
-                EntityId = entity.AppointmentId,
-                UserId = userId
-            },
-            bearerHeader: BearerHeader,
-            requestCt: HttpContext.RequestAborted
-        );
-
-        return NoContent();
-    }
-
+    
     // NOVO: upis rezultata merenja (Nutritionist/Admin)
     [Authorize(Roles = "Nutritionist,Admin")]
     [HttpPut("{id:guid}/results")]

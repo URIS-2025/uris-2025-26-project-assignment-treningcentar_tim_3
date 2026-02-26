@@ -27,9 +27,13 @@ namespace PaymentService.Data
         public PaymentConfirmationDTO AddPayment(PaymentCreationDTO payment)
         {
             // Validacija — proveravamo da li servis postoji u ServiceService
+            // Ostavljeno kao opcionalno jer ServiceId može biti i PackageId iz MembershipService-a
             var service = _serviceService.GetServiceById(payment.ServiceId);
             if (service == null)
-                throw new Exception($"Service with ID {payment.ServiceId} does not exist.");
+            {
+                // throw new Exception($"Service with ID {payment.ServiceId} does not exist.");
+                // Log warning instead of failing
+            }
 
             var newPayment = new Payment
             {
@@ -42,23 +46,17 @@ namespace PaymentService.Data
                 ServiceId = payment.ServiceId
             };
 
+            string? clientSecret = null;
             if (payment.Method == PaymentMethod.Card)
             {
-                try
-                {
-                    var paymentIntentId = _stripePaymentService
-                        .CreatePaymentIntentAsync(payment.Amount)
-                        .GetAwaiter()
-                        .GetResult();
+                var stripeResult = _stripePaymentService
+                    .CreatePaymentIntentAsync(payment.Amount)
+                    .GetAwaiter()
+                    .GetResult();
 
-                    newPayment.StripePaymentIntentId = paymentIntentId;
-                    newPayment.Status = PaymentStatus.Completed;
-                }
-                catch (Exception)
-                {
-                    // Stripe not configured or failed - mark as pending for manual processing
-                    newPayment.Status = PaymentStatus.Pending;
-                }
+                newPayment.StripePaymentIntentId = stripeResult.id;
+                clientSecret = stripeResult.clientSecret;
+                newPayment.Status = PaymentStatus.Pending;
             }
 
             _context.Payments.Add(newPayment);

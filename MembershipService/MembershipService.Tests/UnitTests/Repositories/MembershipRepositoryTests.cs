@@ -97,11 +97,11 @@ public class MembershipRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task CreateMembershipAsync_DuplicateActiveMembership_ThrowsException()
+    public async Task CreateMembershipAsync_DuplicateActiveMembership_CancelsPrevious()
     {
         var package = TestHelpers.SeedPackage(_context);
         var userId = Guid.NewGuid();
-        TestHelpers.SeedMembership(_context, userId, package.PackageId);
+        var oldMembership = TestHelpers.SeedMembership(_context, userId, package.PackageId);
 
         var dto = new CreateMembershipDto
         {
@@ -112,10 +112,14 @@ public class MembershipRepositoryTests : IDisposable
             Status = MembershipStatus.Active
         };
 
-        var act = () => _repository.CreateMembershipAsync(dto);
+        var result = await _repository.CreateMembershipAsync(dto);
 
-        await act.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("User already has an active membership.");
+        result.Should().NotBeNull();
+        
+        // Ensure old membership was cancelled
+        var oldInDb = await _context.Memberships.FindAsync(oldMembership.MembershipId);
+        oldInDb!.Status.Should().Be(MembershipStatus.Cancelled);
+        oldInDb.CancelledDate.Should().NotBeNull();
     }
 
     //  UpdateMembership 

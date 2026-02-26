@@ -140,7 +140,7 @@ namespace PaymentService.Tests.Integration
             _serviceServiceMock.Setup(s => s.GetServiceById(serviceId))
                 .Returns(new ServiceDTO { Id = serviceId, Name = "Personal Training", Price = 100 });
             _stripeMock.Setup(s => s.CreatePaymentIntentAsync(100, "usd"))
-                .ReturnsAsync("pi_integration_test");
+                .ReturnsAsync(("pi_integration_test", "client_secret_test"));
 
             var createDto = new PaymentCreationDTO
             {
@@ -155,8 +155,8 @@ namespace PaymentService.Tests.Integration
             Assert.That(result.Result, Is.InstanceOf<CreatedResult>());
             var created = ((CreatedResult)result.Result!).Value as PaymentConfirmationDTO;
 
-            // Assert — status je Completed jer je kartica
-            Assert.That(created!.Status, Is.EqualTo(PaymentStatus.Completed));
+            // Assert — status je Pending jer je kartica
+            Assert.That(created!.Status, Is.EqualTo(PaymentStatus.Pending));
             Assert.That(created.Method, Is.EqualTo(PaymentMethod.Card));
             _stripeMock.Verify(s => s.CreatePaymentIntentAsync(100, "usd"), Times.Once);
 
@@ -282,7 +282,7 @@ namespace PaymentService.Tests.Integration
             _serviceServiceMock.Setup(s => s.GetServiceById(serviceId))
                 .Returns(new ServiceDTO { Id = serviceId, Name = "Boxing", Price = 80 });
             _stripeMock.Setup(s => s.CreatePaymentIntentAsync(80, "usd"))
-                .ReturnsAsync("pi_card_refund_test");
+                .ReturnsAsync(("pi_card_refund_test", "client_secret_test"));
             _stripeMock.Setup(s => s.RefundPaymentAsync("pi_card_refund_test"))
                 .ReturnsAsync("re_test_456");
 
@@ -295,6 +295,12 @@ namespace PaymentService.Tests.Integration
             };
             var createResult = _controller.AddPayment(createDto);
             var created = ((CreatedResult)createResult.Result!).Value as PaymentConfirmationDTO;
+
+            _repository.UpdatePaymentStatus(new PaymentStatusUpdateDTO
+            {
+                Id = created!.PaymentId,
+                Status = PaymentStatus.Completed
+            });
 
             // Act — refund
             var refundResult = _controller.RefundPayment(created!.PaymentId);
