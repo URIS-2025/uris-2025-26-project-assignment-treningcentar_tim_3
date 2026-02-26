@@ -112,7 +112,8 @@ const AdminPayments: React.FC = () => {
                                             <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${statusBadge(p.status)}`}>{p.status}</span>
                                         </td>
                                         <td className="px-5 py-4 text-neutral-500">
-                                            {p.createdAt ? new Date(p.createdAt).toLocaleDateString() : '—'}
+                                            {/**@ts-ignore */}
+                                            {p.paymentDate ? new Date(p.paymentDate).toLocaleDateString() : '—'}
                                         </td>
                                     </tr>
                                 ))

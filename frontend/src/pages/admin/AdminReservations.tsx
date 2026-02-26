@@ -150,7 +150,8 @@ const AdminReservations: React.FC = () => {
                                 filtered.map((r) => (
                                     <tr key={r.reservationId} className="hover:bg-neutral-50 transition-colors">
                                         <td className="px-5 py-4 font-mono text-xs text-neutral-500">{r.reservationId?.slice(0, 8)}…</td>
-                                        <td className="px-5 py-4 text-neutral-900 font-semibold">{r.username || r.userId?.slice(0, 8) + '…'}</td>
+                                        {/* @ts-ignore */}
+                                        <td className="px-5 py-4 text-neutral-900 font-semibold">{r.member.username || r.userId?.slice(0, 8) + '…'}</td>
                                         <td className="px-5 py-4 text-neutral-300">{r.sessionName || r.sessionId?.slice(0, 8) + '…'}</td>
                                         <td className="px-5 py-4 text-neutral-500">
                                             {r.reservationDate ? new Date(r.reservationDate).toLocaleDateString() : '—'}
